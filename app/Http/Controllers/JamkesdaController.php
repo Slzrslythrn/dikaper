@@ -29,7 +29,7 @@ class JamkesdaController extends Controller
         $pasien = Pasien::with('rumahsakit')->where('status', 'Diproses')->get();
         $tahun = Session::get('tahun'); // Mengambil tahun dari session, default ke tahun sekarang
 
-        // dd(session()->all());
+
 
         $pasien = Pasien::whereYear('tgl_diterima', $tahun)->get();
         return view('pages.admin.jamkesda.page', compact('pasien'));
@@ -245,6 +245,22 @@ class JamkesdaController extends Controller
         Log::logSave('Update Status Ditolak Pengajuan Pasien');
 
         Alert::error('Pengajuang Ditolak');
+        return redirect()->route('jamkesda');
+    }
+
+    public function prosesDiKembalikan(Request $request)
+    {
+        $pasien_id = $request->pasien_id;
+        $pasien =  Pasien::findOrFail($pasien_id);
+
+        $attr['keterangan_status'] = $request->keterangan_status;
+        $attr['status'] = 'Dikembalikan';
+
+        $update = $pasien->update($attr);
+
+        Log::logSave('Update Status Pengembalian Pengajuan Pasien');
+
+        Alert::info('Pengajuang Dikembalikan');
         return redirect()->route('jamkesda');
     }
 
