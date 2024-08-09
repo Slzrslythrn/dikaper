@@ -40,6 +40,7 @@
                                 <tbody id="orders">
                                     @php
                                     $no = 1;
+
                                     @endphp
                                     @foreach ($pasien as $row)
                                     <tr>
@@ -109,6 +110,9 @@
                                                     <button type="submit" href="" class="btn btn-danger mx-2"
                                                         onclick="return confirm('apakah anda yakin ingin menghapus data?')">Hapus</button>
                                                 </form>
+                                                @elseif ($row->status == 'Dikembalikan')
+                                                <a href="{{ route('pengajuan.getUpdate', ['id' => $row->pasien_id]) }}"
+                                                    class="btn btn-success  mx-2">Ajukan Ulang</a>
                                                 @endif
                                                 <a href="{{ route('pengajuan.lihat', ['id' => $row->pasien_id]) }}"
                                                     class="btn btn-primary">Lihat</a>
