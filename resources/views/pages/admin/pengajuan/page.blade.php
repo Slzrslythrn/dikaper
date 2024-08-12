@@ -139,6 +139,7 @@
     @endpush
 
     @push('after-scripts')
+
     <!-- Datatable -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('assets/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
@@ -175,5 +176,6 @@
         });
     }
     </script>
+
     @endpush
 </x-app-layout>

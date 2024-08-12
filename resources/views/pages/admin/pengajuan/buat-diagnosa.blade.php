@@ -67,13 +67,14 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="firstname">No SKTM</label>
-                                        <input type="text" name="no_sktm" class="form-control @error('no_sktm') is-invalid @enderror" id="firstname" placeholder="" value="{{old('no_sktm')}}">
+                                        <input type="text" name="no_sktm" class="form-control @error('no_sktm') is-invalid @enderror" id="firstname" placeholder="" value="{{ old('no_sktm') ?? $pasien->no_sktm }}" disabled >
                                         @error('no_sktm')
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
+                                    
                                     <div class="mb-3">
                                         <label for="country">Nama Puskesmas</label>
                                         <select class="d-block form-control @error('nama_pkm') is-invalid @enderror"

@@ -26,18 +26,18 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6">
-                                            {{-- <div class="mb-3">
+                                            <div class="mb-3">
                                                 <label for="noSurat">No Surat</label>
                                                 <input type="text" name="no_surat"
                                                 class="form-control @error('no_surat') is-invalid @enderror"
                                                 id="noSurat" placeholder=""
-                                                value="{{ old('no_surat', $nextNoSurat) }}" readonly>
+                                                value="{{ old('no_surat') ?? $newCode }}" disabled>
                                                 @error('no_surat')
                                                     <div class="invalid-feedback" style="width: 100%;">
                                                         {{ $message }}
                                                     </div>
                                                 @enderror
-                                            </div> --}}
+                                            </div>
                                             
                                             <div class="mb-3">
                                                 <label for="tglSurat">Tanggal Surat</label>
