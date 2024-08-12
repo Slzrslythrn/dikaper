@@ -27,7 +27,9 @@ class JamkesdaController extends Controller
     public function index(Request $request)
     {
         $pasien = Pasien::with('rumahsakit')->where('status', 'Diproses')->get();
-        $tahun = Session::get('tahun', date('Y')); // Mengambil tahun dari session, default ke tahun sekarang
+        $tahun = Session::get('tahun'); // Mengambil tahun dari session, default ke tahun sekarang
+
+
 
         $pasien = Pasien::whereYear('tgl_diterima', $tahun)->get();
         return view('pages.admin.jamkesda.page', compact('pasien'));
@@ -36,7 +38,7 @@ class JamkesdaController extends Controller
     public function tambah()
     {
         $kelurahan = Kelurahan::with('kecamatan')->get();
-	$rumas = DB::table('rumahsakit')->get();
+        $rumas = DB::table('rumahsakit')->get();
         return view('pages.admin.jamkesda.buat', compact('kelurahan', 'rumas'));
     }
 
@@ -119,11 +121,11 @@ class JamkesdaController extends Controller
 
         if ($request->hasFile('ktp_kk')) {
             $files = $request->file('ktp_kk');
-        
+
             foreach ($files as $index => $file) {
                 $ext = $file->getClientOriginalExtension();
                 $fileName = date('dmY') . Str::random(3);
-        
+
                 if ($index == 0) {
                     $newName = $fileName . 'KK' . '.' . $ext;
                     $file->move('uploads/ktpKk', $newName);
@@ -246,6 +248,22 @@ class JamkesdaController extends Controller
         Log::logSave('Update Status Ditolak Pengajuan Pasien');
 
         Alert::error('Pengajuang Ditolak');
+        return redirect()->route('jamkesda');
+    }
+
+    public function prosesDiKembalikan(Request $request)
+    {
+        $pasien_id = $request->pasien_id;
+        $pasien =  Pasien::findOrFail($pasien_id);
+
+        $attr['keterangan_status'] = $request->keterangan_status;
+        $attr['status'] = 'Dikembalikan';
+
+        $update = $pasien->update($attr);
+
+        Log::logSave('Update Status Pengembalian Pengajuan Pasien');
+
+        Alert::info('Pengajuang Dikembalikan');
         return redirect()->route('jamkesda');
     }
 
