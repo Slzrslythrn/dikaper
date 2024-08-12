@@ -83,6 +83,9 @@ class JamkesdaController extends Controller
         }
         // end
 
+        $lastNoSktm = Pasien::max('no_sktm');
+        $newNoSktm = $lastNoSktm ? $lastNoSktm + 1 : 1;
+
         // store function
         $attr = [
             'pasien_id' => $pasien_id,
@@ -101,7 +104,7 @@ class JamkesdaController extends Controller
             'ket_jamkesda' => $request->ket_jamkesda,
             'status' => 'Diproses',
             'keterangan_status' => '',
-            'no_sktm' => '0',
+            'no_sktm' => $newNoSktm,
             'nama_pkm' => '-',
             'no_rujuk_igd' => '0',
             'diagnosa' => '-',

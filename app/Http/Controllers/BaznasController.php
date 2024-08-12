@@ -19,7 +19,18 @@ class BaznasController extends Controller
 
     public function buat()
     {
-        return view('pages.admin.baznas.buat');
+        $lastRecord = Baznas::orderBy('id', 'desc')->first(); // Assuming `id` is auto-incremented
+
+    if ($lastRecord && preg_match('/460\/(\d{3})\/R\/B/', $lastRecord->kode, $matches)) {
+        $lastNumber = intval($matches[1]);
+        $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+    } else {
+        $newNumber = '012'; // Starting point if no records found
+    }
+
+    // Construct the new code
+    $newCode = "460/{$newNumber}/R/B";
+        return view('pages.admin.baznas.buat', compact('newCode'));
     }
 
     private function validateRequest(Request $request): array
@@ -52,9 +63,12 @@ class BaznasController extends Controller
     }
 
     public function simpan(Request $request)
-    {
-        $validated = $this->validateRequest($request);
+{
+    // Validate the request
+    $validated = $this->validateRequest($request);
 
+    // Attempt to save the validated data
+    try {
         $simpan = Baznas::create($validated);
 
         if ($simpan) {
@@ -63,9 +77,16 @@ class BaznasController extends Controller
         } else {
             Alert::error('Data Gagal Dinputkan');
         }
-
-        return redirect()->route('pages.admin.data-baznas');
+    } catch (\Exception $e) {
+        // Log the error and show a general error message to the user
+        Log::error('Error saving Baznas data: ' . $e->getMessage());
+        Alert::error('Terjadi kesalahan, data gagal disimpan.');
     }
+
+    // Redirect to the intended route
+    return redirect()->route('pages.admin.data-baznas');
+}
+
 
     public function edit($id)
     {

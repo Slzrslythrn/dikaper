@@ -134,39 +134,42 @@
         <!-- Datatable -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('assets/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-        <script>
-            
-            (function($) {
-                "use strict"
-                //example 1
-                var table = $('#example').DataTable();
-            })(jQuery);
+            <script>
+                
+                (function($) {
+    "use strict";
+    // example 1
+    var table = $('#example').DataTable();
+})(jQuery);
 
-            function submitPengajuan(event, url) {
-        event.preventDefault(); // Mencegah tindakan default dari elemen <a>
-        
-        // Menggunakan fetch API untuk mengirim pengajuan
-        fetch(url, {
-            method: 'GET', // Ubah metode ini sesuai dengan metode HTTP yang Anda gunakan (GET, POST, dll)
-            headers: {
-                'Content-Type': 'application/json',
-                // Tambahkan header lain jika diperlukan
-            },
-        })
-        .then(response => {
-            if (response.ok) {
-                // Jika pengajuan berhasil, buka halaman survei di tab baru
-                window.open('https://bit.ly/SurveiDinkesKotaBogor', '_blank');
-            } else {
-                // Jika pengajuan gagal, tampilkan pesan kesalahan
-                alert('Pengajuan gagal. Silakan coba lagi.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan. Silakan coba lagi.');
-        });
-    }
-        </script>
+function submitPengajuan(event, url) {
+    event.preventDefault(); // Mencegah tindakan default dari elemen <a>
+    
+    // Menggunakan fetch API untuk mengirim pengajuan
+    fetch(url, {
+        method: 'GET', // Ubah metode ini sesuai dengan metode HTTP yang Anda gunakan (GET, POST, dll)
+        headers: {
+            'Content-Type': 'application/json',
+            // Tambahkan header lain jika diperlukan
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            // Jika pengajuan berhasil, buka halaman survei di tab baru
+            window.open('https://bit.ly/SurveiDinkesKotaBogor', '_blank');
+            // Refresh the current page after opening the new tab
+            window.location.reload();
+        } else {
+            // Jika pengajuan gagal, tampilkan pesan kesalahan
+            alert('Pengajuan gagal. Silakan coba lagi.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan. Silakan coba lagi.');
+    });
+}
+
+            </script>
     @endpush
 </x-app-layout>
