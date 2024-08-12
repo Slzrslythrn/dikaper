@@ -35,7 +35,7 @@
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
                     <h4>Form Pengajuan</h4>
-                    <span>buat pengajuan baru</span>
+                    <span>{{ $keterangan }}</span>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -76,7 +76,7 @@
                                             <li>Hubungan Dengan Keluarga : <b>{{ $pasien->hubungan_kk }}</b></li>
                                         </ul>
                                     </p>
-                                    
+
                                 </a>
                             </div>
                         </div>
@@ -118,6 +118,17 @@
                                         <span class="text-white">2</span>
                                     </li>
                                 </ul>
+
+                                @if ($pasien->keterangan_status)
+
+                                <div>
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-muted">Keterangan</span>
+                                    </h4>
+                                    <textarea rows="10" disabled readonly
+                                        class="form-control">{{ $pasien->keterangan_status }}</textarea>
+                                </div>
+                                @endif
                             </div>
                             <div class="col-md-8 order-md-1">
                                 <form id="uploadForm" class="needs-validation" novalidate=""
@@ -130,12 +141,12 @@
                                         <label for="username">KTP <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="file"
-                                                class="form-control @error('ktp_kk') is-invalid @enderror"
-                                                id="ktp_kk" name="ktp_kk">
+                                                class="form-control @error('ktp_kk') is-invalid @enderror" id="ktp_kk"
+                                                name="ktp_kk">
                                             @error('ktp_kk')
-                                                <div class="invalid-feedback" style="width: 100%;">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -145,13 +156,13 @@
                                             <input type="file" class="form-control @error('va') is-invalid @enderror"
                                                 id="va" name="va">
                                             @error('va')
-                                                <div class="invalid-feedback" style="width: 100%;">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
-                                
+
                                     {{-- <div class="mb-3">
                                         <label for="username">Surat Pernyataan</label>
                                         <div class="input-group">
@@ -165,8 +176,7 @@
                                     <div class="mb-3">
                                         <label for="username">Surat Rekomendasi</label>
                                         <div class="input-group">
-                                            <input type="file" class="form-control" id="rekomendasi"
-                                                name="rekomendasi">
+                                            <input type="file" class="form-control" id="rekomendasi" name="rekomendasi">
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 Your username is required.
                                             </div>
@@ -175,8 +185,7 @@
                                     <div class="mb-3">
                                         <label for="username">Surat Rujukan Puskesmas</label>
                                         <div class="input-group">
-                                            <input type="file" class="form-control" id="rujukan_pkm"
-                                                name="rujukan_pkm">
+                                            <input type="file" class="form-control" id="rujukan_pkm" name="rujukan_pkm">
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 Your username is required.
                                             </div>
@@ -185,8 +194,7 @@
                                     <div class="mb-3">
                                         <label for="username">Surat Keterangan Rawat Inap</label>
                                         <div class="input-group">
-                                            <input type="file" class="form-control" id="rawat_inap"
-                                                name="rawat_inap">
+                                            <input type="file" class="form-control" id="rawat_inap" name="rawat_inap">
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 Your username is required.
                                             </div>
@@ -195,8 +203,7 @@
                                     <div class="mb-3">
                                         <label for="username">Surat Keterangan Tidak Mampu</label>
                                         <div class="input-group">
-                                            <input type="file" class="form-control" id="sktm"
-                                                name="sktm">
+                                            <input type="file" class="form-control" id="sktm" name="sktm">
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 Your username is required.
                                             </div>
@@ -205,8 +212,7 @@
                                     <div class="mb-3">
                                         <label for="username">KTP dan KK</label>
                                         <div class="input-group">
-                                            <input type="file" class="form-control" id="ktp_kk"
-                                                name="ktp_kk">
+                                            <input type="file" class="form-control" id="ktp_kk" name="ktp_kk">
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 Your username is required.
                                             </div>
@@ -217,8 +223,7 @@
                                         <label for="username">Catatan Kepolisian/ Surat Kematian/ Surat Kelahiran/
                                             Surat Kronologis / Surat Dinsos</label>
                                         <div class="input-group">
-                                            <input type="file" class="form-control" id="catatan"
-                                                name="catatan">
+                                            <input type="file" class="form-control" id="catatan" name="catatan">
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 Your username is required.
                                             </div>
@@ -228,13 +233,20 @@
 
                                     <hr class="mb-4">
                                     <div class="d-flex">
+                                        @if ($keterangan == 'Pengajuan Ulang')
+                                        <a href="{{  route('pengajuan.getUpdate', ['id' => $row->pasien_id]) }}"
+                                            class="btn btn-danger mx-2">Kembali</a>
+                                        @else
                                         <a href="{{ route('pengajuan.buat') }}" class="btn btn-danger mx-2">Kembali</a>
+                                        @endif
+
                                         <button class="btn btn-primary btn-lg btn-block" type="submit">Selesai</button>
                                     </div>
                                 </form>
 
                                 <!-- Form terpisah untuk survei -->
-                                <form id="myForm" action="https://bit.ly/SurveiDinkesKotaBogor" method="POST" onsubmit="handleSubmitAndOpenTab(event)">
+                                <form id="myForm" action="https://bit.ly/SurveiDinkesKotaBogor" method="POST"
+                                    onsubmit="handleSubmitAndOpenTab(event)">
                                     <!-- Elemen input form Anda di sini -->
                                 </form>
                             </div>

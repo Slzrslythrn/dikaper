@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/ 
+*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,7 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::middleware(['role:admin,superadmin'])->group(function () {
         Route::group(['prefix' => 'master'], function () {
-            Route::group(['prefix' => 'data-user'], function () { 
+            Route::group(['prefix' => 'data-user'], function () {
                 Route::get('/', [App\Http\Controllers\DataUserController::class, 'index'])->name('data-user');
                 Route::get('/buat', [App\Http\Controllers\DataUserController::class, 'buat'])->name('data-user.buat');
                 Route::post('/simpan', [App\Http\Controllers\DataUserController::class, 'simpan'])->name('data-user.simpan');
@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/selesai', [App\Http\Controllers\JamkesdaController::class, 'selesai'])->name('jamkesda.selesai');
             Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
             Route::delete('/{id}/delete/jamkesda', [App\Http\Controllers\JamkesdaController::class, 'destroy'])->name('jamkesda.destroy');
+
             Route::group(['prefix' => 'tagihan'], function () {
                 Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanTagihan'])->name('jamkesda.tagihan.simpan');
                 Route::get('/{id}/edit', [App\Http\Controllers\JamkesdaController::class, 'editTagihan'])->name('jamkesda.tagihan.edit');
@@ -73,6 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
             Route::get('/proses/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'prosesDiterima'])->name('jamkesda.proses.diterima');
             Route::post('/proses/ditolak', [App\Http\Controllers\JamkesdaController::class, 'prosesDitolak'])->name('jamkesda.proses.ditolak');
+            Route::post('/proses/dikembalikan', [App\Http\Controllers\JamkesdaController::class, 'prosesDikembalikan'])->name('jamkesda.proses.dikembalikan');
             Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
         });
 
@@ -80,9 +82,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [App\Http\Controllers\PengajuanController::class, 'index'])->name('pengajuan');
             Route::get('/buat', [App\Http\Controllers\PengajuanController::class, 'buat'])->name('pengajuan.buat');
             Route::post('/tambah', [App\Http\Controllers\PengajuanController::class, 'tambahBiodata'])->name('pengajuan.tambah');
+            Route::get('/pengajuan-ulang/{id}', [App\Http\Controllers\PengajuanController::class, 'getUpdate'])->name('pengajuan.getUpdate');
             Route::get('/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'buatDiagnosa'])->name('pengajuan.buat.diagnosa');
             Route::post('/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'tambahDiagnosa'])->name('pengajuan.tambah.diagnosa');
-            Route::get('/buat/upload', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
+            Route::get('/buat/upload/{id}/{ket}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
             Route::post('/tambah/upload', [App\Http\Controllers\PengajuanController::class, 'tambahUpload'])->name('pengajuan.tambah.upload');
             Route::delete('/{id}/delete', [App\Http\Controllers\PengajuanController::class, 'destroy'])->name('pengajuan.destroy');
             Route::get('/{id}/ajukan', [App\Http\Controllers\PengajuanController::class, 'ajukan'])->name('pengajuan.ajukan');
@@ -94,7 +97,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::group(['prefix' => 'pasien'], function () {
                 Route::get('/', [App\Http\Controllers\PasienController::class, 'index'])->name('pasien');
                 Route::get('/pasien/{pasien_id}', [App\Http\Controllers\PasienController::class, 'show'])->name('pasien.show');
-
             });
         });
     });
