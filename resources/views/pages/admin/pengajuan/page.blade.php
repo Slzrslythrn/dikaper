@@ -165,6 +165,8 @@
             if (response.ok) {
                 // Jika pengajuan berhasil, buka halaman survei di tab baru
                 window.open('https://bit.ly/SurveiDinkesKotaBogor', '_blank');
+                 // Refresh the current page after opening the new tab
+                window.location.reload();
             } else {
                 // Jika pengajuan gagal, tampilkan pesan kesalahan
                 alert('Pengajuan gagal. Silakan coba lagi.');
