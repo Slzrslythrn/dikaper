@@ -151,6 +151,8 @@ class PengajuanController extends Controller
             $pasien_id = $urut;
         }
         // end
+        $lastNoSktm = Pasien::max('no_sktm');
+        $newNoSktm = $lastNoSktm ? $lastNoSktm + 1 : 1;
 
         // store function
         $attr = [
@@ -171,7 +173,7 @@ class PengajuanController extends Controller
             'ket_jamkesda' => $request->ket_jamkesda,
             'status' => 'Draft',
             'keterangan_status' => '',
-            // 'no_sktm' => '0',
+             'no_sktm' => $newNoSktm,
             'nama_pkm' => '-',
             'no_rujuk_igd' => '0',
             'diagnosa' => '-',
@@ -483,7 +485,7 @@ class PengajuanController extends Controller
     public function diagnosaUpdate(Request $request, $pasien_id)
     {
         $validated = $request->validate([
-            'no_sktm' => 'required',
+           
             'nama_pkm' => 'required',
             'no_rujuk_igd' => 'required',
             'diagnosa' => 'required',
@@ -510,7 +512,7 @@ class PengajuanController extends Controller
         ]);
 
         $attr = array(
-            'no_sktm' => $request->no_sktm,
+           
             'nama_pkm' => $request->nama_pkm,
             'no_rujuk_igd' => $request->no_rujuk_igd,
             'diagnosa' => $request->diagnosa,
