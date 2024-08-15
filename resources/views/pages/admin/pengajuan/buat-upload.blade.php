@@ -234,7 +234,7 @@
                                     <hr class="mb-4">
                                     <div class="d-flex">
                                         @if ($keterangan == 'Pengajuan Ulang')
-                                        <a href="{{  route('pengajuan.getUpdate', ['id' => $row->pasien_id]) }}"
+                                        <a href="{{  route('pengajuan.getUpdate', ['id' => $pasien->pasien_id]) }}"
                                             class="btn btn-danger mx-2">Kembali</a>
                                         @else
                                         <a href="{{ route('pengajuan.buat') }}" class="btn btn-danger mx-2">Kembali</a>
