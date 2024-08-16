@@ -71,6 +71,7 @@ class PengajuanController extends Controller
                 'alamat' => null,
                 'hubungan_kk' => null,
                 'ket_jamkesda' => null,
+                
             ];
         }
 
@@ -111,6 +112,7 @@ class PengajuanController extends Controller
             'alamat' => 'required',
             'hubungan_kk' => 'required',
             'ket_jamkesda' => 'required',
+           
 
         ], [
             'no_ktp.required' => 'Form input harap diisi',
@@ -125,6 +127,8 @@ class PengajuanController extends Controller
             'alamat.required' => 'Form input harap diisi',
             'hubungan_kk.required' => 'Form input harap diisi',
             'ket_jamkesda.required' => 'Form input harap diisi',
+           
+
         ]);
 
 
@@ -161,6 +165,7 @@ class PengajuanController extends Controller
             'no_peserta' => '410/' . $pasien_id . '/SKTM/' . date('Y'),
             'no_ktp' => $request->no_ktp,
             'no_kk' => $request->no_kk,
+            'doc'=> $request->doc,
             'no_sjp' => $request->no_sjp,
             'nama_kepala' => $request->nama_kepala,
             'nama_pasien' => $request->nama_pasien,
@@ -184,6 +189,19 @@ class PengajuanController extends Controller
             'tgl_diterima' => now(),
         ];
         $store = Pasien::create($attr);
+        $attr2 = [];
+
+        if ($request->hasFile('doc')) {
+            $file = $request->file('doc')[0];
+            $ext = $file->getClientOriginalExtension();
+            $newName =  date('dmY') . Str::random(3) . 'DOC' .  '.' . $ext;
+            $file->move('uploads/doc', $newName);
+            $attr2['doc'] = $newName;
+        }
+
+        $attr2['pasien_id'] = $pasien_id;
+        // dd($attr2);
+        $store2 = Persyaratan::create($attr2);
         // end store function
 
         Log::logSave('Simpan Biodata Pasien');
@@ -225,70 +243,71 @@ class PengajuanController extends Controller
     }
 
     public function tambahUpload(Request $request)
+{
+    // Validasi input
+    $validated = $request->validate([
+        'ktp_kk' => 'required',
+        'va' => 'required',
+        'doc' => 'required', // Add validation for the doc field
+    ], [
+        'ktp_kk.required' => 'Form input KTP/KK harap diisi',
+        'va.required' => 'Form input harap diisi',
+        'doc.required' => 'Form input harap diisi',
+    ]);
 
-    {
+    // Temukan data Persyaratan berdasarkan pasien_id
+    $data = Persyaratan::where('pasien_id', $request->pasien_id)->first();
 
-        // Validasi input
-        $validated = $request->validate([
-            'ktp_kk' => 'required',
-            'va' => 'required',
-        ], [
-            'ktp_kk.required' => 'Form input harap diisi',
-            'va.required' => 'Form input harap diisi',
-        ]);
+    $attr = [];
 
-        // Temukan data Persyaratan berdasarkan pasien_id
-        $data = Persyaratan::where('pasien_id', $request->pasien_id)->first();
+    // Handle file upload dan hapus file lama jika ada file baru diunggah
+    $fileFields = [
+        'va' => 'uploads/buktiPendaftaranBpjs',
+        'surat_pernyataan' => 'uploads/suratPernyataan',
+        'rekomendasi' => 'uploads/rekomendasi',
+        'rujukan_pkm' => 'uploads/rujukanPkm',
+        'rawat_inap' => 'uploads/rawatInap',
+        'sktm' => 'uploads/sktm',
+        'ktp_kk' => 'uploads/ktpKk',
+        'catatan' => 'uploads/catatan',
+        'doc' => 'uploads/doc', // Add doc to the list of file fields
+    ];
 
-        $attr = [];
-
-        // Handle file upload dan hapus file lama jika ada file baru diunggah
-        $fileFields = [
-            'va' => 'uploads/buktiPendaftaranBpjs',
-            'surat_pernyataan' => 'uploads/suratPernyataan',
-            'rekomendasi' => 'uploads/rekomendasi',
-            'rujukan_pkm' => 'uploads/rujukanPkm',
-            'rawat_inap' => 'uploads/rawatInap',
-            'sktm' => 'uploads/sktm',
-            'ktp_kk' => 'uploads/ktpKk',
-            'catatan' => 'uploads/catatan'
-        ];
-
-        foreach ($fileFields as $field => $path) {
-            if ($request->hasFile($field)) {
-                // Hapus file lama jika ada
-                if ($data && $data->$field) {
-                    $oldFile = public_path($path . '/' . $data->$field);
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
-                    }
+    foreach ($fileFields as $field => $path) {
+        if ($request->hasFile($field)) {
+            // Hapus file lama jika ada
+            if ($data && $data->$field) {
+                $oldFile = public_path($path . '/' . $data->$field);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
                 }
-
-                // Upload file baru
-                $file = $request->file($field);
-                $ext = $file->getClientOriginalExtension();
-                $newName = date('dmY') . Str::random(3) . strtoupper($field[0]) . '.' . $ext;
-                $file->move($path, $newName);
-                $attr[$field] = $newName;
             }
+
+            // Upload file baru
+            $file = $request->file($field);
+            $ext = $file->getClientOriginalExtension();
+            $newName = date('dmY') . Str::random(3) . strtoupper($field[0]) . '.' . $ext;
+            $file->move($path, $newName);
+            $attr[$field] = $newName;
         }
+    }
 
-        $attr['pasien_id'] = $request->pasien_id;
+    $attr['pasien_id'] = $request->pasien_id;
 
-        if ($data) {
-            // Update data jika sudah ada
-            $pasien = Pasien::where('pasien_id', $request->pasien_id)->first();
-            $pasien->update(['status' => 'Diproses']);
-            $data->update($attr);
-        } else {
-            // Simpan data baru jika belum ada
-            Persyaratan::create($attr);
-        }
+    if ($data) {
+        // Update data jika sudah ada
+        $pasien = Pasien::where('pasien_id', $request->pasien_id)->first();
+        $pasien->update(['status' => 'Diproses']);
+        $data->update($attr);
+    } else {
+        // Simpan data baru jika belum ada
+        Persyaratan::create($attr);
+    }
 
-        Log::logSave('Upload File Kelengkapan Pengajuan');
+    Log::logSave('Upload File Kelengkapan Pengajuan');
 
-        Alert::success('Pengajuan Telah Selesai Dibuat');
-        return redirect()->route('pengajuan');
+    Alert::success('Pengajuan Telah Selesai Dibuat');
+    return redirect()->route('pengajuan');
 
         // $validated = $request->validate([
         //     'ktp_kk' => 'required',

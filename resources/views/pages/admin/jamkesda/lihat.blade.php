@@ -172,7 +172,7 @@
                             </div>
 
                         </div>
-                        @if (auth()->user()->level != 'user')
+                        @if (auth()->user()->level != 'user' || auth()->user()->level == 'rumahsakit')
                         @if ($pasien->no_sktm && $pasien->no_rujuk_igd != 0)
                         @if ($pasien->status != 'Diterima')
                         <div class="d-flex justify-content-center">
