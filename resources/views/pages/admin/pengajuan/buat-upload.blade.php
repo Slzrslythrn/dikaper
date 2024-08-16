@@ -137,33 +137,46 @@
                                     @csrf
                                     <input type="hidden" name="pasien_id" id="pasien_id"
                                         value="{{ $pasien->pasien_id }}">
-                                        <div class="mb-3">
-                                            <label for="ktp_kk">KTP dan Kartu Keluarga <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <input type="file" class="form-control @error('ktp_kk') is-invalid @enderror" id="ktp_kk" name="ktp_kk[]" multiple>
-                                                @error('ktp_kk')
-                                                <div class="invalid-feedback" style="width: 100%;">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
+                                    <div class="mb-3">
+                                        <label for="username">KTP <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="file"
+                                                class="form-control @error('ktp_kk') is-invalid @enderror" id="ktp_kk"
+                                                name="ktp_kk">
+                                            @error('ktp_kk')
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
                                             </div>
+                                            @enderror
                                         </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username">Kartu Keluarga <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="file" class="form-control @error('va') is-invalid @enderror"
+                                                id="va" name="va">
+                                            @error('va')
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                        <div class="mb-3">
-                                            <label for="ktp_kk">Document Lainya <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <input type="file"
-                                                    class="form-control @error('doc') is-invalid @enderror"
-                                                    id="doc" name="doc[]">
-                                                @error('doc')
-                                                    <div class="invalid-feedback" style="width: 100%;">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                    <div class="mb-3">
+                                        <label for="ktp_kk">Document Lainya <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="file" class="form-control @error('doc') is-invalid @enderror"
+                                                id="doc" name="doc">
+                                            @error('doc')
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
                                             </div>
+                                            @enderror
                                         </div>
-                                        
-                                        
+                                    </div>
+
+
 
                                     {{-- <div class="mb-3">
                                         <label for="username">Surat Pernyataan</label>
