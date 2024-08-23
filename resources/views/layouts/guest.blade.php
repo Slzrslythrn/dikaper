@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Dikaper') }}</title>
+    {{-- <title>{{ config('app.name', 'Dikaper') }}</title> --}}
+    <title>Dikaper Kota Bogor</title>
 
 
     <!-- Mobile Specific -->
@@ -27,7 +28,7 @@
     @stack('before-scripts')
     <!-- Required vendors -->
     <script src="{{ asset('assets/vendor/global/global.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
+
     <script src="{{ asset('assets/js/custom.min.js') }}"></script>
     <script src="{{ asset('assets/js/deznav-init.js') }}"></script>
     @stack('after-scripts')

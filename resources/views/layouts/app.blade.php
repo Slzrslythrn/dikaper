@@ -6,18 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    {{-- <title>{{ config('app.name', 'Dikaper') }}</title> --}}
+    <title>Dikaper Kota Bogor</title>
+
 
     @stack('before-styles')
-    {{-- <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png"> --}}
+    {{--
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png"> --}}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-    <link href="{{ asset('assets/vendor/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/chartist/css/chartist.min.css') }}">
-    {{-- <link href="{{ asset('assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet"> --}}
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    @stack('after-styles')
-   
+<link href="{{ asset('assets/vendor/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('assets/vendor/chartist/css/chartist.min.css') }}">
+{{--
+<link href="{{ asset('assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet"> --}}
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+@stack('after-styles')
+
 </head>
 
 <body>
@@ -25,7 +29,7 @@
     <x-loader />
 
     <div id="main-wrapper">
-        {{-- menu detail  --}}
+        {{-- menu detail --}}
         <x-header />
         <x-sidebar />
 
@@ -43,8 +47,8 @@
         @stack('before-scripts')
         <!-- Required vendors -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{{ asset('assets/vendor/global/global.min.js') }}"></script>
         {{-- <script src="{{ asset('assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script> --}}
         <script src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>

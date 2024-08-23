@@ -28,11 +28,12 @@
                                     <div class="form-group">
                                         <label class="mb-1"><strong>Tahun</strong></label>
 
-                                        <select name="tahun"
+                                        <select name="tahun" class="plain"
                                             style="width: 100%; border: 1px solid #d7dae3; border-radius: 0.375rem; padding: 8px 2px">
                                             @for ($i = date('Y'); $i >= 2000; $i--)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                             @endfor
+
                                         </select>
                                     </div>
 
@@ -59,6 +60,8 @@
                                         <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                                     </div>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
