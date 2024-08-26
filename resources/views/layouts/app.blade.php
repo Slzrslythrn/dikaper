@@ -30,10 +30,12 @@
 
     <div id="main-wrapper">
         {{-- menu detail --}}
+
         <x-header />
         <x-sidebar />
 
         {{-- menu icon --}}
+
         <x-header-start />
         <x-sidebar-start />
 

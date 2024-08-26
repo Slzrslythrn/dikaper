@@ -83,8 +83,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/buat', [App\Http\Controllers\PengajuanController::class, 'buat'])->name('pengajuan.buat');
             Route::post('/tambah', [App\Http\Controllers\PengajuanController::class, 'tambahBiodata'])->name('pengajuan.tambah');
             Route::get('/pengajuan-ulang/{id}', [App\Http\Controllers\PengajuanController::class, 'getUpdate'])->name('pengajuan.getUpdate');
-            Route::get('/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'buatDiagnosa'])->name('pengajuan.buat.diagnosa');
-            Route::post('/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'tambahDiagnosa'])->name('pengajuan.tambah.diagnosa');
+
+            Route::get('/{id}/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('pengajuan.diagnosa.tambah');
+            Route::put('/{id}/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('pengajuan.diagnosa.update');
+
             Route::get('/buat/upload/{id}/{ket}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
             Route::post('/tambah/upload', [App\Http\Controllers\PengajuanController::class, 'tambahUpload'])->name('pengajuan.tambah.upload');
             Route::delete('/{id}/delete', [App\Http\Controllers\PengajuanController::class, 'destroy'])->name('pengajuan.destroy');
@@ -100,6 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
         });
     });
+
     Route::middleware(['role:admin,superadmin'])->group(function () {
         Route::group(['prefix' => 'baznas'], function () {
             Route::get('/', [App\Http\Controllers\BaznasController::class, 'index'])->name('baznas');
@@ -114,3 +117,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+ // Route::get('/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'buatDiagnosa'])->name('pengajuan.buat.diagnosa');
+            // Route::post('/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'tambahDiagnosa'])->name('pengajuan.tambah.diagnosa');

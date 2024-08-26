@@ -143,7 +143,9 @@ class PengajuanController extends Controller
             Log::logSave('Update Biodata Pasien');
 
 
-            return redirect()->route('pengajuan.buat.upload', ['id' => $request->pasien_id, 'ket' => "update"]);
+            return redirect()->route('pengajuan.diagnosa.tambah', ['id' => $request->pasien_id]);
+
+            // return redirect()->route('pengajuan.buat.upload', ['id' => $request->pasien_id, 'ket' => "update"]);
         }
 
         // create a pasien id
@@ -206,21 +208,23 @@ class PengajuanController extends Controller
 
         Log::logSave('Simpan Biodata Pasien');
 
-        return redirect()->route('pengajuan.buat.upload', ['id' => $pasien_id, 'ket' => "baru"]);
+        return redirect()->route('pengajuan.diagnosa.tambah', ['id' => $pasien_id]);
+
+        // return redirect()->route('pengajuan.buat.upload', ['id' => $pasien_id, 'ket' => "baru"]);
     }
 
-    public function buatDiagnosa()
-    {
-        Carbon::setLocale('id');
-        $pasien = Pasien::with('kelurahan')->where('no_ktp', auth()->user()->nik)->where('users_id', auth()->user()->id)->first();
+    // public function buatDiagnosa()
+    // {
+    //     Carbon::setLocale('id');
+    //     $pasien = Pasien::with('kelurahan')->where('no_ktp', auth()->user()->nik)->where('users_id', auth()->user()->id)->first();
 
-        return view('pages.admin.pengajuan.buat-diagnosa', compact('pasien'));
-    }
+    //     return view('pages.admin.pengajuan.buat-diagnosa', compact('pasien'));
+    // }
 
-    public function tambahDiagnosa()
-    {
-        return redirect()->route('pengajuan.buat.upload');
-    }
+    // public function tambahDiagnosa()
+    // {
+    //     return redirect()->route('pengajuan.buat.upload');
+    // }
 
     public function buatUpload($pasien_id, $ket)
     {

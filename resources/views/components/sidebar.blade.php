@@ -2,8 +2,8 @@
     <div class="head-name">
         Dikaper
         <span class="close-fixed-content fa-left d-lg-none">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                viewBox="0 0 24 24" version="1.1">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                height="24px" viewBox="0 0 24 24" version="1.1">
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <polygon points="0 0 24 0 24 24 0 24" />
                     <rect fill="#000000" opacity="0.3"
@@ -41,15 +41,13 @@
                                     <path
                                         d="M3,4 L20,4 C20.5522847,4 21,4.44771525 21,5 L21,7 C21,7.55228475 20.5522847,8 20,8 L3,8 C2.44771525,8 2,7.55228475 2,7 L2,5 C2,4.44771525 2.44771525,4 3,4 Z M10,10 L20,10 C20.5522847,10 21,10.4477153 21,11 L21,13 C21,13.5522847 20.5522847,14 20,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L20,16 C20.5522847,16 21,16.4477153 21,17 L21,19 C21,19.5522847 20.5522847,20 20,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z"
                                         fill="#000000" />
-                                    <rect fill="#000000" opacity="0.3" x="2" y="10" width="5"
-                                        height="10" rx="1" />
+                                    <rect fill="#000000" opacity="0.3" x="2" y="10" width="5" height="10" rx="1" />
                                 </g>
                             </svg>
                             Dashboard</a>
                     </li>
                     <li>
-                        <a href="{{ route('log') }}"
-                            class="{{ request()->is('log-aktivitas') ? 'text-primary' : '' }}">
+                        <a href="{{ route('log') }}" class="{{ request()->is('log-aktivitas') ? 'text-primary' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -57,8 +55,7 @@
                                     <path
                                         d="M3,4 L20,4 C20.5522847,4 21,4.44771525 21,5 L21,7 C21,7.55228475 20.5522847,8 20,8 L3,8 C2.44771525,8 2,7.55228475 2,7 L2,5 C2,4.44771525 2.44771525,4 3,4 Z M10,10 L20,10 C20.5522847,10 21,10.4477153 21,11 L21,13 C21,13.5522847 20.5522847,14 20,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L20,16 C20.5522847,16 21,16.4477153 21,17 L21,19 C21,19.5522847 20.5522847,20 20,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z"
                                         fill="#000000" />
-                                    <rect fill="#000000" opacity="0.3" x="2" y="10" width="5"
-                                        height="10" rx="1" />
+                                    <rect fill="#000000" opacity="0.3" x="2" y="10" width="5" height="10" rx="1" />
                                 </g>
                             </svg>
                             Log Aktivitas</a>
@@ -102,8 +99,7 @@
                                         fill="#000000" />
                                 </g>
                             </svg>
-                            <span
-                                class="nav-text {{ request()->is('master/rumah-sakit*') ? 'text-primary' : '' }}">Data
+                            <span class="nav-text {{ request()->is('master/rumah-sakit*') ? 'text-primary' : '' }}">Data
                                 Rumah sakit</span>
                             {{-- <span class="badge badge-xs badge-light">06</span> --}}
                         </a>
@@ -112,88 +108,84 @@
             </div>
             <div class="tab-pane fade {{ request()->is('jamkesda*') ? 'show active' : '' }}" id="table">
                 <ul class="metismenu tab-nav-menu">
-                    @if (Auth::user()->level == 'user')
-                        <li class="nav-label">Jamkesda</li>
-                        <li><a href="{{ route('pengajuan') }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24">
-                                        </rect>
-                                        <path
-                                            d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z"
-                                            fill="#000000"></path>
-                                        <path
-                                            d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z"
-                                            fill="#000000" opacity="0.3"></path>
-                                    </g>
-                                </svg>
-                                <span
-                                    class="nav-text {{ request()->is('jamkesda/pengajuan*') ? 'text-primary' : '' }}">
-                                    Pengajuan
-                                </span>
-                            </a>
-                        </li>
+                    @if (Auth::user()->level == 'user' || Auth::user()->level == 'rumahsakit')
+                    <li class="nav-label">Jamkesda</li>
+                    <li><a href="{{ route('pengajuan') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24">
+                                    </rect>
+                                    <path
+                                        d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z"
+                                        fill="#000000"></path>
+                                    <path
+                                        d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z"
+                                        fill="#000000" opacity="0.3"></path>
+                                </g>
+                            </svg>
+                            <span class="nav-text {{ request()->is('jamkesda/pengajuan*') ? 'text-primary' : '' }}">
+                                Pengajuan
+                            </span>
+                        </a>
+                    </li>
                     @endif
-                    @if (Auth::user()->level != 'user')
-                        @if (Auth::user()->level != 'verifikator')
-                            <li><a href="{{ route('pasien') }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect x="0" y="0" width="24" height="24">
-                                            </rect>
-                                            <path
-                                                d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z"
-                                                fill="#000000"></path>
-                                            <path
-                                                d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z"
-                                                fill="#000000" opacity="0.3"></path>
-                                        </g>
-                                    </svg>
-                                    <span
-                                        class="nav-text {{ request()->is('jamkesda/pasien*') ? 'text-primary' : '' }}">
-                                        Data Pasien Jamkesda
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('jamkesda') }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect x="0" y="0" width="24" height="24" />
-                                            <path
-                                                d="M3,4 L20,4 C20.5522847,4 21,4.44771525 21,5 L21,7 C21,7.55228475 20.5522847,8 20,8 L3,8 C2.44771525,8 2,7.55228475 2,7 L2,5 C2,4.44771525 2.44771525,4 3,4 Z M10,10 L20,10 C20.5522847,10 21,10.4477153 21,11 L21,13 C21,13.5522847 20.5522847,14 20,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L20,16 C20.5522847,16 21,16.4477153 21,17 L21,19 C21,19.5522847 20.5522847,20 20,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z"
-                                                fill="#000000" />
-                                            <rect fill="#000000" opacity="0.3" x="2" y="10"
-                                                width="5" height="10" rx="1" />
-                                        </g>
-                                    </svg>
-                                    <span class="nav-text {{ request()->is('jamkesda*') ? 'text-primary' : '' }}">
-                                        Data Jamkesda
-                                    </span>
-                                </a>
-                            </li>
-                        @endif
-                        <li>
-                            <a href="{{ route('jamkesda.selesai') }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <path
-                                            d="M3,4 L20,4 C20.5522847,4 21,4.44771525 21,5 L21,7 C21,7.55228475 20.5522847,8 20,8 L3,8 C2.44771525,8 2,7.55228475 2,7 L2,5 C2,4.44771525 2.44771525,4 3,4 Z M10,10 L20,10 C20.5522847,10 21,10.4477153 21,11 L21,13 C21,13.5522847 20.5522847,14 20,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L20,16 C20.5522847,16 21,16.4477153 21,17 L21,19 C21,19.5522847 20.5522847,20 20,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z"
-                                            fill="#000000" />
-                                        <rect fill="#000000" opacity="0.3" x="2" y="10"
-                                            width="5" height="10" rx="1" />
-                                    </g>
-                                </svg>
-                                <span class="nav-text {{ request()->is('jamkesda/selesai') ? 'text-primary' : '' }}">
-                                    Data Jamkesda Selesai
-                                </span>
-                            </a>
-                        </li>
+                    @if (Auth::user()->level != 'user' && Auth::user()->level != 'rumahsakit')
+                    @if (Auth::user()->level != 'verifikator')
+                    <li><a href="{{ route('pasien') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24">
+                                    </rect>
+                                    <path
+                                        d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z"
+                                        fill="#000000"></path>
+                                    <path
+                                        d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z"
+                                        fill="#000000" opacity="0.3"></path>
+                                </g>
+                            </svg>
+                            <span class="nav-text {{ request()->is('jamkesda/pasien*') ? 'text-primary' : '' }}">
+                                Data Pasien Jamkesda
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('jamkesda') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path
+                                        d="M3,4 L20,4 C20.5522847,4 21,4.44771525 21,5 L21,7 C21,7.55228475 20.5522847,8 20,8 L3,8 C2.44771525,8 2,7.55228475 2,7 L2,5 C2,4.44771525 2.44771525,4 3,4 Z M10,10 L20,10 C20.5522847,10 21,10.4477153 21,11 L21,13 C21,13.5522847 20.5522847,14 20,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L20,16 C20.5522847,16 21,16.4477153 21,17 L21,19 C21,19.5522847 20.5522847,20 20,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z"
+                                        fill="#000000" />
+                                    <rect fill="#000000" opacity="0.3" x="2" y="10" width="5" height="10" rx="1" />
+                                </g>
+                            </svg>
+                            <span class="nav-text {{ request()->is('jamkesda*') ? 'text-primary' : '' }}">
+                                Data Jamkesda
+                            </span>
+                        </a>
+                    </li>
+                    @endif
+                    <li>
+                        <a href="{{ route('jamkesda.selesai') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path
+                                        d="M3,4 L20,4 C20.5522847,4 21,4.44771525 21,5 L21,7 C21,7.55228475 20.5522847,8 20,8 L3,8 C2.44771525,8 2,7.55228475 2,7 L2,5 C2,4.44771525 2.44771525,4 3,4 Z M10,10 L20,10 C20.5522847,10 21,10.4477153 21,11 L21,13 C21,13.5522847 20.5522847,14 20,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L20,16 C20.5522847,16 21,16.4477153 21,17 L21,19 C21,19.5522847 20.5522847,20 20,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z"
+                                        fill="#000000" />
+                                    <rect fill="#000000" opacity="0.3" x="2" y="10" width="5" height="10" rx="1" />
+                                </g>
+                            </svg>
+                            <span class="nav-text {{ request()->is('jamkesda/selesai') ? 'text-primary' : '' }}">
+                                Data Jamkesda Selesai
+                            </span>
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </div>
@@ -208,13 +200,12 @@
                                     <path
                                         d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z"
                                         fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                    <rect fill="#000000" x="6" y="11" width="9"
-                                        height="2" rx="1" />
-                                    <rect fill="#000000" x="6" y="15" width="5"
-                                        height="2" rx="1" />
+                                    <rect fill="#000000" x="6" y="11" width="9" height="2" rx="1" />
+                                    <rect fill="#000000" x="6" y="15" width="5" height="2" rx="1" />
                                 </g>
                             </svg>
-                            <span class="nav-text {{ request()->is('baznas*') ? 'text-primary' : '' }}">Data baznas</span>
+                            <span class="nav-text {{ request()->is('baznas*') ? 'text-primary' : '' }}">Data
+                                baznas</span>
                         </a>
                     </li>
                 </ul>
