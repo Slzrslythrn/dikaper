@@ -3,15 +3,28 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
+                    @if ($pasien->status == 'Dikembalikan')
+                    <h4>Form Pengajuan Ulang </h4>
+                    <span>buat pengajuan ulang</span>
+                    @else
                     <h4>Form Pengajuan </h4>
                     <span>buat pengajuan baru</span>
+                    @endif
+
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Pengajuan</a></li>
+                    @if ($pasien->status == 'Dikembalikan')
+                    <li class="breadcrumb-item active"><a
+                            href="{{ route('pengajuan.getUpdate', ['id' => $pasien->pasien_id]) }}">Update</a></li>
+
+                    @else
                     <li class="breadcrumb-item active"><a href="{{ route('pengajuan.buat') }}">Buat</a></li>
+                    @endif
+
                 </ol>
             </div>
         </div>
@@ -49,6 +62,18 @@
                                         <span class="text-muted">3</span>
                                     </li>
                                 </ul>
+
+                                @if ($pasien->keterangan_status)
+                                <div>
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-muted">Keterangan</span>
+                                    </h4>
+                                    <textarea rows="10" disabled readonly
+                                        class="form-control">{{ $pasien->keterangan_status }}</textarea>
+                                </div>
+                                @endif
+
+
                             </div>
                             <div class="col-md-8 order-md-1">
                                 <form class="needs-validation" novalidate="" action="{{ route('pengajuan.tambah') }}"

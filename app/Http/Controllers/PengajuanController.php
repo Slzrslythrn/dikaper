@@ -22,9 +22,9 @@ class PengajuanController extends Controller
         Carbon::setLocale('id');
         $nik = auth()->user()->nik;
         // $pasien = Pasien::has('persyaratan')->with('rumahsakit')->where('no_ktp', auth()->user()->nik)->get();
-        $rumahsakit = Rumahsakit::whereHas('pasien', function ($query) use ($nik) {
-            $query->where('no_ktp', $nik)->has('persyaratan');
-        })->with('pasien')->get();
+        // $rumahsakit = Rumahsakit::whereHas('pasien', function ($query) use ($nik) {
+        //     $query->where('no_ktp', $nik)->has('persyaratan');
+        // })->with('pasien')->get();
 
         $pasien = Pasien::with(['rumahsakit', 'kelurahan.kecamatan'])
             ->where('no_ktp', auth()->user()->nik)
@@ -46,7 +46,7 @@ class PengajuanController extends Controller
         // }
 
         // kondisi jika user sudah pernah isi form dengan status masih draft
-        $pasien = Pasien::where('no_ktp', auth()->user()->nik)->where('status', 'Draft')->first();
+        // $pasien = Pasien::where('no_ktp', auth()->user()->nik)->where('status', 'Draft')->first();
 
         // jika sudah upload berkas
         $persyaratan = Pasien::where('no_ktp', $no_ktp)->where('status', '!=', 'Draft')->has('persyaratan')->count();
@@ -57,24 +57,46 @@ class PengajuanController extends Controller
         //}
         // end
 
-        if (!$pasien) {
-            $pasien = (object) [
-                'no_ktp' => null,
-                'no_kk' => null,
-                'no_sjp' => null,
-                'nama_kepala' => null,
-                'nama_pasien' => null,
-                'jenis_kelamin' => null,
-                'tempat_lahir' => null,
-                'tanggal_lahir' => now(),
-                'kelurahan_id' => null,
-                'alamat' => null,
-                'hubungan_kk' => null,
-                'ket_jamkesda' => null,
 
+        $pasien = (object) [
+            'no_ktp' => null,
+            'no_kk' => null,
+            'no_sjp' => null,
+            'nama_kepala' => null,
+            'nama_pasien' => null,
+            'jenis_kelamin' => null,
+            'tempat_lahir' => null,
+            'tanggal_lahir' => now(),
+            'kelurahan_id' => null,
+            'alamat' => null,
+            'hubungan_kk' => null,
+            'ket_jamkesda' => null,
+
+        ];
+
+
+        // Get kelurahan data
+        $kelurahan = Kelurahan::with('kecamatan')->get();
+
+        // Get hospital data
+        $rumahSakit = auth()->user()->rumah_sakit; // Adjust this according to how you link the hospital to the user
+
+        // Initialize rumahSakit object if not available
+        if (!$rumahSakit) {
+            $rumahSakit = (object) [
+                'kode' => null,
+                'nama' => null,
+                'alamat' => null,
+                'kode_jenis' => null,
             ];
         }
 
+        return view('pages.admin.pengajuan.buat', compact('kelurahan', 'pasien', 'rumahSakit'));
+    }
+
+    public function buatById($pasien_id)
+    {
+        $pasien = Pasien::where('pasien_id', $pasien_id)->first();
         // Get kelurahan data
         $kelurahan = Kelurahan::with('kecamatan')->get();
 
@@ -178,7 +200,7 @@ class PengajuanController extends Controller
             'alamat' => $request->alamat,
             'hubungan_kk' => $request->hubungan_kk,
             'ket_jamkesda' => $request->ket_jamkesda,
-            'status' => 'Draft',
+            // 'status' => '',
             'keterangan_status' => '',
             'no_sktm' => $newNoSktm,
             'nama_pkm' => '-',
@@ -226,7 +248,7 @@ class PengajuanController extends Controller
     //     return redirect()->route('pengajuan.buat.upload');
     // }
 
-    public function buatUpload($pasien_id, $ket)
+    public function buatUpload($pasien_id)
     {
         Carbon::setLocale('id');
 
@@ -235,15 +257,8 @@ class PengajuanController extends Controller
             ->where('pasien_id', $pasien_id)
             ->first();
 
-        if ($ket == "update") {
-            $keterangan = "Pengajuan Ulang";
-        } elseif ($ket == "baru") {
-            $keterangan = "Buat Pengajuan Baru";
-        } else {
-            $keterangan = "Keterangan tidak valid";
-        }
 
-        return view('pages.admin.pengajuan.buat-upload', compact('pasien', 'keterangan'));
+        return view('pages.admin.pengajuan.buat-upload', compact('pasien'));
     }
 
     public function tambahUpload(Request $request)
@@ -251,13 +266,21 @@ class PengajuanController extends Controller
 
         // Validasi input
         $validated = $request->validate([
-            'ktp_kk' => 'required',
-            'va' => 'required',
-            'doc' => 'required',
+            'ktp_kk' =>  ['required', 'mimes:pdf', 'max:2000'],
+            'sktm' =>  ['required', 'mimes:pdf', 'max:2000'],
+            'doc' =>  ['required', 'mimes:pdf', 'max:2000'],
         ], [
-            'ktp_kk.required' => 'Form input harap diisi',
-            'va.required' => 'Form input harap diisi',
-            'doc.required' => 'Form input harap diisi',
+            'ktp_kk.required' => 'Form input KTP/KK harap diisi',
+            'ktp_kk.mimes' => 'File KTP/KK harus berupa PDF',
+            'ktp_kk.max' => 'Ukuran file KTP/KK tidak boleh lebih dari 2MB',
+
+            'sktm.required' => 'Form input SKTM harap diisi',
+            'sktm.mimes' => 'File SKTM harus berupa PDF',
+            'sktm.max' => 'Ukuran file SKTM tidak boleh lebih dari 2MB',
+
+            'doc.required' => 'Form input DOC harap diisi',
+            'doc.mimes' => 'File DOC harus berupa PDF',
+            'doc.max' => 'Ukuran file DOC tidak boleh lebih dari 2MB',
         ]);
 
         // Temukan data Persyaratan berdasarkan pasien_id
@@ -306,7 +329,7 @@ class PengajuanController extends Controller
         if ($data) {
             // Update data jika sudah ada
             $pasien = Pasien::where('pasien_id', $request->pasien_id)->first();
-            $pasien->update(['status' => 'Diproses']);
+            $pasien->update(['status' => 'Diproses', 'keterangan_status' => '']);
             $data->update($attr);
         } else {
             // Simpan data baru jika belum ada
@@ -623,8 +646,8 @@ class PengajuanController extends Controller
 
         Log::logSave('Menambahkan Diagnosa Pasien');
 
-        Alert::success('Pengajuan Telah Dilengkapi');
-        return redirect()->route('jamkesda.lihat', ['id' => $pasien_id]);
+        // Alert::success('Pengajuan Telah Dilengkapi');
+        return redirect()->route('pengajuan.buat.upload', ['id' => $pasien_id]);
     }
 
     public function download($pasien_id)
@@ -671,7 +694,7 @@ class PengajuanController extends Controller
 
         // dd($pasien);
 
-        return view('pages.admin.pengajuan.update', compact('pasien', 'kelurahan', 'rumahSakit'));
+        return view('pages.admin.pengajuan.buat', compact('pasien', 'kelurahan', 'rumahSakit'));
     }
 
     // public function getUpdateUpload($pasien_id)

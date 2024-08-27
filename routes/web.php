@@ -81,13 +81,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::group(['prefix' => 'pengajuan'], function () {
             Route::get('/', [App\Http\Controllers\PengajuanController::class, 'index'])->name('pengajuan');
             Route::get('/buat', [App\Http\Controllers\PengajuanController::class, 'buat'])->name('pengajuan.buat');
+            Route::get('/buat/{id}', [App\Http\Controllers\PengajuanController::class, 'buatById'])->name('pengajuan.buatById');
+
             Route::post('/tambah', [App\Http\Controllers\PengajuanController::class, 'tambahBiodata'])->name('pengajuan.tambah');
             Route::get('/pengajuan-ulang/{id}', [App\Http\Controllers\PengajuanController::class, 'getUpdate'])->name('pengajuan.getUpdate');
 
             Route::get('/{id}/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('pengajuan.diagnosa.tambah');
             Route::put('/{id}/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('pengajuan.diagnosa.update');
 
-            Route::get('/buat/upload/{id}/{ket}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
+            Route::get('/buat/upload/{id}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
             Route::post('/tambah/upload', [App\Http\Controllers\PengajuanController::class, 'tambahUpload'])->name('pengajuan.tambah.upload');
             Route::delete('/{id}/delete', [App\Http\Controllers\PengajuanController::class, 'destroy'])->name('pengajuan.destroy');
             Route::get('/{id}/ajukan', [App\Http\Controllers\PengajuanController::class, 'ajukan'])->name('pengajuan.ajukan');
