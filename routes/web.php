@@ -43,6 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::put('/{id}/update', [App\Http\Controllers\DataRumahSakitController::class, 'update'])->name('data-rumahSakit.update');
                 Route::delete('/{id}/delete', [App\Http\Controllers\DataRumahSakitController::class, 'destroy'])->name('data-rumahSakit.destroy');
             });
+
+            Route::group(['prefix' => 'sktm'], function () {
+                Route::get('/', [App\Http\Controllers\SetSktmController::class, 'index'])->name('data-sktm');
+                Route::post('/tambah', [App\Http\Controllers\SetSktmController::class, 'tambah'])->name('data-sktm.tambah');
+            });
         });
     });
 
@@ -69,13 +74,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
             Route::group(['prefix' => 'lihat'], function () {
                 Route::get('/{id}', [App\Http\Controllers\PengajuanController::class, 'lihat'])->name('jamkesda.lihat');
-                Route::get('/{id}/diagnosa/tambah', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('jamkesda.diagnosa.tambah');
+                Route::get('/{id}/diagnosa/{ket}', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('jamkesda.diagnosa.tambah');
                 Route::put('/{id}/diagnosa/update', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('jamkesda.diagnosa.update');
             });
             Route::get('/proses/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'prosesDiterima'])->name('jamkesda.proses.diterima');
             Route::post('/proses/ditolak', [App\Http\Controllers\JamkesdaController::class, 'prosesDitolak'])->name('jamkesda.proses.ditolak');
             Route::post('/proses/dikembalikan', [App\Http\Controllers\JamkesdaController::class, 'prosesDikembalikan'])->name('jamkesda.proses.dikembalikan');
-            Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
         });
 
         Route::group(['prefix' => 'pengajuan'], function () {
@@ -86,8 +90,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/tambah', [App\Http\Controllers\PengajuanController::class, 'tambahBiodata'])->name('pengajuan.tambah');
             Route::get('/pengajuan-ulang/{id}', [App\Http\Controllers\PengajuanController::class, 'getUpdate'])->name('pengajuan.getUpdate');
 
-            Route::get('/{id}/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('pengajuan.diagnosa.tambah');
-            Route::put('/{id}/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('pengajuan.diagnosa.update');
+            Route::get('/{id}/{ket}/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('pengajuan.diagnosa.tambah');
+            Route::put('/{id}/tambah/{ket}/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('pengajuan.diagnosa.update');
 
             Route::get('/buat/upload/{id}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
             Route::post('/tambah/upload', [App\Http\Controllers\PengajuanController::class, 'tambahUpload'])->name('pengajuan.tambah.upload');
@@ -95,6 +99,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{id}/ajukan', [App\Http\Controllers\PengajuanController::class, 'ajukan'])->name('pengajuan.ajukan');
             Route::get('/{id}/lihat', [App\Http\Controllers\PengajuanController::class, 'lihat'])->name('pengajuan.lihat');
             Route::get('/{id}/download', [App\Http\Controllers\PengajuanController::class, 'download'])->name('pengajuan.download');
+
+            Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
+
+
+            Route::get('/get-diagnosa-by-jenis-rs', [App\Http\Controllers\JamkesdaController::class, 'getDiagnosaByJenisRs'])->name('getDiagnosaByJenisRs');
+            Route::get('/get-tarif-by-diagnosa', [App\Http\Controllers\JamkesdaController::class, 'getTarifByDiagnosa'])->name('getTarifByDiagnosa');
         });
 
         Route::middleware(['role:admin,superadmin'])->group(function () {

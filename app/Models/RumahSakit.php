@@ -28,7 +28,12 @@ class RumahSakit extends Model
 
     public function pasien()
     {
-        return $this->hasMany(Pasien::class, 'kode_rs', 'kode','rumahsakit_id');
-        
+        return $this->hasMany(Pasien::class, 'kode_rs', 'kode');
     }
+
+    // public function pasien()
+    // {
+    //     return $this->hasMany(Pasien::class, 'kode_rs', 'kode','rumahsakit_id');
+
+    // }
 }

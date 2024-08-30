@@ -148,6 +148,7 @@
                                     @csrf
                                     <input type="hidden" name="pasien_id" id="pasien_id"
                                         value="{{ $pasien->pasien_id }}">
+
                                     <div class="mb-3">
                                         <label for="username">KTP dan KK <span class="text-danger">*</span></label>
                                         <div class="input-group">
@@ -161,6 +162,7 @@
                                             @enderror
                                         </div>
                                     </div>
+
                                     <div class="mb-3">
                                         <label for="username">SKTM / DINSOS / Surat Kepolisian <span
                                                 class="text-danger">*</span></label>
@@ -268,7 +270,7 @@
                                         <a href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id]) }}"
                                             class="btn btn-danger mx-2">Kembali</a>
                                         @endif --}}
-                                        <a href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id]) }}"
+                                        <a href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id, 'ket' => 'baru']) }}"
                                             class="btn btn-danger mx-2">Kembali</a>
                                         <button class="btn btn-primary btn-lg btn-block" type="submit">Selesai</button>
                                     </div>

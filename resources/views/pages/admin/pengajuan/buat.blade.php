@@ -106,7 +106,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3">
                                         <label for="username">No SJP</label>
                                         <div class="input-group">
                                             <input type="text"
@@ -118,7 +118,7 @@
                                             </div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="mb-3">
                                         <label for="username">Nama Kepala Keluarga</label>
@@ -284,6 +284,9 @@
                                             <option value="pmks" {{ $pasien->ket_jamkesda
                                                 == 'pmks' ? 'selected' : '' }}>
                                                 Pasien PMKS (Penyandang Masalah Kesejahteraan Sosial)</option>
+                                            <option value="lain-lain" {{ $pasien->
+                                                ket_jamkesda == 'lain-lain' ? 'selected' : '' }}>
+                                                Lain - lain</option>
                                         </select>
                                         @error('ket_jamkesda')
                                         <div class="invalid-feedback">

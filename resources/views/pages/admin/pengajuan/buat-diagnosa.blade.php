@@ -20,17 +20,17 @@
                     'verifikator')
                     <li class="breadcrumb-item"><a href="{{ route('jamkesda') }}">Jamkesda</a></li>
                     <li class="breadcrumb-item active"><a
-                            href="{{ route('jamkesda.diagnosa.tambah', ['id' => $pasien->pasien_id]) }}">Tambah
+                            href="{{ route('jamkesda.diagnosa.tambah', ['id' => $pasien->pasien_id, 'ket' => $keterangan]) }}">Tambah
                             Diagnosa</a></li>
                     @else
                     <li class="breadcrumb-item"><a href="{{ route('jamkesda') }}">Pengajuan</a></li>
                     @if ($pasien->status == 'Dikembalikan')
                     <li class="breadcrumb-item active"><a
-                            href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id]) }}">Update
+                            href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id, 'ket' => $keterangan]) }}">Update
                             Diagnosa</a></li>
                     @else
                     <li class="breadcrumb-item active"><a
-                            href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id]) }}">Tambah
+                            href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id, 'ket' => $keterangan ]) }}">Tambah
                             Diagnosa</a></li>
                     @endif
 
@@ -134,7 +134,7 @@
                         <div class="row">
                             <div class="col-md-12 order-md-1">
                                 <form class="needs-validation" novalidate=""
-                                    action="{{ route('pengajuan.diagnosa.update', ['id' => $pasien->pasien_id]) }}"
+                                    action="{{ route('pengajuan.diagnosa.update', ['id' => $pasien->pasien_id, 'ket' => $keterangan]) }}"
                                     method="post">
                                     @method('PUT')
                                     @csrf
@@ -195,8 +195,8 @@
                                         <select class="d-block form-control @error('kode_rs') is-invalid @enderror"
                                             name="kode_rs">
                                             @foreach ($rumahsakit as $rum)
-                                            <option
-                                                value="{{ $rum->kode }} {{ $pasien->kode_rs == $rum->kode ? 'selected' : '' }}">
+                                            <option value="{{ $rum->kode }}" {{ $pasien->kode_rs == $rum->kode ?
+                                                'selected' : '' }}>
                                                 {{ $rum->nama }}</option>
                                             @endforeach
                                         </select>
@@ -252,7 +252,8 @@
                                         <label for="firstName">Dijamin Sejak</label>
                                         <input type="date"
                                             class="form-control @error('dijamin_sejak') is-invalid @enderror"
-                                            name="dijamin_sejak" value="{{ $pasien->dijamin_sejak }}">
+                                            name="dijamin_sejak"
+                                            value="{{ date('Y-m-d', strtotime($pasien->dijamin_sejak))}}">
                                         @error('dijamin_sejak')
                                         <div class="invalid-feedback" style="width: 100%;">
                                             {{ $message }}
@@ -260,7 +261,8 @@
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3">
+
+                                    {{-- <div class="mb-3">
                                         <label for="firstName">Tanggal Aktif VA BPJS</label>
                                         <input type="date"
                                             class="form-control @error('tgl_aktif_va') is-invalid @enderror"
@@ -270,13 +272,49 @@
                                             {{ $message }}
                                         </div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     <div class="mb-3">
                                         <label for="firstName">Status kepesertaan JKN sebelumnya</label>
-                                        <input type="text"
+                                        {{-- <input type="text"
                                             class="form-control @error('status_kepersertaan') is-invalid @enderror"
-                                            name="status_kepersertaan" value="{{ $pasien->status_kepersertaan }}">
+                                            name="status_kepersertaan" value="{{ $pasien->status_kepersertaan }}"> --}}
+
+                                        <select
+                                            class="d-block w-100 form-control @error('status_kepersertaan') is-invalid @enderror"
+                                            name="status_kepersertaan">
+                                            <option value="">Pilih...</option>
+                                            <option value="PBI APBN AKTIF" {{ $pasien->status_kepersertaan == 'PBI APBN
+                                                AKTIF' ?
+                                                'selected' : '' }}>PBI APBN AKTIF</option>
+
+                                            <option value="PBI APBN NON AKTIF" {{ $pasien->status_kepersertaan == 'PBI
+                                                APBN NON AKTIF' ?
+                                                'selected' : '' }}>PBI APBN NON AKTIF</option>
+
+                                            <option value="PBI APBD AKTIF" {{ $pasien->status_kepersertaan == 'PBI APBD
+                                                AKTIF' ?
+                                                'selected' : '' }}>PBI APBD AKTIF</option>
+
+                                            <option value="PBI APBD NON AKTIF" {{ $pasien->status_kepersertaan == 'PBI
+                                                APBD NON AKTIF' ?
+                                                'selected' : '' }}>PBI APBD NON AKTIF</option>
+
+                                            <option value="BPJS NON AKTIF/MENUNGGAK" {{ $pasien->status_kepersertaan ==
+                                                'BPJS NON AKTIF/MENUNGGAK' ?
+                                                'selected' : '' }}>BPJS NON AKTIF/MENUNGGAK</option>
+
+                                            <option value="PENANGGUHAN PEMBAYARAAN" {{ $pasien->status_kepersertaan ==
+                                                'PENANGGUHAN PEMBAYARAAN' ?
+                                                'selected' : '' }}>PENANGGUHAN PEMBAYARAAN</option>
+
+                                            <option value="BELUM BERJKN" {{ $pasien->status_kepersertaan ==
+                                                'BELUM BERJKN' ?
+                                                'selected' : '' }}>BELUM BERJKN</option>
+
+
+                                        </select>
+
                                         @error('status_kepersertaan')
                                         <div class="invalid-feedback" style="width: 100%;">
                                             {{ $message }}
@@ -285,6 +323,8 @@
                                     </div>
 
                                     <hr class="mb-4">
+
+                                    @if ($keterangan == 'baru')
                                     <div class="d-flex">
                                         <a href="{{ route('pengajuan.buatById', ['id' => $pasien->pasien_id ]) }}"
                                             class="btn btn-danger mx-2">Kembali</a>
@@ -292,6 +332,13 @@
                                             type="submit">Selanjutnya</button>
 
                                     </div>
+                                    @else
+                                    <div class="d-flex">
+
+                                        <button class="btn btn-primary btn-lg btn-block" type="submit">Simpan</button>
+                                        @endif
+
+
                                 </form>
                             </div>
                         </div>

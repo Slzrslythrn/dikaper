@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,7 @@ class Pasien extends Model
         'tgl_diterima',
         'ket_jamkesda',
         'no_sjp',
+        'status_kepersertaan',
     ];
 
     protected $dates = ['tanggal_lahir', 'dijamin_sejak'];

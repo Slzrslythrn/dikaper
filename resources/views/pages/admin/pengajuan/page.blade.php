@@ -53,7 +53,9 @@
                                         <td>{{ $row->jenis_rawat }}</td>
                                         <td>
                                             @if ($row->status == 'Diterima')
-                                            <button class="btn btn-success">{{ $row->status }}</button>
+                                            <a href="{{ route('jamkesda.download.diterima', ['id' => $row->pasien_id]) }}"
+                                                class="btn btn-success" target="_blank">{{ $row->status }}</a>
+                                            {{-- <button class="btn btn-success">{{ $row->status }}</button> --}}
                                             @elseif ($row->status == 'Ditolak')
                                             <button class="btn btn-danger">{{ $row->status }}</button>
 
