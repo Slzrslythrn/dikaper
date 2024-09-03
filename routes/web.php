@@ -17,9 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', [App\Http\Controllers\MainController::class, 'index'])->name('dashboard');
+
+        Route::get('/pembayaran', function () {
+            return view('pages.admin.pembayaran.buat-pembayaran');
+        });
     });
     Route::group(['prefix' => 'log-aktivitas'], function () {
         Route::get('/', [App\Http\Controllers\MainController::class, 'log'])->name('log');

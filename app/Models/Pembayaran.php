@@ -18,6 +18,11 @@ class Pembayaran extends Model
         'keterangan',
         'tgl_pembayaran_tagihan',
         'tgl_pembayaran',
+        'no_rm',
+        'los',
+        'tgl_keluar',
+        'biaya_lainnya',
+        'total_biaya'
     ];
 
     public $timestamps = false;
