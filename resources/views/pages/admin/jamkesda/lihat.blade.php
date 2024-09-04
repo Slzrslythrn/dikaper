@@ -161,7 +161,7 @@
                                     <table class="table table-striped">
                                         <tbody>
                                             <tr>
-                                                <td class="center">SKTM / DINSOS / Surat Kepolisian</td>
+                                                <td class="center">SKTM / DINSOS dan Surat Kepolisian</td>
                                                 <td class="left strong">
                                                     @if ($pasien->persyaratan && $pasien->persyaratan->sktm)
                                                     <a href="{{ asset('uploads/sktm/' . $pasien->persyaratan->sktm) }}"

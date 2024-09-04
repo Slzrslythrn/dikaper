@@ -164,7 +164,7 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="username">SKTM / DINSOS / Surat Kepolisian <span
+                                        <label for="username">SKTM / DINSOS dan Surat Kepolisian <span
                                                 class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="file" class="form-control @error('sktm') is-invalid @enderror"

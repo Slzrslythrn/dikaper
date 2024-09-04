@@ -23,9 +23,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', [App\Http\Controllers\MainController::class, 'index'])->name('dashboard');
 
-        Route::get('/pembayaran', function () {
-            return view('pages.admin.pembayaran.buat-pembayaran');
-        });
+        // Route::get('/pembayaran', function () {
+        //     return view('pages.admin.pembayaran.buat-pembayaran');
+        // });
     });
     Route::group(['prefix' => 'log-aktivitas'], function () {
         Route::get('/', [App\Http\Controllers\MainController::class, 'log'])->name('log');
@@ -107,7 +107,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{id}/download', [App\Http\Controllers\PengajuanController::class, 'download'])->name('pengajuan.download');
 
             Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
+        });
 
+        Route::group(['prefix' => 'pembayaran'], function () {
+
+            Route::get('/buat/{id}', [App\Http\Controllers\JamkesdaController::class, 'pembayaran'])->name('pembayaran.buat');
 
             Route::get('/get-diagnosa-by-jenis-rs', [App\Http\Controllers\JamkesdaController::class, 'getDiagnosaByJenisRs'])->name('getDiagnosaByJenisRs');
             Route::get('/get-tarif-by-diagnosa', [App\Http\Controllers\JamkesdaController::class, 'getTarifByDiagnosa'])->name('getTarifByDiagnosa');

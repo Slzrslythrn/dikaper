@@ -165,9 +165,12 @@
                                                     @if ($row->pembayaran)
                                                     @if ($row->pembayaran->total_tagihan == null)
                                                     <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-primary modalpasienid"
-                                                        data-item="{{ $row->pasien_id }}" data-toggle="modal"
-                                                        data-target="#modalTagihan">Pembayaran</button>
+                                                    <a
+                                                        href="{{ route('pembayaran.buat',  ['id' => $row->pasien_id] )}}">
+                                                        <button type="button" class="btn btn-primary modalpasienid" {{--
+                                                            data-item="{{ $row->pasien_id }}" data-toggle="modal"
+                                                            data-target="#modalTagihan" --}}>Pembayaran </button>
+                                                    </a>
                                                     @else
                                                     <a href="{{ route('jamkesda.tagihan.hapus', ['id' => $row->pasien_id]) }}"
                                                         class="btn btn-danger my-2"
@@ -178,27 +181,34 @@
                                                     @endif
                                                     @else
                                                     <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-primary modalpasienid my-2"
+                                                    <a
+                                                        href="{{ route('pembayaran.buat',  ['id' => $row->pasien_id] )}}">
+                                                        <button type="button" class="btn btn-primary modalpasienid" {{--
+                                                            data-item="{{ $row->pasien_id }}" data-toggle="modal"
+                                                            data-target="#modalTagihan" --}}>Pembayaran </button>
+                                                    </a>
+                                                    {{-- <button type="button"
+                                                        class="btn btn-primary modalpasienid my-2"
                                                         data-item="{{ $row->pasien_id }}" data-toggle="modal"
-                                                        data-target="#modalTagihan">Pembayaran</button>
+                                                        data-target="#modalTagihan">Pembayaran </button> --}}
                                                     @endif
                                                     @else
                                                     @if ($row->pembayaran)
                                                     @if ($row->pembayaran->total_pembayaran == null)
                                                     @if (auth()->user()->level == 'verifikator')
-                                                    <button type="button"
+                                                    {{-- <button type="button"
                                                         class="btn btn-primary modalpasienid_pembayaran my-2"
                                                         data-item="{{ $row->pasien_id }}" data-toggle="modal"
-                                                        data-target="#modalPembayaran">Pembayaran</button>
+                                                        data-target="#modalPembayaran">Pembayaran</button> --}}
                                                     @else
                                                     <button type="button" class="btn btn-primary modalpasienid"
                                                         data-item="{{ $row->pasien_id }}" data-toggle="modal"
-                                                        data-target="#modalTagihan">Pembayaran</button>
+                                                        data-target="#modalTagihan">Pembayaran </button>
                                                     @endif
                                                     @else
                                                     <button type="button" class="btn btn-primary modalpasienid"
                                                         data-item="{{ $row->pasien_id }}" data-toggle="modal"
-                                                        data-target="#modalTagihan">Pembayaran</button>
+                                                        data-target="#modalTagihan">Pembayaran </button>
                                                     @endif
                                                     @endif
                                                     @endif
@@ -251,7 +261,7 @@
                                         </div>
 
                                         <h5>Inacbgs</h5>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="keterangan">Jenis RS</label>
                                             <select class="form-control" id="jenis_rs" name="jenis_rs" required>
                                                 <option value="">Pilih Jenis RS</option>
@@ -259,7 +269,7 @@
                                                 <option value="{{ $item->jenis_rs }}">{{ $item->jenis_rs }}</option>
                                                 @endforeach
                                             </select>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="form-group">
                                             <label for="keterangan">Diagnosa</label>
@@ -284,7 +294,7 @@
                     </div>
 
                     <!-- Modal Pembayaran -->
-                    <div class="modal fade" id="modalPembayaran" tabindex="-1" role="dialog"
+                    {{-- <div class="modal fade" id="modalPembayaran" tabindex="-1" role="dialog"
                         aria-labelledby="modalPembayaranTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -318,7 +328,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>

@@ -400,14 +400,13 @@ class JamkesdaController extends Controller
             }
         });
 
-        $inacbgs = Inacbgs::groupBy('jenis_rs')->get();
         // $inacbgs = Inacbgs::all();
         $rumahsakit = RumahSakit::all();
         // dd($inacbgs);
         // compact('pasien', 'inacbgs', 'rumahsakit')
         return view('pages.admin.jamkesda.selesai', [
             'pasien' => $pasienCollection,
-            'inacbgs' => $inacbgs,
+
             'rumahsakit' => $rumahsakit,
         ]);
     }
@@ -535,6 +534,15 @@ class JamkesdaController extends Controller
         $pdf = PDF::loadView('pages.admin.pdf-diterima', $data);
 
         return $pdf->stream('jamkesda-diterima.pdf');
+    }
+
+    public function pembayaran($pasien_id)
+    {
+        $pasien = Pasien::findOrFail($pasien_id);
+
+        $inacbgs = Inacbgs::groupBy('jenis_rs')->get();
+
+        return view('pages.admin.pembayaran.buat-pembayaran', compact('pasien', 'inacbgs'));
     }
 
     public function simpanTagihan(Request $request)

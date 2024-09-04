@@ -43,6 +43,31 @@
                                         </div>
                                     </div>
 
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for=""> Tanggal Mulai Rawat</label>
+
+                                            <input type="date"
+                                                class="form-control @error('tgl_mulairawat') is-invalid @enderror"
+                                                name="tgl_mulairawat" value="{{ $pasien->tgl_mulairawat }}">
+                                            @error('tgl_mulairawat')
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                            {{-- <input type="date" name="tgl_mulairawat" id="tgl_mulairawat"
+                                                class="form-control @error('tgl_mulairawat') is-invalid @enderror"
+                                                value="{{ $pasien->tgl_mulairawat}}">
+
+                                            @error('tgl_mulairawat')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror --}}
+                                        </div>
+                                    </div>
+
+                                    {{-- @dd( $pasien->tgl_mulairawat) --}}
 
                                     <div class="mb-3">
                                         <div class="form-group">
@@ -77,8 +102,14 @@
                                     <div class="mb-3">
                                         <div class="form-group">
                                             <label for="total">Jenis RS</label>
-                                            <input type="text" name="jenis_rs" id="jenis_rs"
-                                                class="form-control @error('jenis_rs') is-invalid @enderror" ">
+                                            <select class="form-control" id="jenis_rs" name="jenis_rs" required>
+                                                <option value="">Pilih Jenis RS</option>
+                                                @foreach ($inacbgs->unique('jenis_rs') as $item)
+                                                <option value="{{ $item->jenis_rs }}">{{ $item->jenis_rs }}</option>
+                                                @endforeach
+                                            </select>
+                                            {{-- <input type="text" name="jenis_rs" id="jenis_rs"
+                                                class="form-control @error('jenis_rs') is-invalid @enderror" "> --}}
                                              {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
                                             }} --}}
                                             @error('jenis_rs')
@@ -92,9 +123,14 @@
                                     <div class="mb-3">
                                         <div class="form-group">
                                             <label for="total">Diagnosa</label>
-                                            <input type="text" name="diagnosa" id="diagnosa"
-                                                class="form-control @error('diagnosa') is-invalid @enderror" ">
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
+
+                                            <select class="form-control" id="diagnosa" name="diagnosa" required
+                                                disabled>
+                                                <option value="">Pilih Diagnosa</option>
+                                            </select>
+                                            {{-- <input type="text" name="diagnosa" id="diagnosa"
+                                                class="form-control @error('diagnosa') is-invalid @enderror"> --}}
+                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
                                             }} --}}
                                             @error('diagnosa')
                                             <div class="invalid-feedback">
@@ -107,9 +143,14 @@
                                     <div class="mb-3">
                                         <div class="form-group">
                                             <label for="total">Tarif INA CBG'S</label>
-                                            <input type="text" name="tarif_inacbgs" id="tarif_inacbgs"
-                                                class="form-control @error('tarif_inacbgs') is-invalid @enderror" ">
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
+
+                                            <select class="form-control" id="tarif_inacbgs" name="tarif_inacbgs"
+                                                required disabled>
+                                                <option value="">Pilih Tarif</option>
+                                            </select>
+                                            {{-- <input type="text" name="tarif_inacbgs" id="tarif_inacbgs"
+                                                class="form-control @error('tarif_inacbgs') is-invalid @enderror"> --}}
+                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
                                             }} --}}
                                             @error('tarif_inacbgs')
                                             <div class="invalid-feedback">
@@ -165,6 +206,22 @@
                                     </div>
 
 
+                                    <div class="mb-3">
+                                        <label for="username">Berkas Pasien Pulang<span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="file"
+                                                class="form-control @error('pasien_pulang') is-invalid @enderror"
+                                                id="pasien_pulang" name="pasien_pulang">
+                                            @error('pasien_pulang')
+                                            <div class="invalid-feedback" style="width: 100%;">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
                                     <hr class="mb-4">
                                     <div class="d-flex">
                                         <button class="btn btn-primary btn-lg btn-block" type="submit">Simpan</button>
@@ -196,5 +253,53 @@
                 });
             })
     </script>
+
+    <script>
+        $(document).ready(function() {
+    $('#jenis_rs').change(function() {
+        var jenis_rs = $(this).val();
+        $('#diagnosa').prop('disabled', true);
+        $('#tarif_inacbgs').prop('disabled', true);
+        $('#diagnosa').html('<option value="">Pilih Diagnosa</option>');
+        $('#tarif_inacbgs').html('<option value="">Pilih Tarif</option>');
+        
+        if (jenis_rs) {
+            $.ajax({
+                url: '{{ route("getDiagnosaByJenisRs") }}', // Route untuk mengambil data berdasarkan jenis_rs
+                type: 'GET',
+                data: { jenis_rs: jenis_rs },
+                success: function(data) {
+                    if (data.length > 0) {
+                        $('#diagnosa').prop('disabled', false);
+                        $.each(data, function(key, value) {
+                            $('#diagnosa').append('<option value="' + value.id + '">' + value.kode + ' || ' + value.deskrpsi + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    $('#diagnosa').change(function() {
+        var id = $(this).val();
+        $('#tarif_inacbgs').prop('disabled', true);
+        $('#tarif_inacbgs').html('<option value="">Pilih Tarif</option>');
+        
+        if (id) {
+            $.ajax({
+                url: '{{ route("getTarifByDiagnosa") }}', // Route untuk mengambil tarif berdasarkan diagnosa
+                type: 'GET',
+                data: { id: id },
+                success: function(data) {
+                    $('#tarif_inacbgs').prop('disabled', false);
+                    $('#tarif_inacbgs').append('<option value="' + data.tarif + '" selected >' + data.tarif + '</option>');
+                }
+            });
+        }
+    });
+});
+
+    </script>
+
     @endpush
 </x-app-layout>

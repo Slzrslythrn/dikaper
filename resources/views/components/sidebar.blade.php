@@ -200,7 +200,8 @@
                                     <rect fill="#000000" opacity="0.3" x="2" y="10" width="5" height="10" rx="1" />
                                 </g>
                             </svg>
-                            <span class="nav-text {{ request()->is('jamkesda/selesai') ? 'text-primary' : '' }}">
+                            <span
+                                class="nav-text {{ request()->is('jamkesda/selesai') || request()->is('jamkesda/pembayaran/*') ? 'text-primary' : '' }}">
                                 Data Jamkesda Selesai
                             </span>
                         </a>
