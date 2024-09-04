@@ -24,6 +24,7 @@ class Persyaratan extends Model
         'ktp_kk',
         'catatan',
         'doc',
+        'pasien_pulang'
     ];
 
     public $timestamps = false;

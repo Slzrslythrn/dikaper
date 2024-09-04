@@ -548,40 +548,176 @@ class JamkesdaController extends Controller
     public function simpanTagihan(Request $request)
     {
 
-        $pasien_id  = $request->pasien_id;
+        $validate = $request->validate([
+            'no_rm' => ['required'],
+            'tgl_keluar' => ['required'],
+            'los' => ['required'],
+            'jenis_rs' => ['required'],
+            'diagnosa' => ['required'],
+            'tarif_inacbgs' => ['required'],
+            'tarif_rs' => ['required'],
+            'biaya_lainnya' => ['required'],
+            'total_biaya' => ['required'],
+            'pasien_pulang' => ['required', 'mimes:pdf', 'max:2000']
+        ], [
+            'no_rm.required' => 'Form input harap diisi',
+            'tgl_keluar.required' => 'Form input harap diisi',
+            'los.required' => 'Form input harap diisi',
+            'jenis_rs.required' => 'Form input harap diisi',
+            'diagnosa.required' => 'Form input harap diisi',
+            'tarif_inacbgs.required' => 'Form input harap diisi',
+            'tarif_rs.required' => 'Form input harap diisi',
+            'biaya_lainnya.required' => 'Form input harap diisi',
+            'total_biaya.required' => 'Form input harap diisi',
+            'pasien_pulang.required' => 'Form input Berkas Pasien Pulang harap diisi',
+            'pasien_pulang.mimes' => 'File berkas pasien pulang harus berupa PDF',
+            'pasien_pulang.max' => 'Ukuran file berkas pasien pulang tidak boleh lebih dari 2MB',
+        ]);
+
+        $pasien_id = $request->pasien_id;
         $attr = [
             'pasien_id' => $request->pasien_id,
-            'total_tagihan' => $request->total_tagihan,
-            'keterangan' => $request->keterangan,
-            'total_pembayaran' => $request->tarif,
-            // 'tgl_pembayaran_tagihan' => $request->tgl_pembayaran_tagihan
+            'no_rm' => $request->no_rm,
+            'tgl_keluar' => $request->tgl_keluar,
+            'los' => $request->los,
+            'jenis_rs' => $request->jenis_rs,
+            'diagnosa' => $request->diagnosa,
+            'tarif_inacbgs' => $request->tarif_inacbgs,
+            'tarif_rs' => $request->tarif_rs,
+            'biaya_lainnya' => $request->biaya_lainnya,
+            'total_biaya' => $request->total_biaya,
+            'keterangan' => '0',
         ];
 
         $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
-        if ($pembayaran->count()) {
-            $insert = $pembayaran->first()->update($attr);
-            Log::logSave('Upadate data tagihan dengan pasien id=' . $pasien_id);
+        if ($pembayaran->exists()) {
+            $pembayaran->first()->update($attr);
+            Log::logSave('Update data tagihan dengan pasien id=' . $pasien_id);
         } else {
-            $insert = Pembayaran::create($attr);
+            Pembayaran::create($attr);
             Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
         }
 
-        if ($insert) {
-            $attr2 = [
-                'pasien_id' => $request->pasien_id,
-                'inacbgs_id' => $request->diagnosa,
-                'total' => $request->tarif,
-            ];
+        if (isset($request->pasien_pulang)) {
+            $data = Persyaratan::where('pasien_id', $pasien_id)->first();
 
-            PembayaranInacbgs::create($attr2);
-            Log::logSave('Menambahkan pembayaran Inacbgs dengan pasien id=' . $pasien_id);
+            if ($data && $data->pasien_pulang) {
+                $oldFile = public_path('uploads/pasien_pulang/' . $data->pasien_pulang);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
 
-            Alert::success('Data Berhasil Ditambahkan');
-            return redirect()->route('jamkesda.selesai');
-        } else {
-            Alert::error('Data Gagal Ditambahkan!');
-            return redirect()->route('jamkesda.selesai');
+            $file = $request->file('pasien_pulang');
+            $ext = $file->getClientOriginalExtension();
+            $newName = date('dmY') . Str::random(3) . strtoupper($file->getClientOriginalName()[0]) . '.' . $ext;
+            $file->move(public_path('uploads/pasien_pulang'), $newName);
+            $inputFile['pasien_pulang'] = $newName;
+
+            $data->update($inputFile);
+            Log::logSave('Update data berkas pasien pulang dengan pasien id=' . $pasien_id);
         }
+
+        $attr2 = [
+            'pasien_id' => $request->pasien_id,
+            'inacbgs_id' => $request->diagnosa,
+            'total' => $request->tarif_inacbgs,
+        ];
+
+        PembayaranInacbgs::create($attr2);
+        Log::logSave('Menambahkan pembayaran Inacbgs dengan pasien id=' . $pasien_id);
+
+        Alert::success('Data Berhasil Ditambahkan');
+        return redirect()->route('jamkesda.selesai');
+
+        // dd($request);
+        // $validate = $request->validate([
+        //     'no_rm' => 'required',
+        //     'tgl_keluar' => 'required',
+        //     'los' => 'required',
+        //     'jenis_rs' => 'required',
+        //     'diagnosa' => 'required',
+        //     'tarif_inacbgs' => 'required',
+        //     'tarif_rs' => 'required',
+        //     'biaya_lainnya' => 'required',
+        //     'total_biaya' => 'required',
+        //     'pasien_pulang' =>  ['required', 'mimes:pdf', 'max:2000']
+        // ], [
+        //     'no_rm.required' => 'Form input harap diisi',
+        //     'tgl_keluar.required' => 'Form input harap diisi',
+        //     'los.required' => 'Form input harap diisi',
+        //     'jenis_rs.required' => 'Form input harap diisi',
+        //     'diagnosa.required' => 'Form input harap diisi',
+        //     'tarif_inacbgs.required' => 'Form input harap diisi',
+        //     'tarif_rs.required' => 'Form input harap diisi',
+        //     'biaya_lainnya.required' => 'Form input harap diisi',
+        //     'total_biaya.required' => 'Form input harap diisi',
+        //     'pasien_pulang.required' => 'Form input Berkas Pasien Pulang harap diisi',
+        //     'pasien_pulang.mimes' => 'File berkas pasien pulang harus berupa PDF',
+        //     'pasien_pulang.max' => 'Ukuran file berkas pasien pulang tidak boleh lebih dari 2MB',
+        // ]);
+
+        // $pasien_id  = $request->pasien_id;
+        // $attr = [
+        //     'pasien_id' => $request->pasien_id,
+        //     'no_rm' => $request->no_rm,
+        //     'tgl_keluar' => $request->tgl_keluar,
+        //     'los' => $request->los,
+        //     'jenis_rs' => $request->jenis_rs,
+        //     'diagnosa' => $request->diagnosa,
+        //     'tarif_inacbgs' => $request->tarif_inacbgs,
+        //     'tarif_rs' => $request->tarif_rs,
+        //     'biaya_lainnya' => $request->biaya_lainnya,
+        //     'total_biaya' => $request->total_biaya,
+        //     'keterangan' => '0',
+        //     // 'tgl_pembayaran_tagihan' => $request->tgl_pembayaran_tagihan
+        // ];
+
+        // $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
+        // if ($pembayaran->count()) {
+        //     $insert = $pembayaran->first()->update($attr);
+        //     Log::logSave('Upadate data tagihan dengan pasien id=' . $pasien_id);
+        // } else {
+        //     $insert = Pembayaran::create($attr);
+        //     Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
+        // }
+
+        // if ($insert) {
+        //     $data = Persyaratan::where('pasien_id', $pasien_id)->first();
+
+        //     if ($data->pasien_pulang) {
+        //         $oldFile = public_path('uploads/pasien_pulang' . '/' . $data->pasien_pulang);
+        //         if (file_exists($oldFile)) {
+        //             unlink($oldFile);
+        //         }
+        //     }
+
+        //     $file = $request->file('pasien_pulang');
+        //     $ext = $file->getClientOriginalExtension();
+        //     $newName = date('dmY') . Str::random(3) . strtoupper($file->getClientOriginalName()[0]) . '.' . $ext;
+        //     $file->move('uploads/pasien_pulang', $newName);
+        //     $inputFile['pasien_pulang'] = $newName;
+
+        //     $insert2 = $data->update($inputFile);
+        //     Log::logSave('Upadate data berkas pasien pulang dengan pasien id = ' . $pasien_id);
+        // }
+
+        // if ($insert2) {
+        //     $attr2 = [
+        //         'pasien_id' => $request->pasien_id,
+        //         'inacbgs_id' => $request->diagnosa,
+        //         'total' => $request->tarif_inacbgs,
+        //     ];
+
+        //     PembayaranInacbgs::create($attr2);
+        //     Log::logSave('Menambahkan pembayaran Inacbgs dengan pasien id=' . $pasien_id);
+
+        //     Alert::success('Data Berhasil Ditambahkan');
+        //     return redirect()->route('jamkesda.selesai');
+        // } else {
+        //     Alert::error('Data Gagal Ditambahkan!');
+        //     return redirect()->route('jamkesda.selesai');
+        // }
     }
 
     public function editTagihan($pasien_id)

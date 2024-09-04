@@ -81,8 +81,8 @@
                                             <th>Jenis Rawat</th>
                                             <th>Status</th>
                                             <th>Status Pembayaran</th>
-                                            <th>Total Tagihan</th>
-                                            <th>Total Pembayaran</th>
+                                            <th>Tarif INA CBG's</th>
+                                            <th>Tarif RS</th>
                                             <th>Tanggal Diterima</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -145,12 +145,12 @@
                                             </td>
                                             <td>
                                                 @if ($row->pembayaran)
-                                                {{ $row->pembayaran->total_tagihan }}
+                                                {{ $row->pembayaran->tarif_inacbgs }}
                                                 @endif
                                             </td>
                                             <td>
                                                 @if ($row->pembayaran)
-                                                {{ $row->pembayaran->total_pembayaran }}
+                                                {{ $row->pembayaran->tarif_rs }}
                                                 @endif
                                             </td>
                                             <td>
@@ -163,7 +163,7 @@
                                                     @if ($row->status == 'Diterima')
                                                     @if (auth()->user()->level != 'verifikator')
                                                     @if ($row->pembayaran)
-                                                    @if ($row->pembayaran->total_tagihan == null)
+                                                    @if ($row->pembayaran->tarif_inacbgs == null)
                                                     <!-- Button trigger modal -->
                                                     <a
                                                         href="{{ route('pembayaran.buat',  ['id' => $row->pasien_id] )}}">
@@ -172,14 +172,18 @@
                                                             data-target="#modalTagihan" --}}>Pembayaran </button>
                                                     </a>
                                                     @else
+
                                                     <a href="{{ route('jamkesda.tagihan.hapus', ['id' => $row->pasien_id]) }}"
                                                         class="btn btn-danger my-2"
                                                         onclick="return confirm('Yakin untuk membatalkan data ?')">Batal</a>
+
                                                     <a href="{{ route('jamkesda.tagihan.edit', ['id' => $row->pasien_id]) }}"
                                                         class="btn btn-warning text-white">Edit
                                                         Pembayaran</a>
                                                     @endif
+
                                                     @else
+
                                                     <!-- Button trigger modal -->
                                                     <a
                                                         href="{{ route('pembayaran.buat',  ['id' => $row->pasien_id] )}}">

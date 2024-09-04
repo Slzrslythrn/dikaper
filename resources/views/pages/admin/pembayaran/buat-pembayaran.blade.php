@@ -24,10 +24,11 @@
                         <div class="row">
                             <div class="col-md-12 order-md-1">
                                 <form class="needs-validation" novalidate=""
-                                    action="{{ route('jamkesda.pembayaran.update') }}" method="post">
+                                    action="{{ route('jamkesda.tagihan.simpan') }}" method="post"
+                                    enctype="multipart/form-data">
                                     @csrf
-                                    {{-- <input type="hidden" name="pasien_id" id="pasien_id"
-                                        value="{{ $pembayaran->pasien_id }}"> --}}
+                                    <input type="hidden" name="pasien_id" id="pasien_id"
+                                        value="{{ $pasien->pasien_id }}">
                                     <div class="mb-3">
                                         <div class="form-group">
                                             <label for="total">No. RM</label>
@@ -49,7 +50,7 @@
 
                                             <input type="date"
                                                 class="form-control @error('tgl_mulairawat') is-invalid @enderror"
-                                                name="tgl_mulairawat" value="{{ $pasien->tgl_mulairawat }}">
+                                                name="tgl_mulairawat" value="{{ $pasien->tgl_mulairawat }}" disabled>
                                             @error('tgl_mulairawat')
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 {{ $message }}
