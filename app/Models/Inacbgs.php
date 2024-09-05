@@ -19,4 +19,9 @@ class Inacbgs extends Model
     ];
 
     public $timestamps = false;
+
+    public function pembayaran_inacbgs()
+    {
+        return $this->hasMany(PembayaranInacbgs::class, 'inacbgs_id', 'id');
+    }
 }

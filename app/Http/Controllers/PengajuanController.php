@@ -616,6 +616,41 @@ class PengajuanController extends Controller
         return view('pages.admin.pengajuan.buat', compact('pasien', 'kelurahan', 'rumahSakit'));
     }
 
+    public function selesai()
+    {
+        Carbon::setLocale('id');
+
+        $user_id = auth()->user()->id;
+
+        $pasienCollection = Pasien::with('rumahsakit', 'pembayaran')
+            ->where('users_id', $user_id)
+            ->where(function ($query) {
+                $query->where('status', 'Diterima')
+                    ->orWhere('status', 'Ditolak');
+            })
+            ->orderBy('tgl_diterima', 'DESC')
+            ->get();
+
+        $pasienCollection->each(function ($pasien) {
+            if (!$pasien->rumahsakit) {
+                // Jika rumahsakit tidak ditemukan melalui eager loading, lakukan query manual
+                $rumahsakit = DB::table('rumahsakit')
+                    ->where('kode', $pasien->kode_rs)
+                    ->first();
+
+                // Tambahkan hasil query manual sebagai atribut rumahsakit ke objek pasien
+                $pasien->rumahsakit = $rumahsakit;
+            }
+        });
+
+        $rumahsakit = RumahSakit::all();
+
+        return view('pages.admin.pengajuan.selesai', [
+            'pasien' => $pasienCollection,
+            'rumahsakit' => $rumahsakit,
+        ]);
+    }
+
     // public function getUpdateUpload($pasien_id)
     // {
     //     Carbon::setLocale('id');

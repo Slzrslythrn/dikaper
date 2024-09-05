@@ -628,7 +628,13 @@ class JamkesdaController extends Controller
         Log::logSave('Menambahkan pembayaran Inacbgs dengan pasien id=' . $pasien_id);
 
         Alert::success('Data Berhasil Ditambahkan');
-        return redirect()->route('jamkesda.selesai');
+
+        if (auth()->user()->level == 'admin' || auth()->user()->level == 'superadmin' || auth()->user()->level == 'verifikator') {
+            return redirect()->route('jamkesda.selesai');
+        }
+
+        return redirect()->route('pengajuan.selesai');
+
 
         // dd($request);
         // $validate = $request->validate([
@@ -723,32 +729,123 @@ class JamkesdaController extends Controller
     public function editTagihan($pasien_id)
     {
         $pembayaran = Pembayaran::where('pasien_id', $pasien_id)->first();
+        $pasien = Pasien::where('pasien_id', $pasien_id)->first();
+        $inacbgs = Inacbgs::groupBy('jenis_rs')->get();
 
-        return view('pages.admin.jamkesda.tagihan.edit', compact('pembayaran'));
+        $pembayaranInacbgs = PembayaranInacbgs::with('inacbgs')->where('pasien_id', $pasien_id)->first();
+
+        return view('pages.admin.pembayaran.update-pembayaran', compact('pembayaran', 'pasien', 'inacbgs', 'pembayaranInacbgs'));
     }
 
     public function updateTagihan(Request $request)
     {
-        $pasien_id  = $request->pasien_id;
+
+        $validate = $request->validate([
+            'no_rm' => ['required'],
+            'tgl_keluar' => ['required'],
+            'los' => ['required'],
+            'jenis_rs' => ['required'],
+            'diagnosa' => ['required'],
+            'tarif_inacbgs' => ['required'],
+            'tarif_rs' => ['required'],
+            'biaya_lainnya' => ['required'],
+            'total_biaya' => ['required'],
+
+        ], [
+            'no_rm.required' => 'Form input harap diisi',
+            'tgl_keluar.required' => 'Form input harap diisi',
+            'los.required' => 'Form input harap diisi',
+            'jenis_rs.required' => 'Form input harap diisi',
+            'diagnosa.required' => 'Form input harap diisi',
+            'tarif_inacbgs.required' => 'Form input harap diisi',
+            'tarif_rs.required' => 'Form input harap diisi',
+            'biaya_lainnya.required' => 'Form input harap diisi',
+            'total_biaya.required' => 'Form input harap diisi',
+
+        ]);
+
+        $pasien_id = $request->pasien_id;
         $attr = [
             'pasien_id' => $request->pasien_id,
-            'total_tagihan' => $request->total_tagihan,
-            'keterangan' => $request->keterangan,
-            'tgl_pembayaran_tagihan' => $request->tgl_pembayaran_tagihan
+            'no_rm' => $request->no_rm,
+            'tgl_keluar' => $request->tgl_keluar,
+            'los' => $request->los,
+            'jenis_rs' => $request->jenis_rs,
+            'diagnosa' => $request->diagnosa,
+            'tarif_inacbgs' => $request->tarif_inacbgs,
+            'tarif_rs' => $request->tarif_rs,
+            'biaya_lainnya' => $request->biaya_lainnya,
+            'total_biaya' => $request->total_biaya,
+            'keterangan' => '0',
         ];
 
         $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
-        if ($pembayaran->count()) {
-            $insert = $pembayaran->first()->update($attr);
-            Log::logSave('Upadate data tagihan dengan pasien id=' . $pasien_id);
-            Alert::success('Data Berhasil Diupdate');
-            return redirect()->route('jamkesda.selesai');
+        if ($pembayaran->exists()) {
+            $pembayaran->first()->update($attr);
+            Log::logSave('Update data tagihan dengan pasien id=' . $pasien_id);
         } else {
-            $insert = Pembayaran::create($attr);
+            Pembayaran::create($attr);
             Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
-            Alert::success('Data Berhasil Diupdate');
+        }
+
+        if (isset($request->pasien_pulang)) {
+            $data = Persyaratan::where('pasien_id', $pasien_id)->first();
+
+            if ($data && $data->pasien_pulang) {
+                $oldFile = public_path('uploads/pasien_pulang/' . $data->pasien_pulang);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
+
+            $file = $request->file('pasien_pulang');
+            $ext = $file->getClientOriginalExtension();
+            $newName = date('dmY') . Str::random(3) . strtoupper($file->getClientOriginalName()[0]) . '.' . $ext;
+            $file->move(public_path('uploads/pasien_pulang'), $newName);
+            $inputFile['pasien_pulang'] = $newName;
+
+            $data->update($inputFile);
+            Log::logSave('Update data berkas pasien pulang dengan pasien id=' . $pasien_id);
+        }
+
+        $attr2 = [
+            'pasien_id' => $request->pasien_id,
+            'inacbgs_id' => $request->diagnosa,
+            'total' => $request->tarif_inacbgs,
+        ];
+
+        PembayaranInacbgs::create($attr2);
+        Log::logSave('Menambahkan pembayaran Inacbgs dengan pasien id=' . $pasien_id);
+
+        Alert::success('Data Berhasil Di Ubah');
+
+        if (auth()->user()->level == 'admin' || auth()->user()->level == 'superadmin' || auth()->user()->level == 'verifikator') {
             return redirect()->route('jamkesda.selesai');
         }
+
+        return redirect()->route('pengajuan.selesai');
+
+
+        // $pasien_id  = $request->pasien_id;
+        // $attr = [
+        //     'pasien_id' => $request->pasien_id,
+        //     'total_tagihan' => $request->total_tagihan,
+        //     'keterangan' => $request->keterangan,
+        //     'tgl_pembayaran_tagihan' => $request->tgl_pembayaran_tagihan
+        // ];
+
+        // $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
+        // if ($pembayaran->count()) {
+        //     $insert = $pembayaran->first()->update($attr);
+        //     Log::logSave('Upadate data tagihan dengan pasien id=' . $pasien_id);
+        //     Alert::success('Data Berhasil Diupdate');
+        //     return redirect()->route('jamkesda.selesai');
+        // } else {
+        //     $insert = Pembayaran::create($attr);
+        //     Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
+        //     Alert::success('Data Berhasil Diupdate');
+        //     return redirect()->route('jamkesda.selesai');
+        // }
     }
 
     public function hapusTagihan($pasien_id)
@@ -769,10 +866,20 @@ class JamkesdaController extends Controller
             Log::logSave('Hapus pembayaran Inacbgs dengan pasien id=' . $pasien_id);
 
             Alert::success('Data Berhasil Dihapuskan');
-            return redirect()->route('jamkesda.selesai');
+
+            if (auth()->user()->level == 'admin' || auth()->user()->level == 'superadmin' || auth()->user()->level == 'verifikator') {
+                return redirect()->route('jamkesda.selesai');
+            }
+
+            return redirect()->route('pengajuan.selesai');
         } else {
             Alert::error('Data Gagal Dihapuskan');
-            return redirect()->route('jamkesda.selesai');
+
+            if (auth()->user()->level == 'admin' || auth()->user()->level == 'superadmin' || auth()->user()->level == 'verifikator') {
+                return redirect()->route('jamkesda.selesai');
+            }
+
+            return redirect()->route('pengajuan.selesai');
         }
     }
 

@@ -18,4 +18,9 @@ class PembayaranInacbgs extends Model
     ];
 
     public $timestamps = false;
+
+    public function inacbgs()
+    {
+        return $this->belongsTo(Inacbgs::class, 'inacbgs_id', 'id');
+    }
 }
