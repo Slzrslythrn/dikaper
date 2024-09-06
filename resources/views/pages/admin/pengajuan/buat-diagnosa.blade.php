@@ -154,6 +154,7 @@
                                         <label for="country">Nama Puskesmas</label>
                                         <select class="d-block form-control @error('nama_pkm') is-invalid @enderror"
                                             name="nama_pkm">
+                                            <option value="">Pilih Puskesmas...</option>
                                             @foreach ($puskesmas as $pus)
                                             <option value="{{ $pus }}" {{ $pasien->nama_pkm == $pus ? 'selected' : ''
                                                 }}>{{ $pus }}</option>
@@ -194,11 +195,19 @@
                                         <label for="country">Rumah Sakit</label>
                                         <select class="d-block form-control @error('kode_rs') is-invalid @enderror"
                                             name="kode_rs">
+                                            @if (Auth::user()->level != 'rumahsakit')
+
+                                            <option value="">Pilih Rumah Sakit...</option>
                                             @foreach ($rumahsakit as $rum)
                                             <option value="{{ $rum->kode }}" {{ $pasien->kode_rs == $rum->kode ?
                                                 'selected' : '' }}>
                                                 {{ $rum->nama }}</option>
                                             @endforeach
+
+                                            @else
+                                            <option value="{{ $rumahsakit->kode }}">{{ $rumahsakit->nama }}</option>
+                                            @endif
+
                                         </select>
                                         @error('kode_rs')
                                         <div class="invalid-feedback" style="width: 100%;">

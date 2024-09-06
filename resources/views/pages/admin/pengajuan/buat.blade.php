@@ -85,7 +85,7 @@
                                             <label for="firstName">No KTP (Kartu Tanda Penduduk)</label>
                                             <input type="text" name="no_ktp"
                                                 class="form-control @error('no_ktp') is-invalid @enderror"
-                                                id="firstName" placeholder="" value="{{  auth()->user()->nik }}"
+                                                id="firstName" placeholder="" value="{{  $pasien->no_ktp }}"
                                                 required="">
                                             @error('no_ktp')
                                             <div class="invalid-feedback">

@@ -21,7 +21,7 @@ class PengajuanController extends Controller
     public function index()
     {
         Carbon::setLocale('id');
-        $nik = auth()->user()->nik;
+        $id = auth()->user()->id;
         // $pasien = Pasien::has('persyaratan')->with('rumahsakit')->where('no_ktp', auth()->user()->nik)->get();
         // $rumahsakit = Rumahsakit::whereHas('pasien', function ($query) use ($nik) {
         //     $query->where('no_ktp', $nik)->has('persyaratan');
@@ -35,7 +35,7 @@ class PengajuanController extends Controller
 
         // Ambil data pasien dengan relasi rumahsakit dan kelurahan->kecamatan
         $pasienCollection = Pasien::with(['rumahsakit', 'kelurahan.kecamatan'])
-            ->where('no_ktp', $nik)
+            ->where('users_id', $id)
             ->has('persyaratan')
             ->orderByDesc('pasien_id')
             ->get();
@@ -60,8 +60,8 @@ class PengajuanController extends Controller
 
     public function buat()
     {
-        $no_ktp = auth()->user()->nik;
-        $pasienCeks = Pasien::where('no_ktp', $no_ktp)->where('status', '!=', 'Draft')->count();
+        // $no_ktp = auth()->user()->nik;
+        // $pasienCeks = Pasien::where('no_ktp', $no_ktp)->where('status', '!=', 'Draft')->count();
 
         // kondisi jika user sudah pernah isi form meneruskan setelah draft
         // if ($pasienCeks > 0) {
@@ -73,7 +73,7 @@ class PengajuanController extends Controller
         // $pasien = Pasien::where('no_ktp', auth()->user()->nik)->where('status', 'Draft')->first();
 
         // jika sudah upload berkas
-        $persyaratan = Pasien::where('no_ktp', $no_ktp)->where('status', '!=', 'Draft')->has('persyaratan')->count();
+        // $persyaratan = Pasien::where('no_ktp', $no_ktp)->where('status', '!=', 'Draft')->has('persyaratan')->count();
         // dd($pasienCeks);
         // if ($persyaratan > 0) {
         //     Alert::error('Anda sudah membuat pengajuan');
@@ -472,8 +472,18 @@ class PengajuanController extends Controller
 
     public function diagnosaTambah($pasien_id, $ket)
     {
+
+        $users_id = auth()->user()->id;
+
         $pasien = Pasien::findOrFail($pasien_id);
-        $rumahsakit = DB::table('rumahsakit')->get();
+
+        if (auth()->user()->level == 'rumahsakit') {
+
+            $rumahsakit = DB::table('rumahsakit')->where('users_id', $users_id)->first();
+        } else {
+
+            $rumahsakit = DB::table('rumahsakit')->get();
+        }
 
         // $rumahsakit = RumahSakit::all();
         // dd($rumahsakit);

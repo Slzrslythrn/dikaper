@@ -424,9 +424,103 @@ class JamkesdaController extends Controller
     }
 
     public function export(Request $request)
+
     {
-        $nama_file = 'laporan_sembako_' . date('Y-m-d_H-i-s') . '.xlsx';
-        return Excel::download(new JamkesdaSelesai($request->all()), $nama_file);
+
+        $pasienCollection = Pasien::with(['pembayaran', 'rumahsakit', 'pembayaranInacbgs.inacbgs'])
+            ->where('kode_rs', $request->kode_rs)
+            ->where('jenis_rawat', $request->jenis_rawat)
+            ->whereBetween('tgl_diterima', [$request->tgl_awal, $request->tgl_akhir])
+            // Filter pasien yang memiliki data di tabel pembayaran
+            ->whereHas('pembayaran', function ($query) {
+                $query->whereNotNull('pasien_id');  // atau tambahkan kondisi tambahan jika diperlukan
+            })
+            // Filter pasien yang memiliki data di tabel pembayaranInacbgs
+            ->whereHas('pembayaranInacbgs', function ($query) {
+                $query->whereNotNull('pasien_id');  // atau tambahkan kondisi tambahan jika diperlukan
+            })
+            ->get();
+
+        // Ambil semua data rumahsakit yang cocok dengan kode_rs, lalu masukkan ke dalam array untuk akses cepat
+        $rumahsakitData = DB::table('rumahsakit')
+            ->where('kode', $request->kode_rs)
+            ->first();
+
+        // Cek dan tambahkan rumahsakit jika belum ada pada setiap pasien
+        $pasienCollection->each(function ($pasien) use ($rumahsakitData) {
+            if (!$pasien->rumahsakit) {
+                // Tambahkan data rumahsakit yang diambil sebelumnya ke objek pasien
+                $pasien->rumahsakit = $rumahsakitData;
+            }
+        });
+
+        $totalTarifInacbgs = 0;
+        $totalTarifRs = 0;
+        $totalBiayaLainnya = 0;
+        $jumlahTotalBiaya = 0;
+
+
+        foreach ($pasienCollection as $data) {
+            $cleanTarifInacbgs = str_replace(",", "", $data->pembayaran->tarif_inacbgs);
+            $cleanTarifInacbgs = (int)$cleanTarifInacbgs;
+            $totalTarifInacbgs += $cleanTarifInacbgs;
+
+            $cleanTarifRs = str_replace(",", "", $data->pembayaran->tarif_rs);
+            $cleanTarifRs = (int)$cleanTarifRs;
+            $totalTarifRs += $cleanTarifRs;
+
+            $cleanBiayaLainnya = str_replace(",", "", $data->pembayaran->biaya_lainnya);
+            $cleanBiayaLainnya = (int) $cleanBiayaLainnya;
+            $totalBiayaLainnya += $cleanBiayaLainnya;
+
+            $cleanTotalBiaya = str_replace(",", "", $data->pembayaran->total_biaya);
+            $cleanTotalBiaya = (int)$cleanTotalBiaya;
+            $jumlahTotalBiaya += $cleanTotalBiaya;
+        }
+
+        $jenis_rawat = $request->jenis_rawat;
+
+        // Mendapatkan bulan dan tahun di antara tgl_awal dan tgl_akhir
+        $tglAwal = Carbon::parse($request->tgl_awal);
+        $tglAkhir = Carbon::parse($request->tgl_akhir);
+
+        $bulan = [];
+        $tahun = [];
+
+        // Loop untuk mendapatkan semua bulan dan tahun di antara tgl_awal dan tgl_akhir
+        while ($tglAwal->lte($tglAkhir)) {
+            // Tambahkan bulan (format Y-m) ke dalam array
+            $bulan[] = $tglAwal->format('Y-m');
+
+            // Tambahkan tahun jika belum ada dalam array
+            $currentYear = $tglAwal->format('Y');
+            if (!in_array($currentYear, $tahun)) {
+                $tahun[] = $currentYear;
+            }
+
+            $tglAwal->addMonth(); // Tambah 1 bulan setiap iterasi
+        }
+
+
+
+        // Pastikan untuk mengirimkan data ke view dalam bentuk array
+        $data = [
+            'pasien' => $pasienCollection,
+            'rumahSakit' => $rumahsakitData,
+            'jenis_rawat' => $jenis_rawat,
+            'totalTarifInacbgs' => $totalTarifInacbgs,
+            'totalTarifRs' => $totalTarifRs,
+            'totalBiayaLainnya' => $totalBiayaLainnya,
+            'jumlahTotalBiaya' => $jumlahTotalBiaya,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+
+        ];
+        // dd($data);
+        $pdf = PDF::loadView('pages.admin.pdf-rekap-tagihan', $data)->setPaper('a4', 'landscape');
+        return $pdf->stream('rekapitulasi-tagihan.pdf');
+        // $nama_file = 'laporan_sembako_' . date('Y-m-d_H-i-s') . '.xlsx';
+        // return Excel::download(new JamkesdaSelesai($request->all()), $nama_file);
     }
 
     public function prosesDiterima($pasien_id)

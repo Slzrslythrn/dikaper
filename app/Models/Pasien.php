@@ -68,6 +68,11 @@ class Pasien extends Model
         return $this->hasOne(Pembayaran::class, 'pasien_id');
     }
 
+    public function pembayaranInacbgs()
+    {
+        return $this->hasOne(PembayaranInacbgs::class, 'pasien_id');
+    }
+
     // public function noSktm()
     // {
     //     return $this->belongsTo(NoSktm::class, 'no_sktm', 'id');

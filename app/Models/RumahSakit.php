@@ -22,6 +22,7 @@ class RumahSakit extends Model
         'strata',
         'ref_tarif_jamkesda',
         'ref_tarif_jamkesmas',
+        'users_id'
     ];
 
     public $timestamps = false;

@@ -23,4 +23,9 @@ class PembayaranInacbgs extends Model
     {
         return $this->belongsTo(Inacbgs::class, 'inacbgs_id', 'id');
     }
+
+    public function pasien()
+    {
+        return $this->belongsTo(Pasien::class, 'pasien_id');
+    }
 }

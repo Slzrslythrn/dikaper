@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/rekap-tagihan', function () {
+//     return view('pages.admin.pdf-rekap-tagihan');
+// });
+
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -66,8 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
             Route::delete('/{id}/delete/jamkesda', [App\Http\Controllers\JamkesdaController::class, 'destroy'])->name('jamkesda.destroy');
 
-            Route::group(['prefix' => 'tagihan'], function () {
-            });
+            Route::group(['prefix' => 'tagihan'], function () {});
             Route::group(['prefix' => 'pembayaran'], function () {
                 Route::get('/{id}/edit', [App\Http\Controllers\JamkesdaController::class, 'editPembayaran'])->name('jamkesda.pembayaran.edit');
                 Route::post('/update', [App\Http\Controllers\JamkesdaController::class, 'updatePembayaran'])->name('jamkesda.pembayaran.update');
@@ -102,8 +105,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{id}/download', [App\Http\Controllers\PengajuanController::class, 'download'])->name('pengajuan.download');
 
             Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
+
+            Route::get('/selesai', [App\Http\Controllers\PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
         });
-        Route::get('/selesai', [App\Http\Controllers\PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
 
         Route::group(['prefix' => 'pembayaran'], function () {
 
@@ -111,7 +115,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanTagihan'])->name('jamkesda.tagihan.simpan');
             Route::get('/{id}/edit', [App\Http\Controllers\JamkesdaController::class, 'editTagihan'])->name('jamkesda.tagihan.edit');
             Route::post('/update', [App\Http\Controllers\JamkesdaController::class, 'updateTagihan'])->name('jamkesda.tagihan.update');
-            
+
             Route::get('/{id}/hapus', [App\Http\Controllers\JamkesdaController::class, 'hapusTagihan'])->name('jamkesda.tagihan.hapus');
 
             // Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanPembayaran'])->name('jamkesda.pembayaran.simpan');

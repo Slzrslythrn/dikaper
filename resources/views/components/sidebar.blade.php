@@ -162,7 +162,8 @@
                                         fill="#000000" opacity="0.3"></path>
                                 </g>
                             </svg>
-                            <span class="nav-text {{ request()->is('jamkesda/selesai') ? 'text-primary' : '' }}">
+                            <span
+                                class="nav-text {{ request()->is('jamkesda/pengajuan/selesai') ? 'text-primary' : '' }}">
                                 Pengajuan Selesai
                             </span>
                         </a>
