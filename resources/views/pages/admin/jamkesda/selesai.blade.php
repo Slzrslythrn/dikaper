@@ -17,7 +17,7 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('jamkesda.export') }}" method="POST">
+                <form action="{{ route('jamkesda.export') }}" method="POST" target="_blank">
                     <div class="row">
                         @csrf
 

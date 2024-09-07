@@ -12,7 +12,17 @@ class MainController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        $users_id = auth()->user()->id;
+        $pasien = Pasien::where('users_id', $users_id)->get();
+
+        $totalPasien = $pasien->count();
+        $totalDiterima = $pasien->where('status', 'Diterima')->count();
+        $totalDitolak = $pasien->where('status', 'Ditolak')->count();
+        $totalDikembalikan = $pasien->where('status', 'Dikembalikan')->count();
+        $totalDiproses = $pasien->where('status', 'Diproses')->count();
+        $totalDraft = $pasien->where('status', 'Draft')->count();
+
+        return view('dashboard', compact('totalPasien', 'totalDiterima', 'totalDitolak', 'totalDikembalikan', 'totalDiproses', 'totalDraft'));
     }
 
     public function log()

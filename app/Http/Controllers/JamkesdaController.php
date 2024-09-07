@@ -401,7 +401,7 @@ class JamkesdaController extends Controller
         });
 
         // $inacbgs = Inacbgs::all();
-        $rumahsakit = RumahSakit::all();
+        $rumahsakit =  DB::table('rumahsakit')->get();
         // dd($inacbgs);
         // compact('pasien', 'inacbgs', 'rumahsakit')
         return view('pages.admin.jamkesda.selesai', [
@@ -426,6 +426,12 @@ class JamkesdaController extends Controller
     public function export(Request $request)
 
     {
+        $validate = $request->validate([
+            'tgl_awal' => 'required',
+            'tgl_akhir' => 'required',
+            'kode_rs' => 'required',
+            'jenis_rawat' => 'required',
+        ]);
 
         $pasienCollection = Pasien::with(['pembayaran', 'rumahsakit', 'pembayaranInacbgs.inacbgs'])
             ->where('kode_rs', $request->kode_rs)
@@ -442,9 +448,15 @@ class JamkesdaController extends Controller
             ->get();
 
         // Ambil semua data rumahsakit yang cocok dengan kode_rs, lalu masukkan ke dalam array untuk akses cepat
-        $rumahsakitData = DB::table('rumahsakit')
-            ->where('kode', $request->kode_rs)
-            ->first();
+        // $rumahsakitData = DB::table('rumahsakit')
+        //     ->where('kode', $request->kode_rs)
+        //     ->first();
+
+        $rumahsakitData = DB::select(
+            'SELECT * FROM rumahsakit rs WHERE rs.kode = :kode_rs LIMIT 1',
+            ['kode_rs' => $request->kode_rs]
+        );
+
 
         // Cek dan tambahkan rumahsakit jika belum ada pada setiap pasien
         $pasienCollection->each(function ($pasien) use ($rumahsakitData) {
@@ -506,7 +518,7 @@ class JamkesdaController extends Controller
         // Pastikan untuk mengirimkan data ke view dalam bentuk array
         $data = [
             'pasien' => $pasienCollection,
-            'rumahSakit' => $rumahsakitData,
+            'rumahSakit' => $rumahsakitData[0],
             'jenis_rawat' => $jenis_rawat,
             'totalTarifInacbgs' => $totalTarifInacbgs,
             'totalTarifRs' => $totalTarifRs,
@@ -518,6 +530,14 @@ class JamkesdaController extends Controller
         ];
         // dd($data);
         $pdf = PDF::loadView('pages.admin.pdf-rekap-tagihan', $data)->setPaper('a4', 'landscape');
+        // Simpan file PDF ke dalam storage sementara
+        // $pdfPath = storage_path('app/public/rekapitulasi-tagihan.pdf');
+        // $pdf->save($pdfPath);
+
+        // Kembalikan URL file PDF untuk diakses di tab baru
+        // return response()->json([
+        //     'url' => asset('storage/rekapitulasi-tagihan.pdf'),
+        // ]);
         return $pdf->stream('rekapitulasi-tagihan.pdf');
         // $nama_file = 'laporan_sembako_' . date('Y-m-d_H-i-s') . '.xlsx';
         // return Excel::download(new JamkesdaSelesai($request->all()), $nama_file);

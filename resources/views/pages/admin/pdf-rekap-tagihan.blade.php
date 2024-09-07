@@ -10,7 +10,7 @@
 
 <style>
     .container {
-        margin: 4px 3px 3px 4px;
+        margin: 4px 2px 3px 2px;
     }
 </style>
 

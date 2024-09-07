@@ -34,6 +34,7 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
+
                     @if ($pasien->status == 'Dikembalikan')
                     <h4>Form Update Pengajuan</h4>
                     <span>Buat pengajuan ulang</span>

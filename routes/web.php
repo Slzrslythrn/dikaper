@@ -67,7 +67,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/tambah', [App\Http\Controllers\JamkesdaController::class, 'tambah'])->name('jamkesda.tambah');
             Route::post('/buat', [App\Http\Controllers\JamkesdaController::class, 'buat'])->name('jamkesda.buat');
             Route::get('/selesai', [App\Http\Controllers\JamkesdaController::class, 'selesai'])->name('jamkesda.selesai');
-            Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
             Route::delete('/{id}/delete/jamkesda', [App\Http\Controllers\JamkesdaController::class, 'destroy'])->name('jamkesda.destroy');
 
             Route::group(['prefix' => 'tagihan'], function () {});
@@ -108,6 +107,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/selesai', [App\Http\Controllers\PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
         });
+
+        Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
+
 
         Route::group(['prefix' => 'pembayaran'], function () {
 

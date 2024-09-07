@@ -18,41 +18,44 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('jamkesda.export') }}" method="POST">
+                <form action="{{ route('jamkesda.export') }}" method="POST" target="_blank">
                     <div class="row">
                         @csrf
 
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="">Tanggal awal</label>
-                                <input id="min" type="date" name="tgl_diterima1" class="form-control">
+                                <input id="min" type="date" name="tgl_awal" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="">Tanggal akhir</label>
-                                <input id="max" type="date" name="tgl_diterima2" class="form-control">
+                                <input id="max" type="date" name="tgl_akhir" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Rumah Sakit</label>
-                                <select name="rs" id="rs" class="form-control">
-                                    <option value="all">Semua</option>
-                                    @foreach ($rumahsakit as $rs)
+                                <select name="kode_rs" id="kode_rs" class="form-control">
+
+                                    <option value="{{ $rumahsakit->kode }}">{{ $rumahsakit->nama }}</option>
+
+                                    {{-- @foreach ($rumahsakit as $rs)
+
                                     <option value="{{ $rs->kode }}">{{ $rs->nama }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="keterangan">Status Pembayaran</label>
-                                <select class="form-control" id="keterangan" id="keterangan" name="keterangan">
+                                <label for="keterangan">Jenis Rawat</label>
+                                <select class="form-control" id="jenis_rawat" name="jenis_rawat">
                                     <option selected disabled>- pilih -</option>
-                                    <option value="3">Semua</option>
-                                    <option value="1">Sudah Dibayar</option>
-                                    <option value="0">Belum Dibayar</option>
+                                    <option value="Rawat Inap">Rawat Inap</option>
+                                    <option value="Rawat Jalan">Rawat Jalan</option>
+                                    {{-- <option value="0">Belum Dibayar</option> --}}
                                 </select>
                             </div>
                         </div>

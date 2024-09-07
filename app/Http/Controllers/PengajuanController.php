@@ -279,7 +279,6 @@ class PengajuanController extends Controller
         Carbon::setLocale('id');
 
         $pasien = Pasien::with('kelurahan')
-            ->where('no_ktp', auth()->user()->nik)
             ->where('pasien_id', $pasien_id)
             ->first();
 
@@ -653,7 +652,9 @@ class PengajuanController extends Controller
             }
         });
 
-        $rumahsakit = RumahSakit::all();
+
+        $rumahsakit = RumahSakit::where('users_id', $user_id)->first();
+        // dd($rumahsakit);
 
         return view('pages.admin.pengajuan.selesai', [
             'pasien' => $pasienCollection,
