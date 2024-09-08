@@ -18,52 +18,80 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('jamkesda.export') }}" method="POST" target="_blank">
-                    <div class="row">
-                        @csrf
+                <div style="border: solid 1px #94a3b8; border-radius: 10px; padding: 15px">
+                    <h5 class="my-3">Cetak Rekapitulasi Tagihan Jamkesda</h5>
 
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="">Tanggal awal</label>
-                                <input id="min" type="date" name="tgl_awal" class="form-control">
+                    <form action="{{ route('jamkesda.export') }}" method="POST" target="_blank">
+                        <div class="row">
+                            @csrf
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Tanggal awal</label>
+                                    <input id="tgl_awal" type="date" name="tgl_awal"
+                                        class="form-control @error('tgl_awal') is-invalid @enderror">
+                                    @error('tgl_awal')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Tanggal akhir</label>
+                                    <input id="tgl_akhir" type="date" name="tgl_akhir"
+                                        class="form-control @error('tgl_akhir') is-invalid @enderror">
+                                    @error('tgl_akhir')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Rumah Sakit</label>
+                                    <select name="kode_rs" id="kode_rs"
+                                        class="form-control  @error('kode_rs') is-invalid @enderror">
+
+                                        <option value="{{ $rumahsakit->kode }}">{{ $rumahsakit->nama }}</option>
+
+                                        {{-- @foreach ($rumahsakit as $rs)
+
+                                        <option value="{{ $rs->kode }}">{{ $rs->nama }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                    @error('kode_rs')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="keterangan">Jenis Rawat</label>
+                                    <select class="form-control  @error('jenis_rawat') is-invalid @enderror" id="
+                                    jenis_rawat" name="jenis_rawat">
+                                        <option selected disabled>- pilih -</option>
+                                        <option value="Rawat Inap">Rawat Inap</option>
+                                        <option value="Rawat Jalan">Rawat Jalan</option>
+                                        {{-- <option value="0">Belum Dibayar</option> --}}
+                                    </select>
+                                    @error('jenis_rawat')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success mt-4">Cetak</button>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="">Tanggal akhir</label>
-                                <input id="max" type="date" name="tgl_akhir" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Rumah Sakit</label>
-                                <select name="kode_rs" id="kode_rs" class="form-control">
-
-                                    <option value="{{ $rumahsakit->kode }}">{{ $rumahsakit->nama }}</option>
-
-                                    {{-- @foreach ($rumahsakit as $rs)
-
-                                    <option value="{{ $rs->kode }}">{{ $rs->nama }}</option>
-                                    @endforeach --}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="keterangan">Jenis Rawat</label>
-                                <select class="form-control" id="jenis_rawat" name="jenis_rawat">
-                                    <option selected disabled>- pilih -</option>
-                                    <option value="Rawat Inap">Rawat Inap</option>
-                                    <option value="Rawat Jalan">Rawat Jalan</option>
-                                    {{-- <option value="0">Belum Dibayar</option> --}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-success mt-4">Cetak</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
 
 

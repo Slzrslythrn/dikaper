@@ -89,10 +89,10 @@
                     @endforeach
                     <tr>
                         <td colspan='10' style="text-align: center">JUMLAH</td>
-                        <td>{{ $totalTarifInacbgs }}</td>
-                        <td>{{ $totalTarifRs }}</td>
-                        <td>{{ $totalBiayaLainnya }}</td>
-                        <td>{{ $jumlahTotalBiaya }}</td>
+                        <td>{{ number_format($totalTarifInacbgs, 0, '.', ',') }}</td>
+                        <td>{{ number_format($totalTarifRs, 0, '.', ',') }}</td>
+                        <td>{{ number_format($totalBiayaLainnya, 0, '.', ',') }}</td>
+                        <td>{{ number_format($jumlahTotalBiaya, 0, '.', ',') }}</td>
                     </tr>
 
                 </tbody>
