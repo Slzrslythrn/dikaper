@@ -36,6 +36,7 @@ class PengajuanController extends Controller
         // Ambil data pasien dengan relasi rumahsakit dan kelurahan->kecamatan
         $pasienCollection = Pasien::with(['rumahsakit', 'kelurahan.kecamatan'])
             ->where('users_id', $id)
+            ->where('status', '!=', 'Diterima')
             ->has('persyaratan')
             ->orderByDesc('pasien_id')
             ->get();
@@ -526,7 +527,7 @@ class PengajuanController extends Controller
     {
         $validated = $request->validate([
 
-            'nama_pkm' => 'required',
+
             'no_rujuk_igd' => 'required',
             'diagnosa' => 'required',
             'kode_rs' => 'required',
@@ -539,7 +540,6 @@ class PengajuanController extends Controller
 
         ], [
             'hubungan_kk.required' => 'Form input harap diisi',
-            'nama_pkm.required' => 'Form input harap diisi',
             'no_rujuk_igd.required' => 'Form input harap diisi',
             'diagnosa.required' => 'Form input harap diisi',
             'kode_rs.required' => 'Form input harap diisi',

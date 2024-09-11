@@ -138,7 +138,7 @@ class JamkesdaController extends Controller
             'hubungan_kk' => 'required',
             'ket_jamkesda' => 'required',
 
-            'nama_pkm' => 'required',
+
             'no_rujuk_igd' => 'required',
             'diagnosa' => 'required',
             'kode_rs' => 'required',
@@ -169,7 +169,7 @@ class JamkesdaController extends Controller
             'hubungan_kk.required' => 'Form input harap diisi',
             'ket_jamkesda.required' => 'Form input harap diisi',
 
-            'nama_pkm.required' => 'Form input harap diisi',
+
             'no_rujuk_igd.required' => 'Form input harap diisi',
             'diagnosa.required' => 'Form input harap diisi',
             'kode_rs.required' => 'Form input harap diisi',
