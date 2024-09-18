@@ -254,7 +254,7 @@
     </table>
     <p style="font-size: 14px; text-align: justify; text-justify: inter-word;">Untuk mendapatkan jaminan pelayanan
         kesehatan selama dalam pemeriksaan / perawatan /
-        pengobatan lebih lanjut. Mohon biaya <u>{{ $pasien->jenis_rawat }}</u> ditagihkan ke APBD Kota Bogor melalui
+        pengobatan lebih lanjut. Mohon biaya <u>{{ $pasien->jenis_rawat }}</u> ditagihkan ke
         Dinas Kesehatan Kota
         Bogor
         dengan menggunakan tarif INA-CBG. Biaya tersebut diajukan oleh Rumah Sakit melalui klaim kolektif sebelum

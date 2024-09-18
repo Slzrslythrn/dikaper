@@ -9,8 +9,16 @@
 </head>
 
 <style>
+    body {
+        font-family: 'DejaVu Sans', sans-serif;
+    }
+
     .container {
         margin: 4px 2px 3px 2px;
+    }
+
+    th {
+        font-size: 12px
     }
 </style>
 
@@ -87,6 +95,7 @@
                         <td>{{ $row->pembayaran->total_biaya}}</td>
                     </tr>
                     @endforeach
+                    {{-- @dd( $row->pembayaranInacbgs->inacbgs->kode) --}}
                     <tr>
                         <td colspan='10' style="text-align: center">JUMLAH</td>
                         <td>{{ number_format($totalTarifInacbgs, 0, '.', ',') }}</td>

@@ -122,7 +122,7 @@
                                     </table>
                                 </div>
                                 @endif
-                                @if (auth()->user()->level != 'user')
+                                @if (auth()->user()->level != 'user' && auth()->user()->level != 'verifikator')
                                 <a href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id, 'ket' => 'lengkapi']) }}"
                                     class="btn btn-secondary">
                                     Lengkapi Data Diagnosa
@@ -191,9 +191,46 @@
                                     </table>
                                 </div>
                             </div>
+                            @if (auth()->user()->level == 'verifikator' && $pasien->status == 'Diterima')
+                            <div class="col-md-4">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">File SJP</td>
+                                                <td class="left strong">
+
+                                                    <a href="{{ route('jamkesda.download.diterima', ['id' => $pasien->pasien_id]) }}"
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">Berkas Pasien Pulang</td>
+                                                <td class="left strong">
+                                                    @if ($pasien->persyaratan && $pasien->persyaratan->pasien_pulang)
+                                                    <a href="{{ asset('uploads/pasien_pulang/' . $pasien->persyaratan->pasien_pulang) }}"
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endif
 
                         </div>
-                        @if (auth()->user()->level != 'user' && auth()->user()->level != 'rumahsakit')
+                        @if (auth()->user()->level != 'user' && auth()->user()->level != 'rumahsakit' )
                         {{-- @if ($pasien->no_sktm && $pasien->no_rujuk_igd != 0) --}}
                         @if ( $pasien->no_rujuk_igd != 0)
                         @if ($pasien->status != 'Diterima')
