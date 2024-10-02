@@ -3,15 +3,28 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
+                    @if ($pasien->status == 'Dikembalikan')
+                    <h4>Form Pengajuan Ulang </h4>
+                    <span>buat pengajuan ulang</span>
+                    @else
                     <h4>Form Pengajuan </h4>
                     <span>buat pengajuan baru</span>
+                    @endif
+
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Pengajuan</a></li>
+                    @if ($pasien->status == 'Dikembalikan')
+                    <li class="breadcrumb-item active"><a
+                            href="{{ route('pengajuan.getUpdate', ['id' => $pasien->pasien_id]) }}">Update</a></li>
+
+                    @else
                     <li class="breadcrumb-item active"><a href="{{ route('pengajuan.buat') }}">Buat</a></li>
+                    @endif
+
                 </ol>
             </div>
         </div>
@@ -34,21 +47,33 @@
                                         </div>
                                         <span class="text-white">1</span>
                                     </li>
-                                    {{-- <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
                                             <h6 class="my-0">Pengisian Formulir</h6>
                                             <small class="text-muted">Diagnosa</small>
                                         </div>
                                         <span class="text-muted">2</span>
-                                    </li> --}}
+                                    </li>
                                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
                                             <h6 class="my-0">Upload / Kirim File</h6>
                                             <small>upload file kelengkapan</small>
                                         </div>
-                                        <span class="text-muted">2</span>
+                                        <span class="text-muted">3</span>
                                     </li>
                                 </ul>
+
+                                @if ($pasien->keterangan_status)
+                                <div>
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-muted">Keterangan</span>
+                                    </h4>
+                                    <textarea rows="10" disabled readonly
+                                        class="form-control">{{ $pasien->keterangan_status }}</textarea>
+                                </div>
+                                @endif
+
+
                             </div>
                             <div class="col-md-8 order-md-1">
                                 <form class="needs-validation" novalidate="" action="{{ route('pengajuan.tambah') }}"
@@ -60,8 +85,8 @@
                                             <label for="firstName">No KTP (Kartu Tanda Penduduk)</label>
                                             <input type="text" name="no_ktp"
                                                 class="form-control @error('no_ktp') is-invalid @enderror"
-                                                id="firstName" placeholder=""
-                                                value="{{ old('no_ktp') ?? auth()->user()->nik }}" required="">
+                                                id="firstName" placeholder="" value="{{  $pasien->no_ktp }}"
+                                                required="">
                                             @error('no_ktp')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -70,7 +95,7 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">No KK (Kartu Keluarga)</label>
-                                            <input type="text" name="no_kk" value="{{ old('no_kk') ?? $pasien->no_kk }}"
+                                            <input type="text" name="no_kk" value="{{  $pasien->no_kk }}"
                                                 class="form-control @error('no_kk') is-invalid @enderror" id="lastName"
                                                 placeholder="" required="" min="16" max="16">
                                             @error('no_kk')
@@ -81,25 +106,24 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3">
                                         <label for="username">No SJP</label>
                                         <div class="input-group">
                                             <input type="text"
                                                 class="form-control @error('no_sjp') is-invalid @enderror" id="no_sjp"
-                                                name="no_sjp">
+                                                name="no_sjp" value="{{ $pasien->no_sjp }}">>
                                             @error('va')
                                             <div class="invalid-feedback" style="width: 100%;">
                                                 {{ $message }}
                                             </div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="mb-3">
                                         <label for="username">Nama Kepala Keluarga</label>
                                         <div class="input-group">
-                                            <input type="text" name="nama_kepala"
-                                                value="{{ old('nama_kepala') ?? $pasien->nama_kepala }}"
+                                            <input type="text" name="nama_kepala" value="{{  $pasien->nama_kepala }}"
                                                 class="form-control @error('nama_kepala') is-invalid @enderror"
                                                 id="username" required="">
                                             @error('nama_kepala')
@@ -113,8 +137,7 @@
                                     <div class="mb-3">
                                         <label for="username">Nama Pasien</label>
                                         <div class="input-group">
-                                            <input type="text" name="nama_pasien"
-                                                value="{{ old('nama_pasien') ?? $pasien->nama_pasien }}"
+                                            <input type="text" name="nama_pasien" value="{{  $pasien->nama_pasien }}"
                                                 class="form-control @error('nama_pasien') is-invalid @enderror"
                                                 id="username" required="">
                                             @error('nama_pasien')
@@ -131,10 +154,10 @@
                                             class="d-block w-100 form-control @error('jenis_kelamin') is-invalid @enderror"
                                             id="country" required="">
                                             <option value="">Pilih...</option>
-                                            <option value="Laki-Laki" {{ old('jenis_kelamin')=='Laki-Laki' || $pasien->
+                                            <option value="Laki-Laki" {{ $pasien->
                                                 jenis_kelamin == 'Laki-Laki' ? 'selected' : '' }}>
                                                 Laki - Laki</option>
-                                            <option value="Perempuan" {{ old('jenis_kelamin')=='Perempuan' || $pasien->
+                                            <option value="Perempuan" {{ $pasien->
                                                 jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>
                                                 Perempuan</option>
                                         </select>
@@ -150,7 +173,7 @@
                                             <label for="username">Tempat Lahir</label>
                                             <div class="input-group">
                                                 <input type="text" name="tempat_lahir"
-                                                    value="{{ old('tempat_lahir') ?? $pasien->tempat_lahir }}"
+                                                    value="{{  $pasien->tempat_lahir }}"
                                                     class="form-control @error('tempat_lahir') is-invalid @enderror"
                                                     id="username" required="">
                                                 @error('tempat_lahir')
@@ -165,7 +188,7 @@
                                             <label for="username">Tanggal Lahir</label>
                                             <div class="input-group">
                                                 <input type="date" name="tanggal_lahir"
-                                                    value="{{ old('tanggal_lahir') ?? date('Y-m-d', strtotime($pasien->tanggal_lahir)) }}"
+                                                    value="{{ date('Y-m-d', strtotime($pasien->tanggal_lahir)) }}"
                                                     class="form-control @error('tanggal_lahir') is-invalid @enderror"
                                                     id="username" required="">
                                                 @error('tanggal_lahir')
@@ -186,8 +209,8 @@
                                                 id="single-select" required="">
                                                 <option value="">Pilih...</option>
                                                 @foreach ($kelurahan as $kel)
-                                                <option value="{{ $kel->kelurahan_id }}" {{ old('kelurahan_id')==$kel->
-                                                    kelurahan_id || $pasien->kelurahan_id == $kel->kelurahan_id ?
+                                                <option value="{{ $kel->kelurahan_id }}" {{ $pasien->kelurahan_id ==
+                                                    $kel->kelurahan_id ?
                                                     'selected' : '' }}>
                                                     {{ $kel->kelurahan_nama }} |
                                                     {{ $kel->kecamatan->kecamatan_nama }}</option>
@@ -203,8 +226,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="username">Alamat</label>
                                             <div class="input-group">
-                                                <input type="text" name="alamat"
-                                                    value="{{ old('alamat') ?? $pasien->alamat }}"
+                                                <input type="text" name="alamat" value="{{  $pasien->alamat }}"
                                                     class="form-control @error('alamat') is-invalid @enderror"
                                                     id="username" required="">
                                                 @error('alamat')
@@ -223,18 +245,16 @@
                                                 class="d-block w-100 form-control @error('hubungan_kk') is-invalid @enderror"
                                                 id="country" required="">
                                                 <option value="">Pilih...</option>
-                                                <option value="Kepala Keluarga" {{ old('hubungan_kk')=='Kepala Keluarga'
-                                                    || $pasien->hubungan_kk == 'Kepala Keluarga' ? 'selected' : '' }}>
+                                                <option value="Kepala Keluarga" {{ $pasien->hubungan_kk == 'Kepala
+                                                    Keluarga' ? 'selected' : '' }}>
                                                     Kepala Keluarga</option>
-                                                <option value="Istri / Suami" {{ old('hubungan_kk')=='Istri / Suami' ||
-                                                    $pasien->hubungan_kk == 'Istri / Suami' ? 'selected' : '' }}>
+                                                <option value="Istri / Suami" {{ $pasien->hubungan_kk == 'Istri / Suami'
+                                                    ? 'selected' : '' }}>
                                                     Istri / Suami</option>
-                                                <option value="Anak / Cucu / Menantu" {{
-                                                    old('hubungan_kk')=='Anak / Cucu / Menantu' || $pasien->hubungan_kk
+                                                <option value="Anak / Cucu / Menantu" {{ $pasien->hubungan_kk
                                                     == 'Anak / Cucu / Menantu' ? 'selected' : '' }}>
                                                     Anak / Cucu / Menantu</option>
-                                                <option value="Ayah / Ibu / Mertua" {{
-                                                    old('hubungan_kk')=='Ayah / Ibu / Mertua' || $pasien->hubungan_kk ==
+                                                <option value="Ayah / Ibu / Mertua" {{ $pasien->hubungan_kk ==
                                                     'Ayah / Ibu / Mertua' ? 'selected' : '' }}>
                                                     Ayah / Ibu / Mertua</option>
                                             </select>
@@ -252,18 +272,21 @@
                                             class="d-block w-100 form-control @error('ket_jamkesda') is-invalid @enderror"
                                             id="country" required="">
                                             <option value="">Pilih...</option>
-                                            <option value="kekerasan" {{ old('ket_jamkesda')=='kekerasan' || $pasien->
+                                            <option value="kekerasan" {{ $pasien->
                                                 ket_jamkesda == 'kekerasan' ? 'selected' : '' }}>
                                                 Pasien Kekerasan</option>
-                                            <option value="meninggal" {{ old('ket_jamkesda')=='meninggal' || $pasien->
+                                            <option value="meninggal" {{ $pasien->
                                                 ket_jamkesda == 'meninggal' ? 'selected' : '' }}>
                                                 Pasien Meninggal</option>
-                                            <option value="bencana" {{ old('ket_jamkesda')=='bencana' || $pasien->
+                                            <option value="bencana" {{ $pasien->
                                                 ket_jamkesda == 'bencana' ? 'selected' : '' }}>
                                                 Pasien Bencana</option>
-                                            <option value="pmks" {{ old('ket_jamkesda')=='pmks' || $pasien->ket_jamkesda
+                                            <option value="pmks" {{ $pasien->ket_jamkesda
                                                 == 'pmks' ? 'selected' : '' }}>
                                                 Pasien PMKS (Penyandang Masalah Kesejahteraan Sosial)</option>
+                                            <option value="lain-lain" {{ $pasien->
+                                                ket_jamkesda == 'lain-lain' ? 'selected' : '' }}>
+                                                Lain - lain</option>
                                         </select>
                                         @error('ket_jamkesda')
                                         <div class="invalid-feedback">
@@ -271,6 +294,8 @@
                                         </div>
                                         @enderror
                                     </div>
+
+
 
                                     <hr class="mb-4">
                                     <button class="btn btn-primary btn-lg btn-block" type="submit">Selanjutnya</button>

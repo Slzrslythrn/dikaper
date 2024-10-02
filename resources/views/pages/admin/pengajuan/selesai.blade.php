@@ -3,14 +3,15 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Jamkesda Selesai</h4>
-                    <span>data jamkesda selesai</span>
+                    <h4>Pengajuan Selesai</h4>
+                    <span>data pengajuan selesai</span>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="{{ route('jamkesda') }}">Jamkesda Selesai</a></li>
+                    <li class="breadcrumb-item active"><a href="{{ route('jamkesda') }}">pengajuan Selesai</a></li>
+
                 </ol>
             </div>
         </div>
@@ -54,13 +55,8 @@
                                     <select name="kode_rs" id="kode_rs"
                                         class="form-control  @error('kode_rs') is-invalid @enderror">
 
-                                        {{-- <option value="{{ $rumahsakit->kode }}">{{ $rumahsakit->nama }}</option>
-                                        --}}
+                                        <option value="{{ $rumahsakit->kode }}">{{ $rumahsakit->nama }}</option>
 
-                                        <option value="">Pilih Rumah Sakit...</option>
-                                        @foreach ($rumahsakit as $rs)
-                                        <option value="{{ $rs->kode }}">{{ $rs->nama }}</option>
-                                        @endforeach
                                         {{-- @foreach ($rumahsakit as $rs)
 
                                         <option value="{{ $rs->kode }}">{{ $rs->nama }}</option>
@@ -96,7 +92,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
 
 
@@ -202,10 +197,11 @@
                                                     @if ($row->pembayaran)
                                                     @if ($row->pembayaran->tarif_inacbgs == null)
                                                     <!-- Button trigger modal -->
-                                                    <a class="m-2"
+                                                    <a
                                                         href="{{ route('pembayaran.buat',  ['id' => $row->pasien_id] )}}">
-                                                        <button type="button" class="btn btn-primary my-2">Pembayaran
-                                                        </button>
+                                                        <button type="button" class="btn btn-primary modalpasienid" {{--
+                                                            data-item="{{ $row->pasien_id }}" data-toggle="modal"
+                                                            data-target="#modalTagihan" --}}>Pembayaran </button>
                                                     </a>
                                                     @else
 
@@ -223,8 +219,9 @@
                                                     <!-- Button trigger modal -->
                                                     <a
                                                         href="{{ route('pembayaran.buat',  ['id' => $row->pasien_id] )}}">
-                                                        <button type="button" class="btn btn-primary my-2">Pembayaran
-                                                        </button>
+                                                        <button type="button" class="btn btn-primary modalpasienid" {{--
+                                                            data-item="{{ $row->pasien_id }}" data-toggle="modal"
+                                                            data-target="#modalTagihan" --}}>Pembayaran </button>
                                                     </a>
                                                     {{-- <button type="button"
                                                         class="btn btn-primary modalpasienid my-2"
@@ -262,7 +259,7 @@
                     </div>
 
                     <!-- Modal Tagihan -->
-                    <div class="modal fade" id="modalTagihan" tabindex="-1" role="dialog"
+                    {{-- <div class="modal fade" id="modalTagihan" tabindex="-1" role="dialog"
                         aria-labelledby="modalTagihanTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -280,7 +277,7 @@
                                             <label for="total_tagihan">Total Tagihan</label>
                                             <input type="text" class="form-control" name="total_tagihan"
                                                 id="total_tagihan" required>
-                                        </div>
+                                        </div> --}}
                                         {{-- <div class="form-group">
                                             <label for="total_tagihan">Tanggal Pembayaran Tagihan</label>
                                             <input type="date" class="form-control" name="tgl_pembayaran_tagihan"
@@ -291,7 +288,7 @@
                                             <input type="text" class="form-control" name="total_pembayaran"
                                                 id="total_pembayaran" required>
                                         </div> --}}
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="keterangan">Keterangan</label>
                                             <select class="form-control" id="keterangan" name="keterangan" required>
                                                 <option value="1">Sudah Dibayar</option>
@@ -299,7 +296,7 @@
                                             </select>
                                         </div>
 
-                                        <h5>Inacbgs</h5>
+                                        <h5>Inacbgs</h5> --}}
                                         {{-- <div class="form-group">
                                             <label for="keterangan">Jenis RS</label>
                                             <select class="form-control" id="jenis_rs" name="jenis_rs" required>
@@ -310,7 +307,7 @@
                                             </select>
                                         </div> --}}
 
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="keterangan">Diagnosa</label>
                                             <select class="form-control" id="diagnosa" name="diagnosa" required
                                                 disabled>
@@ -330,7 +327,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Modal Pembayaran -->
                     {{-- <div class="modal fade" id="modalPembayaran" tabindex="-1" role="dialog"
@@ -386,7 +383,7 @@
         $("#pasien_id_pembayaran").val(pasienIdPembayaran);
     });
 </script>
-
+{{--
 <script>
     $(document).ready(function() {
     $('#jenis_rs').change(function() {
@@ -432,4 +429,4 @@
     });
 });
 
-</script>
+</script> --}}

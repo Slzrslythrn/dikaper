@@ -13,11 +13,16 @@ class Pembayaran extends Model
 
     protected $fillable = [
         'pasien_id',
-        'total_tagihan',
-        'total_pembayaran',
+        'tarif_inacbgs',
+        'tarif_rs',
         'keterangan',
         'tgl_pembayaran_tagihan',
         'tgl_pembayaran',
+        'no_rm',
+        'los',
+        'tgl_keluar',
+        'biaya_lainnya',
+        'total_biaya'
     ];
 
     public $timestamps = false;

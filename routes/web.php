@@ -17,9 +17,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/rekap-tagihan', function () {
+//     return view('pages.admin.pdf-rekap-tagihan');
+// });
+
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/', [App\Http\Controllers\MainController::class, 'index'])->name('dashboard');
+
+        // Route::get('/pembayaran', function () {
+        //     return view('pages.admin.pembayaran.buat-pembayaran');
+        // });
     });
     Route::group(['prefix' => 'log-aktivitas'], function () {
         Route::get('/', [App\Http\Controllers\MainController::class, 'log'])->name('log');
@@ -43,6 +53,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::put('/{id}/update', [App\Http\Controllers\DataRumahSakitController::class, 'update'])->name('data-rumahSakit.update');
                 Route::delete('/{id}/delete', [App\Http\Controllers\DataRumahSakitController::class, 'destroy'])->name('data-rumahSakit.destroy');
             });
+
+            Route::group(['prefix' => 'sktm'], function () {
+                Route::get('/', [App\Http\Controllers\SetSktmController::class, 'index'])->name('data-sktm');
+                Route::post('/tambah', [App\Http\Controllers\SetSktmController::class, 'tambah'])->name('data-sktm.tambah');
+            });
         });
     });
 
@@ -52,45 +67,63 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/tambah', [App\Http\Controllers\JamkesdaController::class, 'tambah'])->name('jamkesda.tambah');
             Route::post('/buat', [App\Http\Controllers\JamkesdaController::class, 'buat'])->name('jamkesda.buat');
             Route::get('/selesai', [App\Http\Controllers\JamkesdaController::class, 'selesai'])->name('jamkesda.selesai');
-            Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
             Route::delete('/{id}/delete/jamkesda', [App\Http\Controllers\JamkesdaController::class, 'destroy'])->name('jamkesda.destroy');
 
-            Route::group(['prefix' => 'tagihan'], function () {
-                Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanTagihan'])->name('jamkesda.tagihan.simpan');
-                Route::get('/{id}/edit', [App\Http\Controllers\JamkesdaController::class, 'editTagihan'])->name('jamkesda.tagihan.edit');
-                Route::post('/update', [App\Http\Controllers\JamkesdaController::class, 'updateTagihan'])->name('jamkesda.tagihan.update');
-                Route::get('/{id}/hapus', [App\Http\Controllers\JamkesdaController::class, 'hapusTagihan'])->name('jamkesda.tagihan.hapus');
-            });
+            Route::group(['prefix' => 'tagihan'], function () {});
             Route::group(['prefix' => 'pembayaran'], function () {
-                Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanPembayaran'])->name('jamkesda.pembayaran.simpan');
                 Route::get('/{id}/edit', [App\Http\Controllers\JamkesdaController::class, 'editPembayaran'])->name('jamkesda.pembayaran.edit');
                 Route::post('/update', [App\Http\Controllers\JamkesdaController::class, 'updatePembayaran'])->name('jamkesda.pembayaran.update');
                 Route::get('/{id}/hapus', [App\Http\Controllers\JamkesdaController::class, 'hapusPembayaran'])->name('jamkesda.pembayaran.hapus');
             });
             Route::group(['prefix' => 'lihat'], function () {
                 Route::get('/{id}', [App\Http\Controllers\PengajuanController::class, 'lihat'])->name('jamkesda.lihat');
-                Route::get('/{id}/diagnosa/tambah', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('jamkesda.diagnosa.tambah');
+                Route::get('/{id}/diagnosa/{ket}', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('jamkesda.diagnosa.tambah');
                 Route::put('/{id}/diagnosa/update', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('jamkesda.diagnosa.update');
             });
             Route::get('/proses/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'prosesDiterima'])->name('jamkesda.proses.diterima');
             Route::post('/proses/ditolak', [App\Http\Controllers\JamkesdaController::class, 'prosesDitolak'])->name('jamkesda.proses.ditolak');
             Route::post('/proses/dikembalikan', [App\Http\Controllers\JamkesdaController::class, 'prosesDikembalikan'])->name('jamkesda.proses.dikembalikan');
-            Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
         });
 
         Route::group(['prefix' => 'pengajuan'], function () {
             Route::get('/', [App\Http\Controllers\PengajuanController::class, 'index'])->name('pengajuan');
             Route::get('/buat', [App\Http\Controllers\PengajuanController::class, 'buat'])->name('pengajuan.buat');
+            Route::get('/buat/{id}', [App\Http\Controllers\PengajuanController::class, 'buatById'])->name('pengajuan.buatById');
+
             Route::post('/tambah', [App\Http\Controllers\PengajuanController::class, 'tambahBiodata'])->name('pengajuan.tambah');
             Route::get('/pengajuan-ulang/{id}', [App\Http\Controllers\PengajuanController::class, 'getUpdate'])->name('pengajuan.getUpdate');
-            Route::get('/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'buatDiagnosa'])->name('pengajuan.buat.diagnosa');
-            Route::post('/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'tambahDiagnosa'])->name('pengajuan.tambah.diagnosa');
-            Route::get('/buat/upload/{id}/{ket}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
+
+            Route::get('/{id}/{ket}/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaTambah'])->name('pengajuan.diagnosa.tambah');
+            Route::put('/{id}/tambah/{ket}/diagnosa', [App\Http\Controllers\PengajuanController::class, 'diagnosaUpdate'])->name('pengajuan.diagnosa.update');
+
+            Route::get('/buat/upload/{id}', [App\Http\Controllers\PengajuanController::class, 'buatUpload'])->name('pengajuan.buat.upload');
             Route::post('/tambah/upload', [App\Http\Controllers\PengajuanController::class, 'tambahUpload'])->name('pengajuan.tambah.upload');
             Route::delete('/{id}/delete', [App\Http\Controllers\PengajuanController::class, 'destroy'])->name('pengajuan.destroy');
             Route::get('/{id}/ajukan', [App\Http\Controllers\PengajuanController::class, 'ajukan'])->name('pengajuan.ajukan');
             Route::get('/{id}/lihat', [App\Http\Controllers\PengajuanController::class, 'lihat'])->name('pengajuan.lihat');
             Route::get('/{id}/download', [App\Http\Controllers\PengajuanController::class, 'download'])->name('pengajuan.download');
+
+            Route::get('/download/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'downloadDiterima'])->name('jamkesda.download.diterima');
+
+            Route::get('/selesai', [App\Http\Controllers\PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
+        });
+
+        Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
+
+
+        Route::group(['prefix' => 'pembayaran'], function () {
+
+            Route::get('/buat/{id}', [App\Http\Controllers\JamkesdaController::class, 'pembayaran'])->name('pembayaran.buat');
+            Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanTagihan'])->name('jamkesda.tagihan.simpan');
+            Route::get('/{id}/edit', [App\Http\Controllers\JamkesdaController::class, 'editTagihan'])->name('jamkesda.tagihan.edit');
+            Route::post('/update', [App\Http\Controllers\JamkesdaController::class, 'updateTagihan'])->name('jamkesda.tagihan.update');
+
+            Route::get('/{id}/hapus', [App\Http\Controllers\JamkesdaController::class, 'hapusTagihan'])->name('jamkesda.tagihan.hapus');
+
+            // Route::post('/simpan', [App\Http\Controllers\JamkesdaController::class, 'simpanPembayaran'])->name('jamkesda.pembayaran.simpan');
+
+            Route::get('/get-diagnosa-by-jenis-rs', [App\Http\Controllers\JamkesdaController::class, 'getDiagnosaByJenisRs'])->name('getDiagnosaByJenisRs');
+            Route::get('/get-tarif-by-diagnosa', [App\Http\Controllers\JamkesdaController::class, 'getTarifByDiagnosa'])->name('getTarifByDiagnosa');
         });
 
         Route::middleware(['role:admin,superadmin'])->group(function () {
@@ -100,6 +133,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
         });
     });
+
     Route::middleware(['role:admin,superadmin'])->group(function () {
         Route::group(['prefix' => 'baznas'], function () {
             Route::get('/', [App\Http\Controllers\BaznasController::class, 'index'])->name('baznas');
@@ -114,3 +148,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+ // Route::get('/buat/diagnosa', [App\Http\Controllers\PengajuanController::class, 'buatDiagnosa'])->name('pengajuan.buat.diagnosa');
+            // Route::post('/tambah/diagnosa', [App\Http\Controllers\PengajuanController::class, 'tambahDiagnosa'])->name('pengajuan.tambah.diagnosa');

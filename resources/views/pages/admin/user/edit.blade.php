@@ -33,9 +33,9 @@
                                             class="form-control @error('name') is-invalid @enderror" id="firstName"
                                             placeholder="" value="{{ old('name') ?? $user->name }}">
                                         @error('name')
-                                            <div class="invalid-feedback" style="width: 100%;">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
 
@@ -45,9 +45,9 @@
                                             class="form-control @error('nik') is-invalid @enderror" id="firstnik"
                                             placeholder="" value="{{ old('nik') ?? $user->nik }}">
                                         @error('nik')
-                                            <div class="invalid-feedback" style="width: 100%;">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
 
@@ -55,11 +55,11 @@
                                         <label for="firstName">Email</label>
                                         <input type="text" name="email"
                                             class="form-control @error('email') is-invalid @enderror" id="firstemail"
-                                            placeholder="" value="{{ $user->email ?? old('email')  }}" >
+                                            placeholder="" value="{{ $user->email ?? old('email')  }}">
                                         @error('email')
-                                            <div class="invalid-feedback" style="width: 100%;">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
 
@@ -67,26 +67,27 @@
                                         <label for="firstName">Level</label>
                                         <select name="level" id="level"
                                             class="form-control @error('level') is-invalid @enderror">
-                                            <option value="superadmin"
-                                                {{ old('level') == 'superadmin' || $user->level == 'superadmin' ? 'selected' : '' }}>
+                                            <option value="superadmin" {{ old('level')=='superadmin' || $user->level ==
+                                                'superadmin' ? 'selected' : '' }}>
                                                 Superadmin</option>
-                                            <option value="admin"
-                                                {{ old('level') == 'admin' || $user->level == 'admin' ? 'selected' : '' }}>
+                                            <option value="admin" {{ old('level')=='admin' || $user->level == 'admin' ?
+                                                'selected' : '' }}>
                                                 Admin</option>
-                                            <option value="rumahsakit"
-                                                {{ old('level') == 'rumahsakit' || $user->level == 'rumahsakit' ? 'selected' : '' }}>
+                                            <option value="rumahsakit" {{ old('level')=='rumahsakit' || $user->level ==
+                                                'rumahsakit' ? 'selected' : '' }}>
                                                 Rumah Sakit</option>
-                                            <option value="verifaktor"
-                                                {{ old('level') == 'verifaktor' || $user->level == 'verifaktor' ? 'selected' : '' }}>
+                                            <option value="verifikator" {{ old('level')=='verifikator' || $user->level
+                                                ==
+                                                'verifikator' ? 'selected' : '' }}>
                                                 Verifikator</option>
-                                            <option value="user"
-                                                {{ old('level') == 'user' || $user->level == 'user' ? 'selected' : '' }}>
+                                            <option value="user" {{ old('level')=='user' || $user->level == 'user' ?
+                                                'selected' : '' }}>
                                                 User (Masyarakat)</option>
                                         </select>
                                         @error('level')
-                                            <div class="invalid-feedback" style="width: 100%;">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
 
@@ -96,9 +97,9 @@
                                             class="form-control @error('password') is-invalid @enderror"
                                             id="myPassword">
                                         @error('password')
-                                            <div class="invalid-feedback" style="width: 100%;">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
 
@@ -122,13 +123,13 @@
     </div>
 
     @push('after-styles')
-        <link rel="stylesheet" href="{{ asset('assets/pswStrange/passtrength.css') }}" media="screen" title="no title">
+    <link rel="stylesheet" href="{{ asset('assets/pswStrange/passtrength.css') }}" media="screen" title="no title">
     @endpush
     @push('after-scripts')
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ asset('assets/pswStrange/jquery.passtrength.js') }}"></script>
-        <script type="text/javascript">
-            $(document).ready(function($) {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/pswStrange/jquery.passtrength.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function($) {
                 $('#myPassword').passtrength({
                     minChars: 4,
                     passwordToggle: true,
@@ -140,7 +141,7 @@
                     eyeImg: "{{ asset('assets/pswStrange/img/eye.svg') }}"
                 });
             });
-        </script>
+    </script>
     @endpush
 
 </x-app-layout>

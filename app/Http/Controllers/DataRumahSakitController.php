@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Log;
 use App\Models\RumahSakit;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -18,7 +19,9 @@ class DataRumahSakitController extends Controller
 
     public function buat()
     {
-        return view('pages.admin.rumahsakit.buat');
+        $user = User::where('level', 'rumahsakit')->get();
+
+        return view('pages.admin.rumahsakit.buat', compact('user'));
     }
 
     public function simpan(Request $request)
@@ -32,6 +35,7 @@ class DataRumahSakitController extends Controller
             'strata' => ['required'],
             'ref_tarif_jamkesda' => ['required'],
             'ref_tarif_jamkesmas' => ['required'],
+            'users_id' => ['required'],
         ], [
             'kode.required' => 'Harap Menginputkan Data',
             'nama.required' => 'Harap Menginputkan Data',
@@ -41,6 +45,7 @@ class DataRumahSakitController extends Controller
             'strata.required' => 'Harap Menginputkan Data',
             'ref_tarif_jamkesda.required' => 'Harap Menginputkan Data',
             'ref_tarif_jamkesmas.required' => 'Harap Menginputkan Data',
+            'users_id.required' => 'Harap Menginputkan Data',
         ]);
 
         $attr = [
@@ -52,7 +57,15 @@ class DataRumahSakitController extends Controller
             'strata' => $request->strata,
             'ref_tarif_jamkesda' => $request->ref_tarif_jamkesda,
             'ref_tarif_jamkesmas' => $request->ref_tarif_jamkesmas,
+            'users_id' => $request->users_id,
         ];
+
+        $rumahSakit = RumahSakit::where('users_id', $request->users_id)->first();
+
+        if ($rumahSakit) {
+            Alert::error('Akun User sudah digunakan !!!');
+            return redirect()->back()->withInput();
+        }
 
         $simpan = RumahSakit::create($attr);
 
@@ -64,8 +77,9 @@ class DataRumahSakitController extends Controller
     public function edit($kode)
     {
         $rumahsakit = RumahSakit::findOrFail($kode);
+        $user = User::where('level', 'rumahsakit')->get();
 
-        return view('pages.admin.rumahsakit.edit', compact('rumahsakit'));
+        return view('pages.admin.rumahsakit.edit', compact('rumahsakit', 'user'));
     }
 
     public function update(Request $request, $kode)
@@ -81,6 +95,7 @@ class DataRumahSakitController extends Controller
             'strata' => ['required'],
             'ref_tarif_jamkesda' => ['required'],
             'ref_tarif_jamkesmas' => ['required'],
+            'users_id' => ['required'],
         ], [
             'kode.required' => 'Harap Menginputkan Data',
             'nama.required' => 'Harap Menginputkan Data',
@@ -90,6 +105,7 @@ class DataRumahSakitController extends Controller
             'strata.required' => 'Harap Menginputkan Data',
             'ref_tarif_jamkesda.required' => 'Harap Menginputkan Data',
             'ref_tarif_jamkesmas.required' => 'Harap Menginputkan Data',
+            'users_id.required' => 'Harap Menginputkan Data',
         ]);
 
         $attr = [
@@ -101,7 +117,18 @@ class DataRumahSakitController extends Controller
             'strata' => $request->strata,
             'ref_tarif_jamkesda' => $request->ref_tarif_jamkesda,
             'ref_tarif_jamkesmas' => $request->ref_tarif_jamkesmas,
+            'users_id' => $request->users_id,
         ];
+
+        // Cek jika users_id sudah digunakan di record lain
+        $dataRumahsakit = RumahSakit::where('users_id', $request->users_id)
+            ->where('kode', '!=', $rumahsakit->kode)
+            ->first();
+
+        if ($dataRumahsakit) {
+            Alert::error('Akun User sudah digunakan !!!');
+            return redirect()->back()->withInput();
+        }
 
         $update = $rumahsakit->update($attr);
 

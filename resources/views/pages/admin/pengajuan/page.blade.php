@@ -43,6 +43,7 @@
 
                                     @endphp
                                     @foreach ($pasien as $row)
+                                    {{-- @dd($row) --}}
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->nama_pasien }}</td>
@@ -52,7 +53,9 @@
                                         <td>{{ $row->jenis_rawat }}</td>
                                         <td>
                                             @if ($row->status == 'Diterima')
-                                            <button class="btn btn-success">{{ $row->status }}</button>
+                                            <a href="{{ route('jamkesda.download.diterima', ['id' => $row->pasien_id]) }}"
+                                                class="btn btn-success" target="_blank">{{ $row->status }}</a>
+                                            {{-- <button class="btn btn-success">{{ $row->status }}</button> --}}
                                             @elseif ($row->status == 'Ditolak')
                                             <button class="btn btn-danger">{{ $row->status }}</button>
 
@@ -117,9 +120,9 @@
                                                 <a href="{{ route('pengajuan.lihat', ['id' => $row->pasien_id]) }}"
                                                     class="btn btn-primary">Lihat</a>
                                             </div>
-                                            <a href="{{ route('pengajuan.download', ['id' => $row->pasien_id]) }}"
+                                            {{-- <a href="{{ route('pengajuan.download', ['id' => $row->pasien_id]) }}"
                                                 class="badge badge-warning text-white my-2 py-2"
-                                                target="_blank">Download Tanda Terima</a>
+                                                target="_blank">Download Tanda Terima</a> --}}
                                         </td>
                                     </tr>
                                     @endforeach

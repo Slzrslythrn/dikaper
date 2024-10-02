@@ -71,7 +71,10 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                @if ($pasien->no_sktm && $pasien->no_rujuk_igd != 0)
+
+
+                                {{-- @if ($pasien->no_sktm && $pasien->no_rujuk_igd != 0) --}}
+                                @if ($pasien->no_rujuk_igd != 0)
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <tbody>
@@ -119,8 +122,8 @@
                                     </table>
                                 </div>
                                 @endif
-                                @if (auth()->user()->level != 'user')
-                                <a href="{{ route('jamkesda.diagnosa.tambah', ['id' => $pasien->pasien_id]) }}"
+                                @if (auth()->user()->level != 'user' && auth()->user()->level != 'verifikator')
+                                <a href="{{ route('pengajuan.diagnosa.tambah', ['id' => $pasien->pasien_id, 'ket' => 'lengkapi']) }}"
                                     class="btn btn-secondary">
                                     Lengkapi Data Diagnosa
                                 </a>
@@ -129,7 +132,7 @@
                         </div>
                         <h3 class="mt-4">File Persyaratan</h3>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <tbody>
@@ -137,13 +140,13 @@
                                                 <td class="center">Kartu Keluarga & KTP</td>
                                                 <td class="left strong">
                                                     @if ($pasien->persyaratan)
-                                                    @if ($pasien->persyaratan->va)
+                                                    {{-- @if ($pasien->persyaratan->va)
                                                     <a href="{{ asset('uploads/buktiPendaftaranBpjs/' . $pasien->persyaratan->va) }}"
                                                         class="badge badge-secondary mr-2">LIHAT KK</a>
-                                                    @endif
+                                                    @endif --}}
                                                     @if ($pasien->persyaratan->ktp_kk)
                                                     <a href="{{ asset('uploads/ktpKk/' . $pasien->persyaratan->ktp_kk) }}"
-                                                        class="badge badge-secondary">LIHAT KTP</a>
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
                                                     @endif
                                                     @endif
                                                 </td>
@@ -153,16 +156,16 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <tbody>
                                             <tr>
-                                                <td class="center">Document Lainya</td>
+                                                <td class="center">SKTM / DINSOS dan Surat Kepolisian</td>
                                                 <td class="left strong">
-                                                    @if ($pasien->persyaratan && $pasien->persyaratan->doc)
-                                                    <a href="{{ asset('uploads/doc/' . $pasien->persyaratan->doc) }}"
-                                                        class="badge badge-secondary">LIHAT</a>
+                                                    @if ($pasien->persyaratan && $pasien->persyaratan->sktm)
+                                                    <a href="{{ asset('uploads/sktm/' . $pasien->persyaratan->sktm) }}"
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -171,9 +174,65 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-4">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">Surat RS (IGD, RANAP, dan ACC RS)</td>
+                                                <td class="left strong">
+                                                    @if ($pasien->persyaratan && $pasien->persyaratan->doc)
+                                                    <a href="{{ asset('uploads/doc/' . $pasien->persyaratan->doc) }}"
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @if (auth()->user()->level == 'verifikator' && $pasien->status == 'Diterima')
+                            <div class="col-md-4">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">File SJP</td>
+                                                <td class="left strong">
+
+                                                    <a href="{{ route('jamkesda.download.diterima', ['id' => $pasien->pasien_id]) }}"
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">Berkas Pasien Pulang</td>
+                                                <td class="left strong">
+                                                    @if ($pasien->persyaratan && $pasien->persyaratan->pasien_pulang)
+                                                    <a href="{{ asset('uploads/pasien_pulang/' . $pasien->persyaratan->pasien_pulang) }}"
+                                                        target="_blank" class="badge badge-secondary">LIHAT</a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endif
+
                         </div>
-                        @if (auth()->user()->level != 'user' || auth()->user()->level == 'rumahsakit')
-                        @if ($pasien->no_sktm && $pasien->no_rujuk_igd != 0)
+                        @if (auth()->user()->level != 'user' && auth()->user()->level != 'rumahsakit' )
+                        {{-- @if ($pasien->no_sktm && $pasien->no_rujuk_igd != 0) --}}
+                        @if ( $pasien->no_rujuk_igd != 0)
                         @if ($pasien->status != 'Diterima')
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-danger mx-2" data-toggle="modal"

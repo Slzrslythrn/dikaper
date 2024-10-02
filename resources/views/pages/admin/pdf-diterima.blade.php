@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Surat Diterima</title> 
+    <title>Surat Diterima</title>
 
     <style>
         .invoice-box {
@@ -142,7 +142,8 @@
 
 <body>
     <div id="gambar">
-        <img src="{{ public_path("assets/logokotabogor.gif") }}" width="75px">
+        {{-- <img src="{{ public_path(" assets/logokotabogor.gif") }}" width="75px"> --}}
+        <img src="data:image/gif;base64,{{ $logoKotaBogor }}" width="75px">
     </div>
     <div id="content" style="margin-top: 20px" style="float: left">
         <div style="font-size: 18px; font-weight: bold">PEMERINTAH DAERAH KOTA BOGOR</div>
@@ -154,13 +155,13 @@
         </div>
     </div>
     <div id="gambar2">
-        <img src="{{ public_path("assets/dikaper.jpeg") }}" width="120px">
+        <img src="data:image/jpeg;base64,{{ $logoDikaper }}" width="120px">
     </div>
     <br>
     <br>
     <br>
     <div style="display: block; margin-top: 14px;">
-        <img src="{{ public_path("assets/line.png") }}" width="100%">
+        <img src="data:image/png;base64,{{ $lineImage }}" width="100%">
     </div>
 
     <table width="100%" border="0" style="font-size: 14px">
@@ -251,8 +252,10 @@
             <td width="200"><u>{{ $pasien->dijamin_sejak->isoFormat('D MMMM Y') }} s/d Selesai perawatan</u></td>
         </tr>
     </table>
-    <p style="font-size: 14px; text-align: justify; text-justify: inter-word;">Untuk mendapatkan jaminan pelayanan kesehatan selama dalam pemeriksaan / perawatan /
-        pengobatan lebih lanjut. Mohon biaya <u>{{ $pasien->jenis_rawat }}</u> ditagihkan ke APBD Kota Bogor melalui Dinas Kesehatan Kota
+    <p style="font-size: 14px; text-align: justify; text-justify: inter-word;">Untuk mendapatkan jaminan pelayanan
+        kesehatan selama dalam pemeriksaan / perawatan /
+        pengobatan lebih lanjut. Mohon biaya <u>{{ $pasien->jenis_rawat }}</u> ditagihkan ke
+        Dinas Kesehatan Kota
         Bogor
         dengan menggunakan tarif INA-CBG. Biaya tersebut diajukan oleh Rumah Sakit melalui klaim kolektif sebelum
         tanggal 10 bulan berikutnya.
@@ -262,11 +265,12 @@
         <tr>
             <td width="300"></td>
             <td>
-                <b>An. Kepala Dinas Kesehatan <br>Kota Bogor<br>
+                <img src="data:image/jpg;base64,{{ $ttdImage }}" width="100%" />
+                {{-- <b>An. Kepala Dinas Kesehatan <br>Kota Bogor<br>
                     Kepala Seksi Pelayanan Kesehatan Rujukan <br>dan Jaminan Kesehatan</b>
                 <br><br><br><br><br><br>
                 <b><u>dr. Tri Yuliani. M.Kes</u></b><br>
-                NIP. 19751124 200701 2018 <br>
+                NIP. 19751124 200701 2018 <br> --}}
             </td>
         </tr>
     </table>
