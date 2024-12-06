@@ -124,9 +124,9 @@ class JamkesdaController extends Controller
     public function buat(Request $request)
     {
         $validated = $request->validate([
-            'no_ktp' => 'required|max:16|min:16',
-            'no_kk' => 'required|max:16|min:16',
-            'no_hp' => 'required|numeric|digits_between:10,15',
+            'no_ktp' => 'required|max:18|min:1',
+            'no_kk' => 'required|max:18|min:1',
+            'no_hp' => 'required|min:1',
             'nama_kepala' => 'required',
             'nama_pasien' => 'required',
             'jenis_kelamin' => 'required',
@@ -581,7 +581,7 @@ class JamkesdaController extends Controller
         $logoKotaBogor = base64_encode(file_get_contents(public_path('assets/logokotabogor.gif')));
         $logoDikaper = base64_encode(file_get_contents(public_path('assets/dikaper.jpeg')));
         $lineImage = base64_encode(file_get_contents(public_path('assets/line.png')));
-        $ttdImage = base64_encode(file_get_contents(public_path('assets/ttd.jpg')));
+        $ttdImage = base64_encode(file_get_contents(public_path('assets/ttd.png')));
         $data = [
             'title' => 'Welcome to ItSolutionStuff.com',
             'date' => date('m/d/Y'),
