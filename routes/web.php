@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::group(['prefix' => 'sktm'], function () {
                 Route::get('/', [App\Http\Controllers\SetSktmController::class, 'index'])->name('data-sktm');
-                // Route::post('/tambah', [App\Http\Controllers\SetSktmController::class, 'tambah'])->name('data-sktm.tambah');
+                Route::post('/tambah', [App\Http\Controllers\SetSktmController::class, 'tambah'])->name('data-sktm.tambah');
             });
         });
     });
@@ -117,10 +117,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/selesai', [App\Http\Controllers\PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
         });
 
-        Route::group(['prefix' => 'sktm'], function () {
-            Route::get('/', [App\Http\Controllers\SetSktmController::class, 'index'])->name('sktm-data');
-            Route::post('/tambah', [App\Http\Controllers\SetSktmController::class, 'tambah'])->name('data-sktm.tambah');
-        });
+
 
         Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
 

@@ -293,15 +293,18 @@
                                             class="d-block w-100 form-control @error('status_kepersertaan') is-invalid @enderror"
                                             name="status_kepersertaan">
                                             <option value="">Pilih...</option>
-                                            <option value="BPJS AKTIF" {{ $pasien->status_kepersertaan == 'BPJS AKTIF' ?
-                                                'selected' : '' }}>BPJS AKTIF</option>
+                                            <option value="BPJS AKTIF" {{ $pasien->status_kepersertaan == 'BPJS AKTIF'
+                                                ?'selected' : '' }}
+                                                >BPJS AKTIF</option>
 
-                                            <option value="BPJS NON AKTIF" {{ $pasien->status_kepersertaan == 'BPJS NON
-                                                AKTIF' ?
+                                            <option value="BPJS NON AKTIF" {{ $pasien->status_kepersertaan == 'BPJS NON'
+                                                .
+                                                ' AKTIF' ?
                                                 'selected' : '' }}>BPJS NON AKTIF</option>
 
-                                            <option value="BELUM PUNYA BPJS" {{ $pasien->status_kepersertaan == 'BELUM
-                                                PUNYA BPJS' ?
+                                            <option value="BELUM PUNYA BPJS" {{ $pasien->status_kepersertaan == 'BELUM'
+                                                .
+                                                ' PUNYA BPJS' ?
                                                 'selected' : '' }}>BELUM PUNYA BPJS</option>
 
 
