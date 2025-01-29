@@ -93,28 +93,39 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="country">Jenis Kelamin</label>
-                                        <select name="jenis_kelamin"
-                                            class="d-block w-100 form-control @error('jenis_kelamin') is-invalid @enderror"
-                                            id="country" required="">
-                                            <option value="">Pilih...</option>
-                                            <option value="Laki-Laki" {{ $pasien->jenis_kelamin == 'Laki-Laki' ?
-                                                'selected'
-                                                : '' }}>
-                                                Laki - Laki</option>
-                                            <option value="Perempuan" {{ $pasien->jenis_kelamin=='Perempuan' ?
-                                                'selected'
-                                                : '' }}>
-                                                Perempuan</option>
-                                        </select>
-                                        @error('jenis_kelamin')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="country">Nomor Handphone</label>
+                                            <input type="text" name="no_hp"
+                                                class="form-control @error('no_hp') is-invalid @enderror"
+                                                value="{{$pasien->no_hp}}" required>
+                                            @error('no_hp')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </div>
-                                        @enderror
-                                    </div>
 
+                                        <div class="col-md-6 mb-3">
+                                            <label for="country">Jenis Kelamin</label>
+                                            <select name="jenis_kelamin"
+                                                class="d-block w-100 form-control @error('jenis_kelamin') is-invalid @enderror"
+                                                id="country" required="">
+                                                <option value="">Pilih...</option>
+                                                <option value="Laki-Laki" {{ $pasien->
+                                                    jenis_kelamin == 'Laki-Laki' ? 'selected' : '' }}>
+                                                    Laki - Laki</option>
+                                                <option value="Perempuan" {{ $pasien->
+                                                    jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>
+                                                    Perempuan</option>
+                                            </select>
+                                            @error('jenis_kelamin')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="username">Tempat Lahir</label>
@@ -184,6 +195,8 @@
                                         </div>
                                     </div>
 
+
+
                                     <div class="mb-3">
                                         <label for="username">Hubungan Dengan Keluarga</label>
                                         <div class="input-group">
@@ -219,20 +232,24 @@
                                             class="d-block w-100 form-control @error('ket_jamkesda') is-invalid @enderror"
                                             id="country" required="">
                                             <option value="">Pilih...</option>
-                                            <option value="kekerasan" {{ $pasien->ket_jamkesda =='kekerasan' ?
-                                                'selected'
-                                                : '' }}>
-                                                Pasien Kekerasan</option>
-                                            <option value="meninggal" {{ $pasien->ket_jamkesda =='meninggal' ?
-                                                'selected'
-                                                : '' }}>
-                                                Pasien Meninggal</option>
-                                            <option value="bencana" {{ $pasien->ket_jamkesda =='bencana' ? 'selected' :
-                                                ''
-                                                }}>
-                                                Pasien Bencana</option>
-                                            <option value="pmks" {{ $pasien->ket_jamkesda =='pmks' ? 'selected' : '' }}>
-                                                Pasien PMKS (Penyandang Masalah Kesejahteraan Sosial)</option>
+                                            <option value="Orang Terlantar/ODGJ" {{ $pasien->
+                                                ket_jamkesda == 'Orang Terlantar/ODGJ' ? 'selected' : '' }}>
+                                                Orang Terlantar/ODGJ</option>
+
+                                            <option value="Korban Bencana/Wabah/KLB" {{ $pasien->
+                                                ket_jamkesda == 'Korban Bencana/Wabah/KLB' ? 'selected' : '' }}>
+                                                Korban Bencana/Wabah/KLB</option>
+
+                                            <option value="Korban kekerasan yang tidak dijamin penjamin lainnya" {{
+                                                $pasien->
+                                                ket_jamkesda == 'Korban kekerasan yang tidak dijamin penjamin lainnya' ?
+                                                'selected' : '' }}>
+                                                Korban kekerasan yang tidak dijamin penjamin lainnya</option>
+
+                                            <option value="Efek samping tindakan medis" {{ $pasien->ket_jamkesda
+                                                == 'Efek samping tindakan medis' ? 'selected' :
+                                                '' }}>Efek samping tindakan medis</option>
+
                                             <option value="lain-lain" {{ $pasien->
                                                 ket_jamkesda == 'lain-lain' ? 'selected' : '' }}>
                                                 Lain - lain</option>
@@ -248,6 +265,7 @@
                                         <label for="country">Nama Puskesmas</label>
                                         <select class="d-block form-control @error('nama_pkm') is-invalid @enderror"
                                             name="nama_pkm">
+                                            <option value="">Pilih puskesmas...</option>
                                             @foreach ($puskesmas as $pus)
                                             <option value="{{ $pus }}" {{ $pasien->nama_pkm == $pus ? 'selected' : ''
                                                 }}>{{ $pus }}</option>
@@ -378,33 +396,16 @@
                                             class="d-block w-100 form-control @error('status_kepersertaan') is-invalid @enderror"
                                             name="status_kepersertaan">
                                             <option value="">Pilih...</option>
-                                            <option value="PBI APBN AKTIF" {{ $pasien->status_kepersertaan == 'PBI APBN
+                                            <option value="BPJS AKTIF" {{ $pasien->status_kepersertaan == 'BPJS AKTIF' ?
+                                                'selected' : '' }}>BPJS AKTIF</option>
+
+                                            <option value="BPJS NON AKTIF" {{ $pasien->status_kepersertaan == 'BPJS NON
                                                 AKTIF' ?
-                                                'selected' : '' }}>PBI APBN AKTIF</option>
+                                                'selected' : '' }}>BPJS NON AKTIF</option>
 
-                                            <option value="PBI APBN NON AKTIF" {{ $pasien->status_kepersertaan == 'PBI
-                                                APBN NON AKTIF' ?
-                                                'selected' : '' }}>PBI APBN NON AKTIF</option>
-
-                                            <option value="PBI APBD AKTIF" {{ $pasien->status_kepersertaan == 'PBI APBD
-                                                AKTIF' ?
-                                                'selected' : '' }}>PBI APBD AKTIF</option>
-
-                                            <option value="PBI APBD NON AKTIF" {{ $pasien->status_kepersertaan == 'PBI
-                                                APBD NON AKTIF' ?
-                                                'selected' : '' }}>PBI APBD NON AKTIF</option>
-
-                                            <option value="BPJS NON AKTIF/MENUNGGAK" {{ $pasien->status_kepersertaan ==
-                                                'BPJS NON AKTIF/MENUNGGAK' ?
-                                                'selected' : '' }}>BPJS NON AKTIF/MENUNGGAK</option>
-
-                                            <option value="PENANGGUHAN PEMBAYARAAN" {{ $pasien->status_kepersertaan ==
-                                                'PENANGGUHAN PEMBAYARAAN' ?
-                                                'selected' : '' }}>PENANGGUHAN PEMBAYARAAN</option>
-
-                                            <option value="BELUM BERJKN" {{ $pasien->status_kepersertaan ==
-                                                'BELUM BERJKN' ?
-                                                'selected' : '' }}>BELUM BERJKN</option>
+                                            <option value="BELUM PUNYA BPJS" {{ $pasien->status_kepersertaan == 'BELUM
+                                                PUNYA BPJS' ?
+                                                'selected' : '' }}>BELUM PUNYA BPJS</option>
 
 
                                         </select>

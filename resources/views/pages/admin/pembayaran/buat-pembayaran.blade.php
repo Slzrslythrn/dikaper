@@ -41,8 +41,8 @@
                                         <div class="form-group">
                                             <label for="total">No. RM</label>
                                             <input type="text" name="no_rm" id="no_rm"
-                                                class="form-control @error('no_rm') is-invalid @enderror" ">
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
+                                                class="form-control @error('no_rm') is-invalid @enderror">
+                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
                                             }} --}}
                                             @error('no_rm')
                                             <div class="invalid-feedback">
@@ -64,15 +64,7 @@
                                                 {{ $message }}
                                             </div>
                                             @enderror
-                                            {{-- <input type="date" name="tgl_mulairawat" id="tgl_mulairawat"
-                                                class="form-control @error('tgl_mulairawat') is-invalid @enderror"
-                                                value="{{ $pasien->tgl_mulairawat}}">
 
-                                            @error('tgl_mulairawat')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror --}}
                                         </div>
                                     </div>
 
@@ -82,9 +74,9 @@
                                         <div class="form-group">
                                             <label for=""> Tanggal Keluar</label>
                                             <input type="date" name="tgl_keluar" id="tgl_keluar"
-                                                class="form-control @error('tgl_keluar') is-invalid @enderror" ">
-                                               {{-- value=" {{ old('tgl_pembayaran') ?? date('Y-m-d',
-                                                strtotime($pembayaran->tgl_pembayaran)) }} --}}
+                                                class="form-control @error('tgl_keluar') is-invalid @enderror">
+                                            {{-- value=" {{ old('tgl_pembayaran') ?? date('Y-m-d',
+                                            strtotime($pembayaran->tgl_pembayaran)) }} --}}
                                             @error('tgl_keluar')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -117,10 +109,7 @@
                                                 <option value="{{ $item->jenis_rs }}">{{ $item->jenis_rs }}</option>
                                                 @endforeach
                                             </select>
-                                            {{-- <input type="text" name="jenis_rs" id="jenis_rs"
-                                                class="form-control @error('jenis_rs') is-invalid @enderror" "> --}}
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
-                                            }} --}}
+
                                             @error('jenis_rs')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -137,10 +126,7 @@
                                                 disabled>
                                                 <option value="">Pilih Diagnosa</option>
                                             </select>
-                                            {{-- <input type="text" name="diagnosa" id="diagnosa"
-                                                class="form-control @error('diagnosa') is-invalid @enderror"> --}}
-                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
-                                            }} --}}
+
                                             @error('diagnosa')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -157,10 +143,7 @@
                                                 required disabled>
                                                 <option value="">Pilih Tarif</option>
                                             </select>
-                                            {{-- <input type="text" name="tarif_inacbgs" id="tarif_inacbgs"
-                                                class="form-control @error('tarif_inacbgs') is-invalid @enderror"> --}}
-                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
-                                            }} --}}
+
                                             @error('tarif_inacbgs')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -173,9 +156,9 @@
                                         <div class="form-group">
                                             <label for="total">Tarif RS / PKM</label>
                                             <input type="text" name="tarif_rs" id="tarif_rs"
-                                                class="form-control @error('tarif_rs') is-invalid @enderror" ">
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
-                                            }} --}}
+                                                class="form-control @error('tarif_rs') is-invalid @enderror"
+                                                onkeyup="formatRupiah(this)">
+
                                             @error('tarif_rs')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -188,8 +171,9 @@
                                         <div class="form-group">
                                             <label for="total">Biaya Lainnya</label>
                                             <input type="text" name="biaya_lainnya" id="biaya_lainnya"
-                                                class="form-control @error('biaya_lainnya') is-invalid @enderror" ">
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
+                                                class="form-control @error('biaya_lainnya') is-invalid @enderror"
+                                                onkeyup="formatRupiah(this)">
+                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
                                             }} --}}
                                             @error('biaya_lainnya')
                                             <div class="invalid-feedback">
@@ -203,8 +187,9 @@
                                         <div class="form-group">
                                             <label for="total">Total Biaya</label>
                                             <input type="text" name="total_biaya" id="total_biaya"
-                                                class="form-control @error('total_biaya') is-invalid @enderror" ">
-                                             {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
+                                                class="form-control @error('total_biaya') is-invalid @enderror"
+                                                onkeyup="formatRupiah(this)">
+                                            {{-- value=" {{ old('total_pembayaran') ?? $pembayaran->total_pembayaran
                                             }} --}}
                                             @error('total_biaya')
                                             <div class="invalid-feedback">
@@ -213,6 +198,60 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    @if (auth()->user()->level == 'superadmin' || auth()->user()->level == 'admin')
+
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="total">Total Pembayaran</label>
+                                            <input type="text" name="total_pembayaran"
+                                                class="form-control @error('total_pembayaran') is-invalid @enderror"
+                                                value=" {{ $pembayaran->total_pembayaran ?? null }}"
+                                                onkeyup="formatRupiah(this)">
+
+                                            @error('total_pembayaran')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="total">Tanggal Pembayaran</label>
+                                            <input type="date" name="tgl_pembayaran"
+                                                class="form-control @error('tgl_pembayaran') is-invalid @enderror"
+                                                value=" {{ $pembayaran->tgl_pembayaran ?? null }}">
+
+                                            @error('tgl_pembayaran')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="total">Status Pembayaran</label>
+                                            <select name="keterangan"
+                                                class="d-block w-100 form-control @error('keterangan') is-invalid @enderror"
+                                                required>
+                                                <option value="Belum Dibayar">Belum Dibayar</option>
+                                                <option value="Sudah Dibayar">Sudah Dibayar</option>
+                                            </select>
+
+
+                                            @error('keterangan')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    @endif
 
 
                                     <div class="mb-3">
@@ -308,6 +347,23 @@
     });
 });
 
+    </script>
+
+    <script>
+        function formatRupiah(input) {
+        let value = input.value.replace(/[^.\d]/g, '').toString();
+        let split = value.split('.');
+        let sisa = split[0].length % 3;
+        let rupiah = split[0].substr(0, sisa);
+        let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            let separator = sisa ? ',' : '';
+            rupiah += separator + ribuan.join(',');
+        }
+
+        input.value = rupiah + (split[1] != undefined ? '.' + split[1] : '');
+    }
     </script>
 
     @endpush

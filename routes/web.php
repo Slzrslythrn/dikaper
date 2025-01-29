@@ -83,6 +83,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/proses/{id}/diterima', [App\Http\Controllers\JamkesdaController::class, 'prosesDiterima'])->name('jamkesda.proses.diterima');
             Route::post('/proses/ditolak', [App\Http\Controllers\JamkesdaController::class, 'prosesDitolak'])->name('jamkesda.proses.ditolak');
             Route::post('/proses/dikembalikan', [App\Http\Controllers\JamkesdaController::class, 'prosesDikembalikan'])->name('jamkesda.proses.dikembalikan');
+
+            Route::group(['prefix' => 'verifikasi'], function () {
+                Route::get('/', [App\Http\Controllers\VerifikasiController::class, 'index'])->name('verifikasi');
+                Route::get('/buat-bap', [App\Http\Controllers\VerifikasiController::class, 'getBuatBap'])->name('verifikasi.getBuatBap');
+                Route::post('/post/buat-bap', [App\Http\Controllers\VerifikasiController::class, 'postBuatBap'])->name('verifikasi.postBuatBap');
+
+                Route::get('/verif-bap/{bapId}', [App\Http\Controllers\VerifikasiController::class, 'getVerifBap'])->name('verifikasi.getVerifBap');
+                Route::put('/update/verif-bap/{bapId}', [App\Http\Controllers\VerifikasiController::class, 'putVerifBap'])->name('verifikasi.putVerifBap');
+            });
         });
 
         Route::group(['prefix' => 'pengajuan'], function () {
@@ -107,6 +116,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/selesai', [App\Http\Controllers\PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
         });
+
+
 
         Route::post('/export', [App\Http\Controllers\JamkesdaController::class, 'export'])->name('jamkesda.export');
 

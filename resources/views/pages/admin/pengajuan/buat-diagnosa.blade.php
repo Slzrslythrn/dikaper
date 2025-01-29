@@ -293,33 +293,21 @@
                                             class="d-block w-100 form-control @error('status_kepersertaan') is-invalid @enderror"
                                             name="status_kepersertaan">
                                             <option value="">Pilih...</option>
-                                            <option value="PBI APBN AKTIF" {{ $pasien->status_kepersertaan == 'PBI APBN
-                                                AKTIF' ?
-                                                'selected' : '' }}>PBI APBN AKTIF</option>
+                                            <option value="BPJS AKTIF" {{ $pasien->status_kepersertaan == 'BPJS AKTIF'
+                                                ?'selected' : '' }}
+                                                >BPJS AKTIF</option>
 
-                                            <option value="PBI APBN NON AKTIF" {{ $pasien->status_kepersertaan == 'PBI
-                                                APBN NON AKTIF' ?
-                                                'selected' : '' }}>PBI APBN NON AKTIF</option>
+                                            <option value="BPJS NON AKTIF" {{ $pasien->status_kepersertaan == 'BPJS NON'
+                                                .
+                                                ' AKTIF' ?
+                                                'selected' : '' }}>BPJS NON AKTIF</option>
 
-                                            <option value="PBI APBD AKTIF" {{ $pasien->status_kepersertaan == 'PBI APBD
-                                                AKTIF' ?
-                                                'selected' : '' }}>PBI APBD AKTIF</option>
+                                            <option value="BELUM PUNYA BPJS" {{ $pasien->status_kepersertaan == 'BELUM'
+                                                .
+                                                ' PUNYA BPJS' ?
+                                                'selected' : '' }}>BELUM PUNYA BPJS</option>
 
-                                            <option value="PBI APBD NON AKTIF" {{ $pasien->status_kepersertaan == 'PBI
-                                                APBD NON AKTIF' ?
-                                                'selected' : '' }}>PBI APBD NON AKTIF</option>
 
-                                            <option value="BPJS NON AKTIF/MENUNGGAK" {{ $pasien->status_kepersertaan ==
-                                                'BPJS NON AKTIF/MENUNGGAK' ?
-                                                'selected' : '' }}>BPJS NON AKTIF/MENUNGGAK</option>
-
-                                            <option value="PENANGGUHAN PEMBAYARAAN" {{ $pasien->status_kepersertaan ==
-                                                'PENANGGUHAN PEMBAYARAAN' ?
-                                                'selected' : '' }}>PENANGGUHAN PEMBAYARAAN</option>
-
-                                            <option value="BELUM BERJKN" {{ $pasien->status_kepersertaan ==
-                                                'BELUM BERJKN' ?
-                                                'selected' : '' }}>BELUM BERJKN</option>
 
 
                                         </select>

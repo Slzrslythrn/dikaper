@@ -208,6 +208,59 @@
                                         </div>
                                     </div>
 
+                                    @if (auth()->user()->level == 'superadmin' || auth()->user()->level == 'admin')
+
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="total">Total Pembayaran</label>
+                                            <input type="text" name="total_pembayaran"
+                                                class="form-control @error('total_pembayaran') is-invalid @enderror"
+                                                value=" {{ $pembayaran->total_pembayaran ?? null }}"
+                                                onkeyup="formatRupiah(this)">
+
+                                            @error('total_pembayaran')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="total">Tanggal Pembayaran</label>
+                                            <input type="date" name="tgl_pembayaran"
+                                                class="form-control @error('tgl_pembayaran') is-invalid @enderror"
+                                                value="{{ $pembayaran->tgl_pembayaran  }}">
+
+                                            @error('tgl_pembayaran')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="total">Status Pembayaran</label>
+                                            <select name="keterangan"
+                                                class="d-block w-100 form-control @error('keterangan') is-invalid @enderror">
+                                                <option value="Belum Dibayar" {{ $pembayaran->keterangan == 'Belum ' .
+                                                    'Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                                                <option value="Sudah Dibayar" {{ $pembayaran->keterangan == 'Sudah ' .
+                                                    'Dibayar' ? 'selected' : '' }}>Sudah Dibayar</option>
+                                            </select>
+
+                                            @error('keterangan')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    @endif
 
                                     <div class="mb-3">
                                         <label for="username">Berkas Pasien Pulang<span
@@ -258,6 +311,94 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+        // Cek apakah jenis_rs sudah memiliki value
+        var jenis_rs_value = $('#jenis_rs').val();
+        if (jenis_rs_value) {
+            // Jika sudah ada value, langsung muat diagnosa dan tarif
+            loadDiagnosa(jenis_rs_value);
+        }
+
+        // Fungsi untuk memuat diagnosa berdasarkan jenis RS
+        function loadDiagnosa(jenis_rs) {
+            // Disable kolom diagnosa dan tarif_inacbgs sementara
+            $('#diagnosa').prop('disabled', true);
+            $('#tarif_inacbgs').prop('disabled', true);
+
+            if (jenis_rs !== null) {
+                // Ajax untuk mengambil data diagnosa berdasarkan jenis RS
+                $.ajax({
+                    url: '{{ route("getDiagnosaByJenisRs") }}',
+                    type: 'GET',
+                    data: { jenis_rs: jenis_rs },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            // Aktifkan kolom diagnosa setelah data diperoleh
+                            $('#diagnosa').prop('disabled', false);
+                            $.each(data, function(key, value) {
+                                $('#diagnosa').append('<option value="' + value.id + '">' + value.kode + ' || ' + value.deskrpsi + '</option>');
+                            });
+                            
+                            // Pilih otomatis diagnosa pertama
+                            var diagnosaId = data[0].id;
+                            loadTarif(diagnosaId);
+                        }
+                    }
+                });
+            }
+        }
+
+        // Fungsi untuk memuat tarif berdasarkan diagnosa
+        function loadTarif(diagnosaId) {
+            $('#tarif_inacbgs').prop('disabled', true);
+
+            if (diagnosaId) {
+                // Ajax untuk mengambil tarif berdasarkan diagnosa
+                $.ajax({
+                    url: '{{ route("getTarifByDiagnosa") }}',
+                    type: 'GET',
+                    data: { id: diagnosaId },
+                    success: function(data) {
+                        // Aktifkan kolom tarif_inacbgs setelah tarif diperoleh
+                        $('#tarif_inacbgs').prop('disabled', false);
+                        $('#tarif_inacbgs').append('<option value="' + data.tarif + '" selected>' + data.tarif + '</option>');
+                    }
+                });
+            }
+        }
+
+        // Jika user mengganti jenis RS
+        $('#jenis_rs').change(function() {
+            var jenis_rs = $(this).val();
+            loadDiagnosa(jenis_rs);
+        });
+
+        // Jika user mengganti diagnosa (hanya jika perlu)
+        $('#diagnosa').change(function() {
+            var id = $(this).val();
+            loadTarif(id);
+        });
+    });
+    </script>
+
+    <script>
+        function formatRupiah(input) {
+    let value = input.value.replace(/[^.\d]/g, '').toString();
+    let split = value.split('.');
+    let sisa = split[0].length % 3;
+    let rupiah = split[0].substr(0, sisa);
+    let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+        let separator = sisa ? ',' : '';
+        rupiah += separator + ribuan.join(',');
+    }
+
+    input.value = rupiah + (split[1] != undefined ? '.' + split[1] : '');
+}
+    </script>
+
+    {{-- <script>
         $(document).ready(function() {
         // Pengecekan apakah jenis_rs sudah memiliki value
         var jenis_rs_value = $('#jenis_rs').val();
@@ -315,7 +456,7 @@
             }
         });
     });
-    </script>
+    </script> --}}
 
 
     {{-- <script>

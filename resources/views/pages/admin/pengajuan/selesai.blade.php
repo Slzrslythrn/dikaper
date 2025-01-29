@@ -86,6 +86,25 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="keterangan">Status Pembayaran</label>
+                                    <select class="form-control  @error('keterangan') is-invalid @enderror" id="
+                                    jenis_rawat" name="keterangan">
+                                        <option selected disabled>- pilih -</option>
+                                        <option value="Sudah Dibayar">Sudah Dibayar</option>
+                                        <option value="Belum Dibayar">Belum Dibayar</option>
+                                        {{-- <option value="0">Belum Dibayar</option> --}}
+                                    </select>
+                                    @error('keterangan')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-success mt-4">Cetak</button>
                             </div>
@@ -166,10 +185,8 @@
                                             </td>
                                             <td>
                                                 @if ($row->pembayaran)
-                                                @if ($row->pembayaran->keterangan == 1)
-                                                Sudah Dibayar
-                                                @else
-                                                Belum Dibayar
+                                                @if ($row->pembayaran->keterangan)
+                                                {{$row->pembayaran->keterangan}}
                                                 @endif
                                                 @else
                                                 Belum Dibayar

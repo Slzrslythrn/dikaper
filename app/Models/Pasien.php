@@ -42,6 +42,7 @@ class Pasien extends Model
         'ket_jamkesda',
         'no_sjp',
         'status_kepersertaan',
+        'no_hp'
     ];
 
     protected $dates = ['tanggal_lahir', 'dijamin_sejak'];

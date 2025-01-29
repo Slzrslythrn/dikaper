@@ -39,6 +39,10 @@
                                                 <td class="left strong">{{ $pasien->nama_pasien }}</td>
                                             </tr>
                                             <tr>
+                                                <td class="center">Nomor Handphone</td>
+                                                <td class="left strong">{{ $pasien->no_hp }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td class="center">Jenis Kelamin</td>
                                                 <td class="left strong">{{ $pasien->jenis_kelamin }}</td>
                                             </tr>
@@ -65,6 +69,10 @@
                                             <tr>
                                                 <td class="center">Hubungan dengan Keluarga</td>
                                                 <td class="left strong">{{ $pasien->hubungan_kk }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">Keterangan Pasien Jamkesda</td>
+                                                <td class="left strong">{{ $pasien-> ket_jamkesda }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -117,6 +125,10 @@
                                             <tr>
                                                 <td class="center">Dijamin Sejak Tanggal</td>
                                                 <td class="left strong">{{ $pasien->dijamin_sejak }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">Status Kepesertaan JKN</td>
+                                                <td class="left strong">{{ $pasien->status_kepersertaan }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

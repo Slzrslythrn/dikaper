@@ -102,8 +102,7 @@ class JamkesdaController extends Controller
             'hubungan_kk' => null,
             'ket_jamkesda' => null,
             'status' => null,
-            // 'keterangan_status' => null, 
-            // 'status' => '',
+            'no_hp' => null,
             'no_sktm' => null,
             'nama_pkm' => null,
             'no_rujuk_igd' => null,
@@ -125,9 +124,9 @@ class JamkesdaController extends Controller
     public function buat(Request $request)
     {
         $validated = $request->validate([
-            'no_ktp' => 'required|max:16|min:16',
-            'no_kk' => 'required|max:16|min:16',
-            // 'no_sjp' => 'required',
+            'no_ktp' => 'required|max:18|min:1',
+            'no_kk' => 'required|max:18|min:1',
+            'no_hp' => 'required|min:1',
             'nama_kepala' => 'required',
             'nama_pasien' => 'required',
             'jenis_kelamin' => 'required',
@@ -146,19 +145,17 @@ class JamkesdaController extends Controller
             'jenis_rawat' => 'required',
             'dikelas' => 'required',
             'dijamin_sejak' => 'required',
-            // 'tgl_aktif_va' => 'required',
             'status_kepersertaan' => 'required',
 
             'ktp_kk' =>  ['required', 'mimes:pdf', 'max:2000'],
             'sktm' =>  ['required', 'mimes:pdf', 'max:2000'],
             'doc' =>  ['required', 'mimes:pdf', 'max:2000'],
-            // 'ktp_kk' => 'required',
-            // 'va' => 'required',
+
 
         ], [
             'no_ktp.required' => 'Form input harap diisi',
             'no_kk.required' => 'Form input harap diisi',
-            // 'no_sjp.required' => 'Form input harap diisi',
+            'no_hp.required' => 'Form input harap diisi',
             'nama_kepala.required' => 'Form input harap diisi',
             'nama_pasien.required' => 'Form input harap diisi',
             'jenis_kelamin.required' => 'Form input harap diisi',
@@ -177,7 +174,7 @@ class JamkesdaController extends Controller
             'jenis_rawat.required' => 'Form input harap diisi',
             'dikelas.required' => 'Form input harap diisi',
             'dijamin_sejak.required' => 'Form input harap diisi',
-            // 'tgl_aktif_va.required' => 'Form input harap diisi',
+
             'status_kepersertaan.required' => 'Form input harap diisi',
 
             'ktp_kk.required' => 'Form input KTP/KK harap diisi',
@@ -209,7 +206,7 @@ class JamkesdaController extends Controller
             'no_peserta' => '410/' . $pasien_id . '/SKTM/' . date('Y'),
             'no_ktp' => $request->no_ktp,
             'no_kk' => $request->no_kk,
-            // 'no_sjp' => $request->no_sjp,
+            'no_hp' => $request->no_hp,
             'nama_kepala' => $request->nama_kepala,
             'nama_pasien' => $request->nama_pasien,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -220,8 +217,7 @@ class JamkesdaController extends Controller
             'hubungan_kk' => $request->hubungan_kk,
             'ket_jamkesda' => $request->ket_jamkesda,
             'status' => 'Diproses',
-            // 'keterangan_status' => '',
-            // 'no_sktm' => $newNoSktm,
+
             'nama_pkm' => $request->nama_pkm,
             'no_rujuk_igd' => $request->no_rujuk_igd,
             'diagnosa' => $request->diagnosa,
@@ -230,7 +226,7 @@ class JamkesdaController extends Controller
             'jenis_rawat' => $request->jenis_rawat,
             'dikelas' => $request->dikelas,
             'dijamin_sejak' => $request->dijamin_sejak,
-            // 'tgl_aktif_va' => $request->tgl_aktif_va,
+
             'status_kepersertaan' => $request->status_kepersertaan,
             'tgl_diterima' => now(),
 
@@ -241,32 +237,6 @@ class JamkesdaController extends Controller
 
         $attr2 = [];
 
-        // if ($request->hasFile('ktp_kk')) {
-        //     $files = $request->file('ktp_kk');
-
-        //     foreach ($files as $index => $file) {
-        //         $ext = $file->getClientOriginalExtension();
-        //         $fileName = date('dmY') . Str::random(3);
-
-        //         if ($index == 0) {
-        //             $newName = $fileName . 'KK' . '.' . $ext;
-        //             $file->move('uploads/ktpKk', $newName);
-        //             $attr2['ktp_kk'] = $newName; // Adjust path and file name for KTP
-        //         } elseif ($index == 1) {
-        //             $newName = $fileName . 'BPB' . '.' . $ext;
-        //             $file->move('uploads/buktiPendaftaranBpjs', $newName);
-        //             $attr2['va'] = $newName; // Adjust path and file name for KK
-        //         }
-        //     }
-        // }
-
-        // if ($request->hasFile('doc')) {
-        //     $file = $request->file('doc')[0];
-        //     $ext = $file->getClientOriginalExtension();
-        //     $newName =  date('dmY') . Str::random(3) . 'DOC' .  '.' . $ext;
-        //     $file->move('uploads/doc', $newName);
-        //     $attr2['doc'] = $newName;
-        // }
 
         // Handle file upload dan hapus file lama jika ada file baru diunggah
         $fileFields = [
@@ -306,8 +276,6 @@ class JamkesdaController extends Controller
 
         $attr2['pasien_id'] = $pasien_id;
 
-        // $pasien = Pasien::where('pasien_id', $request->pasien_id)->first();
-        // $pasien->update(['status' => 'Draft', 'keterangan_status' => '']);
 
         if ($data) {
             // Update data jika sudah ada
@@ -318,12 +286,6 @@ class JamkesdaController extends Controller
             Persyaratan::create($attr2);
         }
 
-        // Log::logSave('Upload File Kelengkapan Pengajuan');
-
-        // Alert::success('Pengajuan Telah Selesai Dibuat');
-        // $attr2['pasien_id'] = $pasien_id;
-        // // dd($attr2);
-        // $store2 = Persyaratan::create($attr2);
 
         Log::logSave('Menambah data pasien manual ' . $request->nama_pasien);
 
@@ -431,6 +393,7 @@ class JamkesdaController extends Controller
             'tgl_akhir' => 'required',
             'kode_rs' => 'required',
             'jenis_rawat' => 'required',
+            'keterangan' => 'required'
         ]);
 
         $pasienCollection = Pasien::with(['pembayaran', 'rumahsakit', 'pembayaranInacbgs.inacbgs'])
@@ -438,8 +401,8 @@ class JamkesdaController extends Controller
             ->where('jenis_rawat', $request->jenis_rawat)
             ->whereBetween('tgl_diterima', [$request->tgl_awal, $request->tgl_akhir])
             // Filter pasien yang memiliki data di tabel pembayaran
-            ->whereHas('pembayaran', function ($query) {
-                $query->whereNotNull('pasien_id');  // atau tambahkan kondisi tambahan jika diperlukan
+            ->whereHas('pembayaran', function ($query) use ($request) {
+                $query->whereNotNull('pasien_id')->where('keterangan', $request->keterangan);  // atau tambahkan kondisi tambahan jika diperlukan
             })
             // Filter pasien yang memiliki data di tabel pembayaranInacbgs
             ->whereHas('pembayaranInacbgs', function ($query) {
@@ -447,10 +410,6 @@ class JamkesdaController extends Controller
             })
             ->get();
 
-        // Ambil semua data rumahsakit yang cocok dengan kode_rs, lalu masukkan ke dalam array untuk akses cepat
-        // $rumahsakitData = DB::table('rumahsakit')
-        //     ->where('kode', $request->kode_rs)
-        //     ->first();
 
         $rumahsakitData = DB::select(
             'SELECT * FROM rumahsakit rs WHERE rs.kode = :kode_rs LIMIT 1',
@@ -530,17 +489,8 @@ class JamkesdaController extends Controller
         ];
         // dd($data);
         $pdf = PDF::loadView('pages.admin.pdf-rekap-tagihan', $data)->setPaper('a4', 'landscape');
-        // Simpan file PDF ke dalam storage sementara
-        // $pdfPath = storage_path('app/public/rekapitulasi-tagihan.pdf');
-        // $pdf->save($pdfPath);
 
-        // Kembalikan URL file PDF untuk diakses di tab baru
-        // return response()->json([
-        //     'url' => asset('storage/rekapitulasi-tagihan.pdf'),
-        // ]);
         return $pdf->stream('rekapitulasi-tagihan.pdf');
-        // $nama_file = 'laporan_sembako_' . date('Y-m-d_H-i-s') . '.xlsx';
-        // return Excel::download(new JamkesdaSelesai($request->all()), $nama_file);
     }
 
     public function prosesDiterima($pasien_id)
@@ -631,7 +581,7 @@ class JamkesdaController extends Controller
         $logoKotaBogor = base64_encode(file_get_contents(public_path('assets/logokotabogor.gif')));
         $logoDikaper = base64_encode(file_get_contents(public_path('assets/dikaper.jpeg')));
         $lineImage = base64_encode(file_get_contents(public_path('assets/line.png')));
-        $ttdImage = base64_encode(file_get_contents(public_path('assets/ttd.jpg')));
+        $ttdImage = base64_encode(file_get_contents(public_path('assets/ttd.png')));
         $data = [
             'title' => 'Welcome to ItSolutionStuff.com',
             'date' => date('m/d/Y'),
@@ -700,7 +650,9 @@ class JamkesdaController extends Controller
             'tarif_rs' => $request->tarif_rs,
             'biaya_lainnya' => $request->biaya_lainnya,
             'total_biaya' => $request->total_biaya,
-            'keterangan' => '0',
+            'keterangan' => $request->keterangan ?? "Belum Dibayar",
+            'total_pembayaran' => $request->total_pembayaran ?? "0",
+            'tgl_pembayaran' => $request->tgl_pembayaran ?? null,
         ];
 
         $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
@@ -890,17 +842,22 @@ class JamkesdaController extends Controller
             'tarif_rs' => $request->tarif_rs,
             'biaya_lainnya' => $request->biaya_lainnya,
             'total_biaya' => $request->total_biaya,
-            'keterangan' => '0',
+            'keterangan' => $request->keterangan ?? "Belum Dibayar",
+            'total_pembayaran' => $request->total_pembayaran ?? "0",
+            'tgl_pembayaran' => $request->tgl_pembayaran ?? null,
         ];
 
-        $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
-        if ($pembayaran->exists()) {
-            $pembayaran->first()->update($attr);
-            Log::logSave('Update data tagihan dengan pasien id=' . $pasien_id);
-        } else {
-            Pembayaran::create($attr);
-            Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
-        }
+        $pembayaran = Pembayaran::where('pasien_id', $pasien_id)->first();
+
+        $pembayaran->update($attr);
+        Log::logSave('Update data tagihan dengan pasien id = ' . $pasien_id);
+        // if ($pembayaran->exists()) {
+        //     $pembayaran->first()->update($attr);
+        //     Log::logSave('Update data tagihan dengan pasien id=' . $pasien_id);
+        // } else {
+        //     Pembayaran::create($attr);
+        //     Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
+        // }
 
         if (isset($request->pasien_pulang)) {
             $data = Persyaratan::where('pasien_id', $pasien_id)->first();
@@ -938,28 +895,6 @@ class JamkesdaController extends Controller
         }
 
         return redirect()->route('pengajuan.selesai');
-
-
-        // $pasien_id  = $request->pasien_id;
-        // $attr = [
-        //     'pasien_id' => $request->pasien_id,
-        //     'total_tagihan' => $request->total_tagihan,
-        //     'keterangan' => $request->keterangan,
-        //     'tgl_pembayaran_tagihan' => $request->tgl_pembayaran_tagihan
-        // ];
-
-        // $pembayaran = Pembayaran::where('pasien_id', $pasien_id);
-        // if ($pembayaran->count()) {
-        //     $insert = $pembayaran->first()->update($attr);
-        //     Log::logSave('Upadate data tagihan dengan pasien id=' . $pasien_id);
-        //     Alert::success('Data Berhasil Diupdate');
-        //     return redirect()->route('jamkesda.selesai');
-        // } else {
-        //     $insert = Pembayaran::create($attr);
-        //     Log::logSave('Menambahkan data tagihan dengan pasien id=' . $pasien_id);
-        //     Alert::success('Data Berhasil Diupdate');
-        //     return redirect()->route('jamkesda.selesai');
-        // }
     }
 
     public function hapusTagihan($pasien_id)

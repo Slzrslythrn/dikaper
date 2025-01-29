@@ -260,7 +260,7 @@
         dengan menggunakan tarif INA-CBG. Biaya tersebut diajukan oleh Rumah Sakit melalui klaim kolektif sebelum
         tanggal 10 bulan berikutnya.
     </p>
-    <p style="font-size: 14px">Atas perhatian serta kerjasama Saudara, kami ucapkan terima kasih.</p>
+    <p style="font-size: 14px">Atas perhatian serta kerja sama Saudara, kami ucapkan terima kasih.</p>
     <table width="100%" style="text-align: center; font-size: 14px" border="0">
         <tr>
             <td width="300"></td>

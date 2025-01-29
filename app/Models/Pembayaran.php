@@ -22,7 +22,8 @@ class Pembayaran extends Model
         'los',
         'tgl_keluar',
         'biaya_lainnya',
-        'total_biaya'
+        'total_biaya',
+        'total_pembayaran'
     ];
 
     public $timestamps = false;

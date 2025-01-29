@@ -50,4 +50,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $attributes = [
         'level' => 'user',
     ];
+
+    public function bap()
+    {
+        return $this->hasMany(Bap::class, 'user_id', 'id');
+    }
 }
